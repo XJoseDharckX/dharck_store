@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DHARCK STORE - Recargas de Juegos</title>
+    <!-- No se carga Tailwind CSS ni estilos personalizados -->
+</head>
+<body>
+
+    <style>
+        /* Fuentes */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Fondo de la página con degradados de neón llamativos */
+            background: linear-gradient(135deg, #2A0A4C, #6A0DAD, #8A2BE2, #FF00FF, #00FFFF, #00FF00); /* Degradado vibrante */
+            background-size: 400% 400%; /* Para el efecto de animación */
+            animation: gradient-animation 15s ease infinite; /* Animación del fondo */
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            position: relative;
+            overflow-x: hidden; /* Evitar desplazamiento horizontal */
+        }
+
+        /* Animación para el degradado de fondo */
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Logo de fondo flotante grande */
+        .background-logo {
+            position: fixed; /* Para que se quede en su lugar sin desplazarse */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Centra el elemento en la pantalla */
+            width: 80%; /* Ajusta el tamaño del logo */
+            max-width: 1000px; /* Limita el tamaño máximo en pantallas muy grandes */
+            height: auto;
+            opacity: 0.15; /* Opacar un poco el logo para que no sea tan brillante */
+            z-index: -2; /* Asegura que esté detrás del formulario y cualquier superposición */
+            pointer-events: none; /* Para que el logo no sea interactivo y no bloquee clics */
+        }
+
+        /* Estilo para el título "DHARCK STORE" */
+        .dharck-store-title-container {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Centrar el título y el logo */
+            margin-bottom: 30px; /* Espacio debajo del título */
+        }
+        .dharck-store-title {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to right, #00FFFF, #FF00FF, #00FF00); /* Degradado cian-magenta-verde neón */
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8), /* Resplandor cian */
+                         0 0 20px rgba(255, 0, 255, 0.8), /* Resplandor magenta */
+                         0 0 30px rgba(0, 255, 0, 0.8);   /* Resplandor verde */
+            animation: neon-pulse 1.5s infinite alternate; /* Efecto de pulsación sutil */
+            font-weight: bold;
+            font-size: 2.8em; /* Tamaño de fuente del título */
+            line-height: 1; /* Asegurar que el texto y el logo se alineen bien */
+            margin: 0; /* Eliminar margen predeterminado */
+            margin-right: 15px; /* Espacio entre el texto y el logo */
+        }
+        /* Logo pequeño al lado del título */
+        .title-logo {
+            height: 60px; /* Tamaño ajustado para el logo al lado del título */
+            width: auto;
+            border-radius: 50%; /* Si el logo es circular, para que se vea bien */
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* Pequeño resplandor */
+        }
+
+
+        /* Animación opcional para el título */
+        @keyframes neon-pulse {
+            from { text-shadow: 0 0 8px rgba(0, 255, 255, 0.6), 0 0 15px rgba(255, 0, 255, 0.6), 0 0 25px rgba(0, 255, 0, 0.6); }
+            to { text-shadow: 0 0 12px rgba(0, 255, 255, 1), 0 0 20px rgba(255, 0, 255, 1), 0 0 35px rgba(0, 255, 0, 1); }
+        }
+
+        /* Estilos principales para el formulario */
+        body > div:first-of-type { /* Selecciona el primer div hijo del body (el contenedor del formulario) */
+            background-color: rgba(10, 0, 30, 0.95); /* Fondo muy oscuro pero no negro puro, translúcido */
+            border: 2px solid #8a2be2; /* Borde morado neón */
+            padding: 30px;
+            border-radius: 15px; /* Esquinas más redondeadas */
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.7); /* Sombra con resplandor morado neón */
+            max-width: 800px; /* Un poco más ancho para permitir expansión horizontal de ítems */
+            width: 90%;
+            margin: auto;
+            color: #e0f2fe; /* Texto principal muy claro, casi blanco-azulado */
+            box-sizing: border-box; /* Asegura que padding no aumente el ancho total */
+            z-index: 1; /* Asegurar que el formulario esté por encima del logo de fondo */
+            position: relative; /* Para que z-index funcione */
+        }
+
+        form div {
+            margin-bottom: 20px; /* Más espacio entre campos */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px; /* Más espacio debajo de la etiqueta */
+            font-weight: bold;
+            color: #00ffff; /* Cian neón para las etiquetas */
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); /* Sombra sutil de texto */
+        }
+
+        input[type="text"],
+        input[type="tel"], /* Estilo para el input de tipo tel */
+        select {
+            width: 100%;
+            padding: 12px; /* Más padding para mayor tamaño */
+            border: 1px solid #6a0dad; /* Borde morado */
+            border-radius: 8px; /* Más redondeado */
+            box-sizing: border-box;
+            background-color: #1a052e; /* Fondo de campo oscuro pero no negro */
+            color: #ffffff; /* Texto blanco en los campos de entrada */
+            font-size: 1.1em; /* Texto un poco más grande */
+            transition: all 0.3s ease; /* Transición suave */
+        }
+
+        input[type="text"]::placeholder,
+        input[type="tel"]::placeholder { /* Placeholder para ambos tipos de input */
+            color: #a0a0a0; /* Placeholder gris claro */
+        }
+
+        input[type="text"]:focus,
+        input[type="tel"]:focus, /* Focus para ambos tipos de input */
+        select:focus {
+            outline: none;
+            border-color: #00ff00; /* Borde verde neón al enfocar */
+            box-shadow: 0 0 0 3px rgba(0, 255, 0, 0.5); /* Resplandor verde neón al enfocar */
+        }
+
+        .action-button { /* Clase base para los botones de acción */
+            background: linear-gradient(to right, #00e676, #00c853); /* Degradado verde neón */
+            color: #0d001a; /* Texto muy oscuro en el botón neón */
+            padding: 15px 20px; /* Más padding para mayor tamaño */
+            border: none;
+            border-radius: 10px; /* Más redondeado */
+            cursor: pointer;
+            font-size: 1.2em; /* Texto más grande */
+            font-weight: bold;
+            width: 100%;
+            box-shadow: 0 5px 20px rgba(0, 230, 118, 0.7); /* Sombra con resplandor verde neón */
+            transition: all 0.3s ease;
+            margin-top: 20px; /* Margen superior para separar de otros elementos */
+        }
+
+        .action-button:hover:not(:disabled) { /* Hover solo si no está deshabilitado */
+            background: linear-gradient(to right, #00c853, #00ffff); /* Verde a cian neón al pasar el ratón */
+            box-shadow: 0 8px 25px rgba(0, 255, 255, 0.8); /* Resplandor cian al pasar el ratón */
+            transform: translateY(-3px) scale(1.01); /* Efecto 3D sutil */
+        }
+
+        .action-button:disabled { /* Estilo para botones deshabilitados */
+            background: #4a4a4a; /* Gris oscuro */
+            cursor: not-allowed;
+            opacity: 0.6;
+            box-shadow: none;
+        }
+
+        /* Estilo específico para el botón de confirmar transferencia */
+        #confirmTransferBtn {
+            background: linear-gradient(to right, #FF00FF, #8a2be2); /* Degradado magenta-morado neón */
+            box-shadow: 0 5px 20px rgba(255, 0, 255, 0.7); /* Sombra con resplandor magenta neón */
+        }
+        #confirmTransferBtn:hover:not(:disabled) {
+            background: linear-gradient(to right, #8a2be2, #FF00FF); /* Degradado invertido */
+            box-shadow: 0 8px 25px rgba(255, 0, 255, 0.8); /* Resplandor más fuerte */
+        }
+
+
+        #amountButtons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Artículos de tamaño más uniforme y un poco más grandes, con expansión horizontal */
+            gap: 20px; /* Más espacio entre botones */
+            justify-content: center; /* Centrar los elementos si no llenan la cuadrícula */
+        }
+        .amount-item { /* Nueva clase para los elementos de artículo */
+            background-color: #1a052e; /* Fondo oscuro para cada artículo */
+            border: 2px solid #6a0dad; /* Borde morado */
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(138, 43, 226, 0.5); /* Sombra con resplandor */
+            display: flex;
+            flex-direction: column; /* Organizar imagen y texto verticalmente */
+            align-items: center;
+            justify-content: center; /* Centrar contenido */
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 150px; /* Altura mínima uniforme para todos los artículos */
+            text-align: center;
+            box-sizing: border-box; /* Asegurar que el padding no desborde el min-height */
+        }
+        .amount-item:hover:not(.selected) { /* Hover solo si no está seleccionado */
+            background-color: #8a2be2; /* Morado más claro al pasar el ratón */
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.8); /* Resplandor más fuerte */
+            transform: translateY(-5px); /* Efecto de elevación */
+        }
+        .amount-item.selected {
+            background: linear-gradient(to right, #00e676, #00ffff); /* Degradado verde-cian al seleccionar */
+            border-color: #00ffff;
+            color: #1a052e; /* Texto oscuro en el botón seleccionado */
+            box-shadow: 0 0 20px rgba(0, 255, 255, 1); /* Resplandor brillante */
+            transform: scale(1.05); /* Efecto de escala */
+        }
+        .item-image { /* Estilo para las imágenes dentro de los artículos */
+            width: 80px; /* Tamaño fijo para las imágenes */
+            height: 80px;
+            object-fit: contain; /* Asegura que la imagen se ajuste sin distorsión */
+            margin-bottom: 10px; /* Espacio entre imagen y texto */
+            border-radius: 5px; /* Ligeras esquinas redondeadas para las imágenes */
+        }
+        .item-label { /* Estilo para el texto del artículo */
+            color: #ffffff; /* Texto blanco para etiquetas de artículos */
+            font-weight: bold;
+            font-size: 1.1em;
+            line-height: 1.2; /* Ajusta la altura de línea */
+        }
+
+
+        #priceSummary, #messageDisplay, #paymentMethodsDisplay {
+            padding: 20px; /* Más padding */
+            border-radius: 10px; /* Más redondeado */
+            margin-top: 25px; /* Más margen superior */
+            text-align: center;
+            background-color: rgba(10, 0, 30, 0.8); /* Fondo oscuro translúcido */
+            border: 1px solid #8a2be2; /* Borde morado neón */
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.3); /* Sombra sutil */
+        }
+        #priceSummary p, #paymentMethodsList p {
+            color: #e0f2fe; /* Texto claro para legibilidad */
+        }
+
+        #totalPriceDisplay {
+            font-weight: bold;
+            color: #00ffff; /* Cian neón para el total */
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.7); /* Resplandor al total */
+            font-size: 1.5em; /* Total más grande */
+        }
+        #currencySymbolDisplay {
+            color: #00ff00; /* Verde neón para el símbolo de moneda */
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.7);
+        }
+        #baseAmountDisplay {
+            color: #a0a0a0; /* Gris más claro para el monto base */
+            font-size: 0.9em;
+        }
+        #paymentMethodsList p span {
+            color: #00e676; /* Verde neón para los nombres de los métodos */
+            font-weight: bold;
+        }
+
+        /* Visualización de mensajes - Actualizado para usar clases */
+        #messageDisplay {
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 8px;
+            text-shadow: 0 0 5px rgba(0,0,0,0.2);
+            color: white; /* Color de texto predeterminado para mensajes */
+        }
+        .message-error {
+            background-color: #8b0000; /* Rojo oscuro vibrante */
+            border: 1px solid #ff4444;
+            color: #ffcccc; /* Texto rojo muy claro */
+        }
+        .message-success {
+            background-color: #006400; /* Verde oscuro vibrante */
+            border: 1px solid #00ff00;
+            color: #ccffcc; /* Texto verde muy claro */
+        }
+        .message-info {
+            background-color: #00008b; /* Azul oscuro vibrante */
+            border: 1px solid #4444ff;
+            color: #cceeff; /* Texto azul muy claro */
+        }
+        /* Advertencia de transferencia - COLORES MEJORADOS PARA VISIBILIDAD */
+        .transfer-warning {
+            background-color: #FF5733; /* Naranja vibrante */
+            border: 2px solid #FFC300; /* Borde amarillo brillante */
+            color: #330000; /* Texto oscuro para alto contraste */
+            font-weight: bold;
+            padding: 18px; /* Más padding para mayor tamaño */
+            border-radius: 12px; /* Más redondeado */
+            margin-top: 25px; /* Más margen superior */
+            text-align: center;
+            box-shadow: 0 0 20px rgba(255, 87, 51, 0.8), 0 0 30px rgba(255, 195, 0, 0.8); /* Doble resplandor neón */
+            animation: pulse-warning 1.5s infinite alternate; /* Animación de pulsación */
+        }
+
+        @keyframes pulse-warning {
+            from { transform: scale(1); box-shadow: 0 0 10px rgba(255, 87, 51, 0.6); }
+            to { transform: scale(1.02); box-shadow: 0 0 25px rgba(255, 87, 51, 1), 0 0 35px rgba(255, 195, 0, 1); }
+        }
+
+
+        /* Estilos del modal - FONDO MEJORADO */
+        #whatsappWarningModal > div {
+            background-color: rgba(10, 0, 30, 0.95); /* Fondo oscuro translúcido, igual que el formulario */
+            border: 2px solid #00ffff; /* Borde cian neón */
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6); /* Sombra con resplandor cian */
+            color: #e0f2fe; /* Texto principal claro */
+        }
+        #whatsappWarningModal h2 {
+            color: #00ffff; /* Cian neón para el título del modal */
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+        }
+        #whatsappWarningModal p { /* Color del texto del párrafo del modal */
+            color: #e0f2fe; /* Texto claro para legibilidad */
+        }
+        #whatsappWarningModal p span {
+            color: #ff00ff; /* Magenta neón para advertencia */
+            text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+        }
+        #whatsappWarningModal #cancelWhatsApp {
+            background-color: #333333; /* Gris oscuro */
+            color: #e0f2fe;
+            border: 1px solid #555555;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+        }
+        #whatsappWarningModal #cancelWhatsApp:hover {
+            background-color: #555555;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            transform: translateY(-1px);
+        }
+        #whatsappWarningModal #confirmWhatsApp {
+            background: linear-gradient(to right, #00e676, #00ffff); /* Degradado verde-cian */
+            color: #1a052e; /* Texto oscuro */
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+        #whatsappWarningModal #confirmWhatsApp:hover {
+            background: linear-gradient(to right, #00ffff, #00e676); /* Degradado invertido */
+            box-shadow: 0 6px 20px rgba(0, 255, 255, 1);
+            transform: translateY(-2px);
+        }
+
+    </style>
+
+    <!-- Logo de fondo flotante -->
+    <img src="logo.png" alt="DHARCK STORE Logo Background" class="background-logo">
+
+    <div>
+        <div class="dharck-store-title-container">
+            <h1 class="dharck-store-title">
+                DHARCK STORE
+            </h1>
+            <!-- Logo al lado del título -->
+            <img src= "logo.png" alt="DHARCK STORE Logo" class="title-logo">
+        </div>
+
+        <form id="topupForm">
+            <div>
+                <label for="game">
+                    SELECCIONA EL JUEGO:
+                </label>
+                <select
+                    id="game"
+                    name="game"
+                    required
+                >
+                    <option value="">-- ELIGE EL JUEGO --</option>
+                    </select>
+            </div>
+
+            <div id="amountSelection" style="display: none;">
+                <label>
+                    SELECCIONA EL ARTICULO:
+                </label>
+                <div id="amountButtons">
+                    <!-- Los divs de los artículos se generarán aquí con JS -->
+                </div>
+            </div>
+
+            <div>
+                <label for="userId">
+                    ID DEL JUGADOR:
+                </label>
+                <input
+                    type="tel"
+                    id="userId"
+                    name="userId"
+                    placeholder="Ej: 1234567890"
+                    pattern="[0-9]*"
+                    title="Por favor, ingresa solo números."
+                    required
+                />
+            </div>
+            <div>
+                <label for="userName">
+                    NOMBRE DEL JUGADOR:
+                </label>
+                <input
+                    type="text"
+                    id="userName"
+                    name="userName"
+                    placeholder="Ej: ElCojeViejas300"
+                    required
+                />
+            </div>
+            <div>
+                <label for="country">
+                    SELECCIONA TU PAIS:
+                </label>
+                <select
+                    id="country"
+                    name="country"
+                    required
+                >
+                    <option value="">-- Elige un país --</option>
+                    </select>
+            </div>
+            <input type="hidden" id="gameHidden" name="game">
+            <input type="hidden" id="amountUSDHidden" name="amountUSD">
+            <input type="hidden" id="totalPriceHidden" name="totalPrice">
+            <input type="hidden" id="currencySymbolHidden" name="currencySymbol">
+
+
+            <div id="priceSummary" style="display: none;">
+                <p>RESUMEN DE PEDIDO:</p>
+                <p>
+                    TOTAL A PAGAR: <span id="totalPriceDisplay"></span> <span id="currencySymbolDisplay"></span>
+                </p>
+                <p>
+                    (BASADO EN <span id="baseAmountDisplay"></span> USD + COMISION!)
+                </p>
+            </div>
+
+            <div id="paymentMethodsDisplay" style="display: none;">
+                <p>METODOS DE PAGOS:</p>
+                <div id="paymentMethodsList"></div>
+            </div>
+
+            <!-- Advertencia debajo de los métodos de pago -->
+            <div id="transferWarningMessage" class="transfer-warning">
+                ¡Advertencia! No oprimas el botón de "Confirmar Transferencia" si aún no has realizado el pago. Recuerda guardar una imagen del comprobante de pago.
+            </div>
+
+            <!-- Nuevo botón para confirmar transferencia -->
+            <button
+                type="button"
+                id="confirmTransferBtn"
+                class="action-button"
+                disabled="true" <!-- Inicialmente deshabilitado -->
+            >
+                ¡CONFIRMAR QUE HAZ PAGADO! 
+            </button <!-- Botón de Enviar Pedido (WhatsApp), inicialmente oculto -->
+
+            <button
+                type="submit"
+                id="sendWhatsAppOrderBtn"
+                class="action-button"
+                style="display: none;"
+            >
+                ENVIAR EL PEDIDO
+            </button>
+
+            <div id="messageDisplay" style="display: none;"></div>
+        </form>
+    </div>
+
+    <!-- Custom Modal for WhatsApp Warning -->
+    <div id="whatsappWarningModal" style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); z-index: 1000; display: none;">
+        <div style="background-color: rgba(10, 0, 30, 0.95); padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 400px; width: 100%; text-align: center;">
+            <h2>¡Importante!</h2>
+            <p style="color: #e0f2fe;">
+                Tu pedido será enviado por WhatsApp.
+                <span style="color: #ff00ff;">Recuerda enviar el comprobante de pago por WhatsApp después de confirmar el pedido.</span>
+            </p>
+            <div>
+                <button id="cancelWhatsApp" type="button">
+                    Cancelar
+                </button>
+                <button id="confirmWhatsApp" type="button">
+                    Confirmar y Enviar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Número de WhatsApp Business (reemplaza con tu número, incluyendo el código de país)
+        const WHATSAPP_NUMBER = '584126027407'; // Número proporcionado por el usuario
+
+        // Elementos ocultos (ahora solo para datos del formulario)
+        const gameHidden = document.getElementById('gameHidden');
+        const amountUSDHidden = document.getElementById('amountUSDHidden');
+        const totalPriceHidden = document.getElementById('totalPriceHidden');
+        const currencySymbolHidden = document.getElementById('currencySymbolHidden');
+
+        // Referencias al modal
+        const whatsappWarningModal = document.getElementById('whatsappWarningModal');
+        const confirmWhatsAppBtn = document.getElementById('confirmWhatsApp');
+        const cancelWhatsAppBtn = document.getElementById('cancelWhatsApp');
+
+        // Nuevos botones de acción
+        const confirmTransferBtn = document.getElementById('confirmTransferBtn');
+        const sendWhatsAppOrderBtn = document.getElementById('sendWhatsAppOrderBtn');
+
+        // Datos simulados de juegos y sus precios base en USD
+        // ¡IMPORTANTE! Reemplaza estas URLs de `placehold.co` con las URLs reales de tus imágenes de artículos.
+        const gameOptions = [
+            { name: 'BLOOD STRIKE', amounts: [
+                { value: 0.89, label: '100+5🧈', imageUrl: 'Imagenes/100.png' },
+                { value: 2.50, label: '300+20🧈', imageUrl: 'Imagenes/300.png' },
+                { value: 4.30, label: '500+40🧈', imageUrl: 'Imagenes/500.png' },
+                { value: 8.50, label: '1000+100🧈', imageUrl: 'Imagenes/1000.png' },
+                { value: 17.60, label: '2000+200🧈', imageUrl: 'Imagenes/2000.png' },
+                { value: 42.00, label: '5000+800🧈', imageUrl: 'Imagenes/5000.png' },
+                { value: 3.50, label: 'PASE ELITE🧈', imageUrl: 'Imagenes/elite.png' },
+                { value: 8.51, label: 'PASE PREMIUM🧈', imageUrl: 'Imagenes/premium.png' },
+                { value: 2.00, label: 'PASE DE NIVEL🧈', imageUrl: 'Imagenes/mejora.png' },
+               
+              ] },
+
+            //{ name: 'Free Fire', amounts: [{ value: 0.90, label: '100 Diamantes', imageUrl: 'URL_IMAGEN_FF_100' }, { value: 4.00, label: '500 Diamantes', imageUrl: 'URL_IMAGEN_FF_500' }, { value: 7.50, label: '1000 Diamantes', imageUrl: 'URL_IMAGEN_FF_1000' }] },
+            //{ name: 'Mobile Legends', amounts: [{ value: 1.10, label: '100 Diamantes', imageUrl: 'URL_IMAGEN_ML_100' }, { value: 5.00, label: '500 Diamantes', imageUrl: 'URL_IMAGEN_ML_500' }, { value: 9.00, label: '1000 Diamantes', imageUrl: 'URL_IMAGEN_ML_1000' }] },
+        ];
+
+        // Datos simulados de países y sus tasas de cambio con respecto al USD
+        const countryData = [
+            {
+                name: 'Venezuela',
+                code: 'VES',
+                exchangeRate: 137,
+                symbol: 'Bs.',
+                paymentMethods: [
+                    { name: 'Pago Móvil', details: 'C.I.: V-32147818, Teléfono: 04126027407, Banco: 0105 (Banco Mercantil)' },
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+
+                ]
+            },
+            {
+                name: 'Colombia',
+                code: 'COP',
+                exchangeRate: 4300,
+                symbol: 'COP',
+                paymentMethods: [
+                    { name: 'Nequi', details: 'Número:  3012660676 Nombre:Ali.' },
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+
+                ]
+            },
+            {
+                name: 'Perú',
+                code: 'PEN',
+                exchangeRate: 3.9,
+                symbol: 'S/.',
+                paymentMethods: [
+                    { name: 'BCP', details: 'Cuenta: 38097062947042, Titular: Yoshimara' },
+                    { name: 'Yape', details: 'Número: 974610375' },
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                ]
+            },
+            {
+                name: 'México',
+                code: 'MXN',
+                exchangeRate: 20.1,
+                symbol: 'MXN',
+                paymentMethods: [
+                    { name: ' SPIN BY OXXO', details: 'TARJETA: 4217 4701 8364 0099' },
+                    { name: ' BANCO AZTECA', details: 'INTERBANCARIA: 1277 9700 1467 5859 00, ' },
+                    { name: ' Titular', details: 'Jesus Carrillo' },
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                ]
+            },
+            {
+                name: 'Estados Unidos',
+                code: 'USD',
+                exchangeRate: 1.05, // Asumiendo un pequeño margen para el USD
+                symbol: '$',
+                paymentMethods: [
+                    { name: 'Zelle', details: 'Correo Zelle: +1 (661) 736 - 0564, Nombre: Jannett Martinez Lopez' },
+                    { name: 'Titular', details: 'Jannett Martinez Lopez' },
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+
+                ]
+            },
+        ];
+
+        let selectedGame = '';
+        let selectedAmountUSD = 0;
+        let selectedCountry = '';
+        let totalPrice = 0;
+        let currencySymbol = 'USD';
+
+        // Elementos del DOM
+        const gameSelect = document.getElementById('game');
+        const amountSelectionDiv = document.getElementById('amountSelection');
+        const amountButtonsDiv = document.getElementById('amountButtons');
+        const userIdInput = document.getElementById('userId');
+        const userNameInput = document.getElementById('userName');
+        const countrySelect = document.getElementById('country');
+        const priceSummaryDiv = document.getElementById('priceSummary');
+        const totalPriceDisplay = document.getElementById('totalPriceDisplay');
+        const currencySymbolDisplay = document.getElementById('currencySymbolDisplay');
+        const baseAmountDisplay = document.getElementById('baseAmountDisplay');
+        const messageDisplay = document.getElementById('messageDisplay');
+        const topupForm = document.getElementById('topupForm');
+        const paymentMethodsDisplayDiv = document.getElementById('paymentMethodsDisplay');
+        const paymentMethodsListDiv = document.getElementById('paymentMethodsList');
+        const transferWarningMessage = document.getElementById('transferWarningMessage');
+
+
+        // Función para validar todos los campos y habilitar/deshabilitar el botón de Confirmar Transferencia
+        function updateConfirmTransferButtonState() {
+            const isGameSelected = gameSelect.value !== '';
+            const isAmountSelected = selectedAmountUSD > 0;
+            const isUserIdFilled = userIdInput.value.trim() !== '';
+            const isUserNameFilled = userNameInput.value.trim() !== '';
+            const isCountrySelected = countrySelect.value !== '';
+
+            // Validar si el ID de usuario contiene solo números
+            const userIdPattern = /^[0-9]*$/;
+            const isUserIdNumeric = userIdPattern.test(userIdInput.value.trim());
+
+            if (isGameSelected && isAmountSelected && isUserIdFilled && isUserNameFilled && isCountrySelected && isUserIdNumeric) {
+                confirmTransferBtn.disabled = false;
+                messageDisplay.style.display = 'none'; // Ocultar mensajes si todo es válido
+            } else {
+                confirmTransferBtn.disabled = true;
+                // Mostrar un mensaje de "completa todos los campos" si no está completo y no hay otro mensaje activo
+                if (!messageDisplay.textContent || messageDisplay.style.display === 'none') {
+                    // Solo si no hay un mensaje específico de error de ID o si no hay un mensaje visible
+                    if (!isUserIdNumeric && isUserIdFilled) {
+                        showMessage('El ID de Usuario solo debe contener números.', 'error');
+                    } else if (isUserIdFilled && isUserNameFilled && isCountrySelected && isGameSelected && isAmountSelected && !isUserIdNumeric) {
+                        // This case is already covered by the specific check above
+                    } else {
+                        // No mostrar este mensaje si ya hay uno más específico de error de ID, etc.
+                        const currentMessageType = messageDisplay.classList.contains('message-error') ? 'error' : messageDisplay.classList.contains('message-info') ? 'info' : '';
+                        if (!currentMessageType) { // Solo si no hay un mensaje ya visible
+                            showMessage('Por favor, completa todos los campos para confirmar la transferencia.', 'info');
+                        }
+                    }
+                }
+            }
+        }
+
+
+        // Función para cargar opciones de juego
+        function loadGameOptions() {
+            gameOptions.forEach(game => {
+                const option = document.createElement('option');
+                option.value = game.name;
+                option.textContent = game.name;
+                gameSelect.appendChild(option);
+            });
+        }
+
+        // Función para cargar opciones de país
+        function loadCountryOptions() {
+            countryData.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country.name;
+                option.textContent = country.name;
+                countrySelect.appendChild(option);
+            });
+        }
+
+        // Manejador de cambio de juego
+        gameSelect.addEventListener('change', (e) => {
+            selectedGame = e.target.value;
+            selectedAmountUSD = 0; // Reiniciar monto al cambiar de juego
+            updateAmountSelection();
+            updatePriceSummary();
+            // Restablecer el estado de los botones cuando se cambia el juego
+            sendWhatsAppOrderBtn.style.display = 'none';
+            messageDisplay.style.display = 'none'; // Limpiar mensajes
+            transferWarningMessage.style.display = 'block'; // Asegurarse de que la advertencia esté visible
+            updateConfirmTransferButtonState();
+        });
+
+        // Función para actualizar los botones de monto con imágenes
+        function updateAmountSelection() {
+            amountButtonsDiv.innerHTML = ''; // Limpiar botones existentes
+            if (selectedGame) {
+                amountSelectionDiv.style.display = 'block'; // Mostrar
+                const currentAmounts = gameOptions.find(g => g.name === selectedGame)?.amounts;
+                currentAmounts.forEach(amount => {
+                    const itemDiv = document.createElement('div'); // Usamos un div como contenedor del item
+                    itemDiv.classList.add('amount-item'); // Añadir la clase para los estilos CSS
+                    itemDiv.dataset.value = amount.value; // Guardar el valor en un data-attribute
+
+                    itemDiv.innerHTML = `
+                        <img src="${amount.imageUrl}" alt="${amount.label}" class="item-image">
+                        <span class="item-label">${amount.label}</span>
+                    `;
+
+                    itemDiv.addEventListener('click', () => {
+                        selectedAmountUSD = parseFloat(amount.value);
+                        // Remover la clase 'selected' de todos los divs de artículo
+                        Array.from(amountButtonsDiv.children).forEach(div => div.classList.remove('selected'));
+                        // Añadir la clase 'selected' al div de artículo clicado
+                        itemDiv.classList.add('selected');
+                        updatePriceSummary();
+                        // Restablecer el estado de los botones cuando se selecciona un monto
+                        sendWhatsAppOrderBtn.style.display = 'none';
+                        messageDisplay.style.display = 'none'; // Limpiar mensajes
+                        transferWarningMessage.style.display = 'block'; // Asegurarse de que la advertencia esté visible
+                        updateConfirmTransferButtonState();
+                    });
+                    amountButtonsDiv.appendChild(itemDiv);
+                });
+            } else {
+                amountSelectionDiv.style.display = 'none'; // Ocultar
+            }
+        }
+
+        // Manejador de cambio de país
+        countrySelect.addEventListener('change', (e) => {
+            selectedCountry = e.target.value;
+            updatePriceSummary();
+            // Restablecer el estado de los botones cuando se cambia el país
+            sendWhatsAppOrderBtn.style.display = 'none';
+            messageDisplay.style.display = 'none'; // Limpiar mensajes
+            transferWarningMessage.style.display = 'block'; // Asegurarse de que la advertencia esté visible
+            updateConfirmTransferButtonState();
+        });
+        
+        // Manejadores de input para validar y restablecer botones
+        userIdInput.addEventListener('input', () => {
+            sendWhatsAppOrderBtn.style.display = 'none';
+            messageDisplay.style.display = 'none'; // Limpiar mensajes
+            transferWarningMessage.style.display = 'block'; // Asegurarse de que la advertencia esté visible
+            updateConfirmTransferButtonState();
+        });
+
+        userNameInput.addEventListener('input', () => {
+            sendWhatsAppOrderBtn.style.display = 'none';
+            messageDisplay.style.display = 'none'; // Limpiar mensajes
+            transferWarningMessage.style.display = 'block'; // Asegurarse de que la advertencia esté visible
+            updateConfirmTransferButtonState();
+        });
+
+
+        // Función para actualizar el resumen del precio y los métodos de pago
+        function updatePriceSummary() {
+            if (selectedAmountUSD > 0 && selectedCountry) {
+                const countryInfo = countryData.find(country => country.name === selectedCountry);
+                if (countryInfo) {
+                    totalPrice = selectedAmountUSD * countryInfo.exchangeRate;
+                    currencySymbol = countryInfo.symbol;
+                    totalPriceDisplay.textContent = totalPrice.toFixed(2);
+                    currencySymbolDisplay.textContent = currencySymbol;
+                    baseAmountDisplay.textContent = selectedAmountUSD.toFixed(2);
+                    priceSummaryDiv.style.display = 'block'; // Mostrar
+
+                    // Mostrar métodos de pago para el país seleccionado
+                    paymentMethodsListDiv.innerHTML = '';
+                    if (countryInfo.paymentMethods && countryInfo.paymentMethods.length > 0) {
+                        countryInfo.paymentMethods.forEach(method => {
+                            const p = document.createElement('p');
+                            p.innerHTML = `<span>${method.name}:</span> ${method.details}`;
+                            paymentMethodsListDiv.appendChild(p);
+                        });
+                        paymentMethodsDisplayDiv.style.display = 'block'; // Mostrar
+                    } else {
+                        paymentMethodsDisplayDiv.style.display = 'none'; // Ocultar
+                    }
+
+                }
+            } else {
+                priceSummaryDiv.style.display = 'none'; // Ocultar
+                paymentMethodsDisplayDiv.style.display = 'none'; // Ocultar
+            }
+        }
+
+        // Función para mostrar mensajes al usuario - AHORA USA CLASES
+        function showMessage(msg, type) {
+            messageDisplay.textContent = msg;
+            messageDisplay.style.display = 'block'; // Mostrar
+            messageDisplay.classList.remove('message-error', 'message-success', 'message-info'); // Limpiar clases anteriores
+
+            if (type === 'error') {
+                messageDisplay.classList.add('message-error');
+            } else if (type === 'success') {
+                messageDisplay.classList.add('message-success');
+            } else if (type === 'info') {
+                messageDisplay.classList.add('message-info');
+            }
+        }
+
+        // Función para mostrar el modal de advertencia de WhatsApp
+        function showWhatsAppWarningModal() {
+            whatsappWarningModal.style.display = 'flex'; // Mostrar como flex para centrar
+            messageDisplay.style.display = 'none'; // Ocultar cualquier mensaje anterior
+        }
+
+        // Función para ocultar el modal de advertencia de WhatsApp
+        function hideWhatsAppWarningModal() {
+            whatsappWarningModal.style.display = 'none'; // Ocultar
+        }
+
+        // Manejador del botón "Confirmar Transferencia"
+        confirmTransferBtn.addEventListener('click', () => {
+            // Asegurarse de que el botón esté habilitado antes de procesar el clic
+            if (confirmTransferBtn.disabled) {
+                // Si el botón está deshabilitado, showMessage ya habrá puesto el mensaje de error o info
+                return;
+            }
+
+            // Validación detallada para mensajes específicos, si es necesario.
+            // Aunque updateConfirmTransferButtonState ya valida, esto asegura mensajes más claros al intentar confirmar.
+            if (!gameSelect.value) { showMessage('Por favor, selecciona un juego.', 'error'); return; }
+            if (selectedAmountUSD <= 0) { showMessage('Por favor, selecciona un monto.', 'error'); return; }
+            if (!userIdInput.value.trim()) { showMessage('Por favor, ingresa tu ID de Usuario.', 'error'); return; }
+            if (!userNameInput.value.trim()) { showMessage('Por favor, ingresa tu Nombre de Cuenta.', 'error'); return; }
+            if (!countrySelect.value) { showMessage('Por favor, selecciona tu País.', 'error'); return; }
+            
+            const userId = userIdInput.value.trim();
+            const userIdPattern = /^[0-9]*$/;
+            if (!userIdPattern.test(userId)) {
+                showMessage('El ID de Usuario solo debe contener números. Por favor, revisa tu entrada.', 'error');
+                return;
+            }
+
+            showMessage('¡Transferencia confirmada! Ahora puedes enviar tu pedido por WhatsApp.', 'success');
+            confirmTransferBtn.style.display = 'none'; // Ocultar el botón de confirmar transferencia
+            sendWhatsAppOrderBtn.style.display = 'block'; // Mostrar el botón de enviar WhatsApp
+            transferWarningMessage.style.display = 'none'; // Ocultar la advertencia una vez confirmada la transferencia
+        });
+
+
+        // Manejador del envío del formulario (modificado para WhatsApp) - ahora activado por sendWhatsAppOrderBtn
+        topupForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Evitar el envío automático del formulario
+
+            // Esta lógica se ejecuta solo cuando se hace clic en 'Enviar Pedido' (sendWhatsAppOrderBtn)
+            // que solo es visible después de 'Confirmar Transferencia'.
+            showWhatsAppWarningModal();
+        });
+
+        // Oyente de eventos para el botón "Confirmar y Enviar" en el modal (este es el que realmente envía a WhatsApp)
+        confirmWhatsAppBtn.addEventListener('click', async () => {
+            hideWhatsAppWarningModal(); // Ocultar el modal
+
+            showMessage('Enviando pedido...', 'info'); // Mensaje actualizado sin mencionar "guardando datos"
+
+            // Actualizar elementos ocultos para la lógica interna (no se enviarán directamente a WhatsApp)
+            gameHidden.value = selectedGame;
+            amountUSDHidden.value = selectedAmountUSD;
+            totalPriceHidden.value = totalPrice;
+            currencySymbolHidden.value = currencySymbol;
+
+            // Obtener el label del artículo seleccionado para el mensaje de WhatsApp
+            const selectedAmountLabel = gameOptions
+                .find(g => g.name === selectedGame)
+                ?.amounts.find(a => a.value === selectedAmountUSD)?.label || 'N/A';
+
+            // Generar el mensaje de WhatsApp
+            // MENSAJE DE WHATSAPP SIMPLIFICADO
+            const whatsappMessageContent =
+                `█Pedido de Recarga:\n\n` +
+                `█ID: ${userIdInput.value.trim()}\n` +
+                `█Nombre: ${userNameInput.value.trim()}\n` +
+                `█Artículo: ${selectedAmountLabel} (${selectedGame})\n` +
+                `█Monto: ${totalPrice.toFixed(2)} ${currencySymbol} (Base: ${selectedAmountUSD.toFixed(2)} USD + comision)\n` +
+                `█País: ${selectedCountry}\n\n` +
+                `❗ ¡Importante! Por favor, envíame el comprobante de pago.`;
+
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessageContent)}`;
+
+            // Abrir WhatsApp en una nueva pestaña/ventana
+            window.open(whatsappUrl, '_blank');
+
+            showMessage('Pedido enviado a WhatsApp. ¡No olvides enviar tu comprobante!', 'success');
+
+            // Opcional: Limpiar el formulario después de un envío exitoso
+            topupForm.reset();
+            selectedGame = '';
+            selectedAmountUSD = 0;
+            selectedCountry = '';
+            // Restablecer elementos de la interfaz de usuario
+            gameSelect.value = ''; // Restablecer el select de juego
+            countrySelect.value = ''; // Restablecer el select de país
+            priceSummaryDiv.style.display = 'none'; // Ocultar
+            paymentMethodsDisplayDiv.style.display = 'none'; // Ocultar
+            amountSelectionDiv.style.display = 'none'; // Ocultar
+            amountButtonsDiv.innerHTML = '';
+            
+            // Asegurarse de que los botones vuelvan a su estado inicial para un nuevo pedido
+            confirmTransferBtn.style.display = 'block';
+            sendWhatsAppOrderBtn.style.display = 'none';
+            transferWarningMessage.style.display = 'block'; // Asegurarse de que la advertencia vuelva a ser visible
+            updateConfirmTransferButtonState(); // Actualizar el estado del botón después de limpiar el formulario
+        });
+
+        // Oyente de eventos para el botón "Cancelar" en el modal
+        cancelWhatsAppBtn.addEventListener('click', () => {
+            hideWhatsAppWarningModal(); // Ocultar el modal
+            showMessage('Envío de pedido cancelado.', 'info');
+        });
+
+        // Inicializar la página cuando se carga el DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            loadGameOptions();
+            loadCountryOptions();
+            updateConfirmTransferButtonState(); // Llamar al cargar para establecer el estado inicial del botón
+        });
+
+    </script>
+</body>
+</html>
