@@ -16,6 +16,6 @@
           "dest": "/api/record_sale.py"
         }
       ],
-      "outputDirectory": "public"
+      "outputDirectory": "public/index.html"
     }
     
