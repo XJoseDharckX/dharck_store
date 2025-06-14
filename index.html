@@ -764,6 +764,7 @@
         async function fetchExchangeRates() {
             try {
                 // Usa la BASE_API_URL para construir la URL completa al endpoint de tasas de cambio
+                // ¡IMPORTANTE! Asegúrate de que esto sea "/exchange-rates" y NO "/tipos-de-cambio"
                 const response = await fetch(`${BASE_API_URL}/exchange-rates`); 
                 if (!response.ok) {
                     throw new Error(`Error HTTP: ${response.status}`);
@@ -897,7 +898,7 @@
                         symbol: 'Bs.', 
                         paymentMethods: [
                             { name: 'SIMPE', details: '63223852' }, 
-                            { name: 'Titular', details: 'Solange Granja Duarte' }, 
+                            { name: 'Titular', details: 'Solange Granja Duarte'}, 
                             { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
                         ]
                     },
