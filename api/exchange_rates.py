@@ -1,5 +1,5 @@
 # api/exchange_rates.py
-
+ 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import pandas as pd
@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Configura CORS. EN PRODUCCIÓN, CAMBIA '*' por el dominio real de tu frontend en Vercel.
+# Configura CORS. En producción, CAMBIA '*' por el dominio real de tu frontend en Vercel.
 # Ejemplo: CORS(app, resources={r"/*": {"origins": "https://tudominio.vercel.app"}})
 # Para desarrollo local (vercel dev), '*' puede ser útil inicialmente.
 CORS(app) 
