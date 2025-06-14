@@ -494,7 +494,6 @@
 
     </style>
 
-    <!-- Las rutas de logo ahora son absolutas desde la raíz del sitio (public/) -->
     <img src="/logo.png" alt="DHARCK STORE Logo Background" class="background-logo">
 
     <!-- Header para el título de la aplicación -->
@@ -503,7 +502,6 @@
             <h1 class="dharck-store-title">
                 DHARCK STORE
             </h1>
-            <!-- La ruta del logo del título también es absoluta -->
             <img src="/logo.png" alt="Logotipo de la TIENDA DHARCK" class="title-logo">    
         </div>
     </header>
@@ -520,7 +518,7 @@
                     required
                 >
                     <option value="">-- ELIGE EL JUEGO --</option>
-                </select>
+                    </select>
             </div>
 
             <div id="amountSelection" class="form-group" style="display: none;">
@@ -582,7 +580,7 @@
                     required
                 >
                     <option value="">-- Elige un país --</option>
-                </select>
+                    </select>
             </div>
             <input type="hidden" id="gameHidden" name="game">
             <input type="hidden" id="amountUSDHidden" name="amountUSD">
@@ -649,11 +647,11 @@
         </div>
     </div>
 
-    <!-- Loading Overlay (Eliminado ya que no hay llamadas API) -->
-    <!-- <div id="loadingOverlay" style="position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); z-index: 1001; color: white; display: none;">
+    <!-- Loading Overlay (NUEVO) -->
+    <div id="loadingOverlay" style="position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); z-index: 1001; color: white; display: none;">
         <div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid #00ffff; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite;"></div>
         <p style="margin-top: 15px; font-size: 1.2em; color: #00ffff; text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);" class="loading-text">Cargando...</p>
-    </div> -->
+    </div>
 
     <script type="module">
 
@@ -674,7 +672,7 @@
         // Nuevos botones de acción
         const confirmTransferBtn = document.getElementById('confirmTransferBtn');
         const sendWhatsAppOrderBtn = document.getElementById('sendWhatsAppOrderBtn');
-        // const loadingOverlay = document.getElementById('loadingOverlay'); // Eliminado
+        const loadingOverlay = document.getElementById('loadingOverlay'); // Referencia al overlay de carga
 
         // Datos de juegos y sus precios base en USD
         // ¡IMPORTANTE! Asegúrate de que tus imágenes de artículos sean optimizadas y de tamaño adecuado (ej. 80x80px comprimidas a WebP o PNG ligero).
@@ -710,133 +708,8 @@
             // Puedes añadir más juegos aquí
         ];
 
-        // Datos de países y tasas de cambio - AHORA HARDCODEADOS DIRECTAMENTE EN EL JS
-        const countryData = [
-            {
-                name: 'VENEZUELA',
-                code: 'VES',
-                exchangeRate: 137, // Tasa de ejemplo
-                symbol: 'Bs.',
-                paymentMethods: [
-                    { name: 'Pago Móvil', details: 'C.I.: V-32147818, Teléfono: 04126027407, Banco: 0105 (Banco Mercantil)' },
-                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
-                ]
-            },
-            {
-                name: 'COLOMBIA',
-                code: 'COP',
-                exchangeRate: 4300, // Tasa de ejemplo
-                symbol: 'COP',
-                paymentMethods: [
-                    { name: 'Nequi', details: 'Número: 3012660676 Nombre:Ali.' },
-                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
-                ]
-            },
-            {
-                name: 'PERU',
-                code: 'PEN',
-                exchangeRate: 3.9, // Tasa de ejemplo
-                symbol: 'S/.',
-                paymentMethods: [
-                    { name: 'BCP', details: 'Cuenta: 38097062947042, Titular: Yoshimara' },
-                    { name: 'Yape', details: 'Número: 974610375' },
-                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
-                ]
-            },
-            {
-                name: 'MEXICO',
-                code: 'MXN',
-                exchangeRate: 20.1, // Tasa de ejemplo
-                symbol: 'MXN',
-                paymentMethods: [
-                    { name: 'SPIN BY OXXO', details: 'TARJETA: 4217 4701 8364 0099' },
-                    { name: 'BANCO AZTECA', details: 'INTERBANCARIA: 1277 9700 1467 5859 00' },
-                    { name: 'Titular', details: 'Jesus Carrillo' },
-                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
-                ]
-            },
-            {
-                name: 'ESTADOS UNIDOS',
-                code: 'USD',
-                exchangeRate: 1.05, // Tasa de ejemplo
-                symbol: '$',
-                paymentMethods: [
-                    { name: 'Zelle', details: '+1 (661) 736 - 0564, Nombre: Jannett Martinez Lopez' },
-                    { name: 'Titular', details: 'Jannett Martinez Lopez' },
-                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
-                ]
-            },
-            {
-                name: 'ARGENTINA',
-                code: 'ARS',
-                exchangeRate: 1260, // Tasa de ejemplo
-                symbol: '$',
-                paymentMethods: [
-                    { name: 'Mercado pago', details: '0000003100069089540216' },
-                    { name: 'UALA', details: '3840200500000000199867' },
-                    { name: 'Titular', details: 'Pamela Schneider' },
-                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
-                ]
-            },
-            {
-                name: 'ECUADOR',
-                code: 'USD',
-                exchangeRate: 1.06, // Tasa de ejemplo
-                symbol: '$',
-                paymentMethods: [
-                    { name: 'Banco Pichincha', details: 'Cta. ahorros 2204277346' },
-                    { name: 'Banco de Guayaquil', details: 'Cta. ahorros 0039924590' },
-                    { name: 'Titular', details: 'María de los Ángeles Ronquillo León. CI: 0941414203' },
-                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
-                ]
-            },
-            {
-                name: 'CHILE',
-                code: 'CLP',
-                exchangeRate: 1010, // Tasa de ejemplo
-                symbol: '$',
-                paymentMethods: [
-                    { name: 'BANCO FALABELLA', details: 'RUT: 17244216-1 / gi553ll30@gmail.com / Cta Corriente: 1-983-036407-8' },
-                    { name: 'BANCO ESTADO', details: 'RUT: 17244216-1 / Cta Corriente: 37100135052 / 300 PESOS EXTRAS AL VALOR TOTAL' },
-                    { name: 'Titular', details: 'GISSELLE GONZALEZ' },
-                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
-                ]
-            },
-            {
-                name: 'ESPAÑA',
-                code: 'EUR',
-                exchangeRate: 1.03, // Tasa de ejemplo
-                symbol: '€',
-                paymentMethods: [
-                    { name: 'BIZUM', details: '612237372 / 614153840 / CUALQUIERA DE LOS DOS' },
-                    { name: 'BANCO SANTANDER', details: 'Cuenta bancaria : ES0800495939582916425258' },
-                    { name: 'Titular', details: 'MAX FRANCIS SILVA RAMOS' },
-                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
-                ]
-            },
-            { 
-                name: 'COSTA RICA',
-                code: 'CRC',
-                exchangeRate: 600, // Tasa de ejemplo
-                symbol: '₡',
-                paymentMethods: [
-                    { name: 'SIMPE', details: '63223852' },
-                    { name: 'Titular', details: 'Solange Granja Duarte' },
-                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
-                ]
-            },
-            { 
-                name: 'BOLIVIA',
-                code: 'BOB',
-                exchangeRate: 16.9, // Tasa de ejemplo
-                symbol: 'Bs.', 
-                paymentMethods: [
-                    { name: 'SIMPE', details: '63223852' }, 
-                    { name: 'Titular', details: 'Solange Granja Duarte'}, 
-                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
-                ]
-            },
-        ];
+        // Se declara la variable `countryData` que se llenará con los datos del Excel (o el fallback)
+        let countryData = []; 
 
         // Datos de vendedores (ACTUALIZADOS)
         const sellerData = [
@@ -874,14 +747,166 @@
         const paymentMethodsListDiv = document.getElementById('paymentMethodsList');
         const transferWarningMessage = document.getElementById('transferWarningMessage');
 
-        // --- Configuración para la URL base de tu API en Vercel (AHORA INNECESARIA PARA ESTA VERSIÓN) ---
-        // const BASE_API_URL = 'https://dharckstore-recargas.vercel.app/api'; 
+        // --- Configuración para la URL base de tu API en Vercel ---
+        // ¡CAMBIA 'https://tudominio.vercel.app' por el dominio real de tu proyecto en Vercel!
+        // Cuando tu proyecto esté desplegado en Vercel, esta será la URL base de tus funciones serverless.
+        // Por ejemplo, si tu proyecto se llama "dharck-store-ventas" y se despliega en
+        // "https://dharck-store-ventas.vercel.app", entonces la URL base de tu API será:
+        // "https://dharck-store-ventas.vercel.app/api"
+        // Durante el desarrollo local con `vercel dev`, podrías usar 'http://localhost:3000'
+        const BASE_API_URL = 'https://dharckstore-recargas.vercel.app/api'; 
 
 
         /**
          * @function fetchExchangeRates
-         * @description (ELIMINADA: Datos ahora hardcodeados)
+         * @description Función asíncrona para obtener las tasas de cambio desde el backend de Vercel.
          */
+        async function fetchExchangeRates() {
+            try {
+                // Usa la BASE_API_URL para construir la URL completa al endpoint de tasas de cambio
+                // ¡IMPORTANTE! Asegúrate de que esto sea "/exchange-rates" y NO "/tipos-de-cambio"
+                const response = await fetch(`${BASE_API_URL}/exchange-rates`); 
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+                const data = await response.json();
+                countryData = data; 
+                loadCountryOptions(); 
+                showMessage('Tasas de cambio actualizadas correctamente desde el servidor.', 'success');
+            } catch (error) {
+                console.error('Error al obtener las tasas de cambio:', error);
+                showMessage('Error al cargar las tasas de cambio desde el servidor. Usando datos de ejemplo (hardcodeados).', 'info');
+                // Fallback a datos hardcodeados si falla la llamada a la API
+                countryData = [
+                    {
+                        name: 'VENEZUELA',
+                        code: 'VES',
+                        exchangeRate: 137,
+                        symbol: 'Bs.',
+                        paymentMethods: [
+                            { name: 'Pago Móvil', details: 'C.I.: V-32147818, Teléfono: 04126027407, Banco: 0105 (Banco Mercantil)' },
+                            { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                        ]
+                    },
+                    {
+                        name: 'COLOMBIA',
+                        code: 'COP',
+                        exchangeRate: 4300,
+                        symbol: 'COP',
+                        paymentMethods: [
+                            { name: 'Nequi', details: 'Número: 3012660676 Nombre:Ali.' },
+                            { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                        ]
+                    },
+                    {
+                        name: 'PERU',
+                        code: 'PEN',
+                        exchangeRate: 3.9,
+                        symbol: 'S/.',
+                        paymentMethods: [
+                            { name: 'BCP', details: 'Cuenta: 38097062947042, Titular: Yoshimara' },
+                            { name: 'Yape', details: 'Número: 974610375' },
+                            { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                        ]
+                    },
+                    {
+                        name: 'MEXICO',
+                        code: 'MXN',
+                        exchangeRate: 20.1,
+                        symbol: 'MXN',
+                        paymentMethods: [
+                            { name: 'SPIN BY OXXO', details: 'TARJETA: 4217 4701 8364 0099' },
+                            { name: 'BANCO AZTECA', details: 'INTERBANCARIA: 1277 9700 1467 5859 00' },
+                            { name: 'Titular', details: 'Jesus Carrillo' },
+                            { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                        ]
+                    },
+                    {
+                        name: 'ESTADOS UNIDOS',
+                        code: 'USD',
+                        exchangeRate: 1.05, 
+                        symbol: '$',
+                        paymentMethods: [
+                            { name: 'Zelle', details: '+1 (661) 736 - 0564, Nombre: Jannett Martinez Lopez' },
+                            { name: 'Titular', details: 'Jannett Martinez Lopez' },
+                            { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                        ]
+                    },
+                    {
+                        name: 'ARGENTINA',
+                        code: 'ARS',
+                        exchangeRate: 1260,
+                        symbol: '$',
+                        paymentMethods: [
+                            { name: 'Mercado pago', details: '0000003100069089540216' },
+                            { name: 'UALA', details: '3840200500000000199867' },
+                            { name: 'Titular', details: 'Pamela Schneider' },
+                            { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                        ]
+                    },
+                    {
+                        name: 'ECUADOR',
+                        code: 'USD',
+                        exchangeRate: 1.06,
+                        symbol: '$',
+                        paymentMethods: [
+                            { name: 'Banco Pichincha', details: 'Cta. ahorros 2204277346' },
+                            { name: 'Banco de Guayaquil', details: 'Cta. ahorros 0039924590' },
+                            { name: 'Titular', details: 'María de los Ángeles Ronquillo León. CI: 0941414203' },
+                            { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                        ]
+                    },
+                    {
+                        name: 'CHILE',
+                        code: 'CLP',
+                        exchangeRate: 1010,
+                        symbol: '$',
+                        paymentMethods: [
+                            { name: 'BANCO FALABELLA', details: 'RUT: 17244216-1 / gi553ll30@gmail.com / Cta Corriente: 1-983-036407-8' },
+                            { name: 'BANCO ESTADO', "details": 'RUT: 17244216-1 / Cta Corriente: 37100135052 / 300 PESOS EXTRAS AL VALOR TOTAL'},
+                            { name: 'Titular', "details": 'GISSELLE GONZALEZ'},
+                            { name: '¡IMPORTANTE!', "details": '¡No colocar conceptos EN LOS PAGOS!'},
+                        ]
+                    },
+                    {
+                        name: 'ESPAÑA',
+                        code: 'EUR',
+                        exchangeRate: 1.03,
+                        symbol: '€',
+                        paymentMethods: [
+                            { name: 'BIZUM', details: '612237372 / 614153840 / CUALQUIERA DE LOS DOS' },
+                            { name: 'BANCO SANTANDER', details: 'Cuenta bancaria : ES0800495939582916425258' },
+                            { name: 'Titular', details: 'MAX FRANCIS SILVA RAMOS' },
+                            { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                        ]
+                    },
+                    { 
+                        name: 'COSTA RICA',
+                        code: 'CRC',
+                        exchangeRate: 600,
+                        symbol: '₡',
+                        paymentMethods: [
+                            { name: 'SIMPE', details: '63223852' },
+                            { name: 'Titular', details: 'Solange Granja Duarte' },
+                            { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                        ]
+                    },
+                    { 
+                        name: 'BOLIVIA',
+                        code: 'BOB',
+                        exchangeRate: 16.9,
+                        symbol: 'Bs.', 
+                        paymentMethods: [
+                            { name: 'SIMPE', details: '63223852' }, 
+                            { name: 'Titular', details: 'Solange Granja Duarte'}, 
+                            { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                        ]
+                    },
+                ];
+                loadCountryOptions(); 
+            }
+        }
+
 
         // Función para validar todos los campos y habilitar/deshabilitar el botón de Confirmar Transferencia
         function updateConfirmTransferButtonState() {
@@ -927,7 +952,7 @@
             });
         }
 
-        // Función para cargar opciones de país (AHORA USA countryData HARDCODEADO)
+        // Función para cargar opciones de país
         function loadCountryOptions() {
             // Limpiar opciones existentes primero
             countrySelect.innerHTML = '<option value="">-- Elige un país --</option>';
@@ -1123,7 +1148,7 @@
         // Oyente de eventos para el botón "Confirmar y Enviar" en el modal (este es el que realmente envía a WhatsApp)
         confirmWhatsAppBtn.addEventListener('click', async () => {
             hideWhatsAppWarningModal(); 
-            // loadingOverlay.style.display = 'flex'; // Eliminado
+            loadingOverlay.style.display = 'flex'; 
 
             gameHidden.value = selectedGame;
             amountUSDHidden.value = selectedAmountUSD;
@@ -1138,8 +1163,43 @@
             const whatsappRecipientNumber = sellerInfo ? sellerInfo.phoneNumber : DEFAULT_WHATSAPP_NUMBER; 
             
             // -----------------------------------------------------
-            // ELIMINADO: Envío de datos de la venta al backend de Vercel
-            // No hay llamadas a record-sale aquí.
+            // Enviar datos de la venta al backend de Vercel
+            // -----------------------------------------------------
+            const saleData = {
+                sellerName: selectedSeller,
+                gameName: selectedGame,
+                itemLabel: selectedAmountLabel,
+                amountUSD: selectedAmountUSD,
+                totalPrice: totalPrice,
+                currencySymbol: currencySymbol,
+                playerId: userIdInput.value.trim(),
+                playerName: userNameInput.value.trim(),
+                countryName: selectedCountry
+            };
+
+            try {
+                // Usa la BASE_API_URL para construir la URL completa al endpoint de registro de venta
+                const response = await fetch(`${BASE_API_URL}/record-sale`, { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(saleData)
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Error al registrar la venta en el backend:', errorText);
+                    showMessage('Error al registrar la venta en el servidor. Por favor, avisa al soporte.', 'error');
+                } else {
+                    showMessage('Venta registrada en el servidor y preparando WhatsApp...', 'success');
+                }
+            } catch (error) {
+                console.error('Error de red al intentar registrar la venta:', error);
+                showMessage('Error de conexión al servidor al intentar registrar la venta.', 'error');
+            }
+            // -----------------------------------------------------
+            // FIN: Envío de datos al backend
             // -----------------------------------------------------
 
             const whatsappMessageContent =
@@ -1157,7 +1217,7 @@
 
             // Después de un breve retraso, ocultar la animación de carga y mostrar el mensaje de éxito
             setTimeout(() => {
-                // loadingOverlay.style.display = 'none'; // Eliminado
+                loadingOverlay.style.display = 'none'; 
                 showMessage('¡Pedido Enviado! Abre WhatsApp para confirmar.', 'success'); 
 
                 // Opcional: Limpiar el formulario después de un envío exitoso
@@ -1192,7 +1252,7 @@
             loadGameOptions();
             loadSellerOptions(); 
             updateConfirmTransferButtonState(); 
-            loadCountryOptions(); // Carga directamente los datos hardcodeados
+            fetchExchangeRates(); 
         });
 
     </script>
