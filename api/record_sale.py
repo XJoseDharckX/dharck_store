@@ -1,137 +1,137 @@
-    # api/record_sale.py
+# api/record_sale.py
 
-    from flask import Flask, jsonify, request
-    from flask_cors import CORS
-    import os
-    import json
-    from datetime import datetime
-    import logging
-    import gspread
-    from oauth2client.service_account import ServiceAccountCredentials
-    import base64 # Necesario para decodificar las credenciales base64
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+import os
+import json
+from datetime import datetime
+import logging
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+import base64 # Necessary to decode base64 credentials
 
-    # Inicializa Flask. En Vercel, 'app' es el punto de entrada que espera.
-    app = Flask(__name__)
+# Initialize Flask. In Vercel, 'app' is the expected entry point.
+app = Flask(__name__)
 
-    # Configura el logger para ver los mensajes en los logs de Vercel
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# Configure the logger to view messages in Vercel logs
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-    # Configura CORS. EN PRODUCCIÓN, CAMBIA '*' por el dominio real de tu frontend en Vercel.
-    # Por ejemplo: CORS(app, resources={r"/*": {"origins": "https://tudominio.vercel.app"}})
-    # Para desarrollo local (vercel dev), '*' puede ser útil inicialmente.
-    CORS(app) 
+# Configure CORS. IN PRODUCTION, CHANGE '*' to your frontend's real domain on Vercel.
+# Example: CORS(app, resources={r"/*": {"origins": "https://yourdomain.vercel.app"}})
+# For local development (vercel dev), '*' can be useful initially.
+CORS(app) 
 
-    # --- Configuración de Google Sheets API (obtenida de Variables de Entorno de Vercel) ---
-    # Las credenciales de la cuenta de servicio se pasan como una cadena base64 codificada.
-    # ESTAS VARIABLES SE CONFIGURARÁN EN EL DASHBOARD DE VERCEL.
-    GOOGLE_CREDS_BASE64 = os.environ.get('GOOGLE_SERVICE_ACCOUNT_CREDENTIALS_BASE64')
-    # El ID de tu Google Sheet principal también viene de una variable de entorno.
-    GOOGLE_SHEET_ID = os.environ.get('GOOGLE_SHEET_ID')
+# --- Google Sheets API Configuration (obtained from Vercel Environment Variables) ---
+# Service account credentials are passed as a base64 encoded string.
+# THESE VARIABLES WILL BE CONFIGURED IN THE VERCEL DASHBOARD.
+GOOGLE_CREDS_BASE64 = os.environ.get('GOOGLE_SERVICE_ACCOUNT_CREDENTIALS_BASE64')
+# The ID of your main Google Sheet also comes from an environment variable.
+GOOGLE_SHEET_ID = os.environ.get('GOOGLE_SHEET_ID')
 
-    # Alcances (scopes) necesarios para acceder a Google Sheets
-    SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive.file']
-    gc = None # Variable global para el cliente de gspread
+# Scopes necessary to access Google Sheets
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive.file']
+gc = None # Global variable for the gspread client
 
-    def authenticate_google_sheets():
-        """
-        Autentica la cuenta de servicio con Google Sheets API usando las credenciales de las variables de entorno.
-        Esta función se ejecutará al inicio de la función serverless o cuando sea necesario.
-        """
-        global gc
-        if not GOOGLE_CREDS_BASE64:
-            logging.critical("Error: La variable de entorno GOOGLE_SERVICE_ACCOUNT_CREDENTIALS_BASE64 no está configurada.")
-            return
+def authenticate_google_sheets():
+    """
+    Authenticates the service account with the Google Sheets API using credentials from environment variables.
+    This function will run at the start of the serverless function or when needed.
+    """
+    global gc
+    if not GOOGLE_CREDS_BASE64:
+        logging.critical("Error: The GOOGLE_SERVICE_ACCOUNT_CREDENTIALS_BASE64 environment variable is not configured.")
+        return
+
+    try:
+        # Decode the base64 string to bytes, then to a UTF-8 string, and finally to JSON
+        creds_json_str = base64.b64decode(GOOGLE_CREDS_BASE64).decode('utf-8')
+        creds_info = json.loads(creds_json_str)
+        
+        creds = ServiceAccountCredentials.from_json(creds_info, SCOPES)
+        gc = gspread.authorize(creds)
+        logging.info("Google Sheets authentication successful from environment variables.")
+    except Exception as e:
+        logging.critical(f"Error authenticating Google Sheets from environment variables: {e}", exc_info=True)
+        gc = None
+
+# DO NOT CALL authenticate_google_sheets() DIRECTLY HERE AT THE GLOBAL LEVEL
+# In a serverless environment like Vercel, state does not persist between invocations.
+# Authentication will be attempted on each request if 'gc' is not initialized,
+# which is a common pattern for serverless functions.
+
+@app.route('/api/record-sale', methods=['POST'])
+def record_sale():
+    """
+    Endpoint to record a sale in the corresponding Google Sheet tab for the seller.
+    """
+    # Ensure authentication is attempted if gc is not yet initialized
+    if gc is None:
+        authenticate_google_sheets()
+        if gc is None: # If authentication failed even after retrying
+            return jsonify({"error": "The Google Sheets service is unavailable. Contact the administrator. (Authentication failed)"}), 503
+
+    if not GOOGLE_SHEET_ID:
+        logging.error("GOOGLE_SHEET_ID not configured in Vercel environment variables.")
+        return jsonify({"error": "Google Sheet ID configuration missing."}), 500
+
+    try:
+        data = request.get_json()
+        if not data:
+            logging.warning("POST request without JSON data to /api/record-sale.")
+            return jsonify({"error": "JSON data is required."}), 400
+
+        seller_name = data.get('sellerName')
+        if not seller_name:
+            logging.warning("Seller name not provided in sale data.")
+            return jsonify({"error": "Seller name is required."}), 400
+
+        # Prepare sale data to be inserted into Google Sheets
+        # The order MUST match the headers in your Google Sheet (Part 2.3 of the instructions)
+        sale_record_row = [
+            datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            seller_name,
+            data.get('gameName'),
+            data.get('itemLabel'),
+            data.get('amountUSD'),
+            data.get('totalPrice'),
+            data.get('currencySymbol'),
+            data.get('playerId'),
+            data.get('playerName'),
+            data.get('countryName')
+        ]
 
         try:
-            # Decodifica la cadena base64 a bytes, luego a una cadena UTF-8, y finalmente a JSON
-            creds_json_str = base64.b64decode(GOOGLE_CREDS_BASE64).decode('utf-8')
-            creds_info = json.loads(creds_json_str)
+            # Open the spreadsheet by its ID (obtained from the environment variable)
+            spreadsheet = gc.open_by_key(GOOGLE_SHEET_ID)
+            logging.info(f"Spreadsheet '{GOOGLE_SHEET_ID}' opened successfully.")
             
-            creds = ServiceAccountCredentials.from_json(creds_info, SCOPES)
-            gc = gspread.authorize(creds)
-            logging.info("Autenticación de Google Sheets exitosa desde variables de entorno.")
+            # Select the seller's worksheet (tab)
+            # THE NAME OF THIS TAB MUST EXACTLY MATCH the 'seller_name'
+            worksheet = spreadsheet.worksheet(seller_name)
+            logging.info(f"Worksheet '{seller_name}' selected successfully.")
+
+            # Add the row to the end of the worksheet
+            worksheet.append_row(sale_record_row)
+            logging.info(f"Sale successfully recorded for {seller_name} in Google Sheet.")
+
+        except gspread.exceptions.SpreadsheetNotFound:
+            logging.error(f"Google Sheet with ID '{GOOGLE_SHEET_ID}' not found. Ensure the ID is correct and the service account has access.")
+            return jsonify({"error": f"The main Google spreadsheet was not found. Check the GOOGLE_SHEET_ID in Vercel and permissions."}), 404
+        except gspread.exceptions.WorksheetNotFound:
+            logging.error(f"Worksheet (tab) '{seller_name}' not found in the Google Sheet. Ensure a tab with that EXACT name exists.")
+            return jsonify({"error": f"No tab found for seller '{seller_name}' in the Google Sheet. Check tab names."}), 404
+        except gspread.exceptions.APIError as api_err:
+            logging.error(f"Google Sheets API error: {api_err.response.text}")
+            # You can parse api_err.response.text for more specific messages if desired
+            return jsonify({"error": f"Error in Google Sheets API: {api_err.response.text}. Check service account permissions."}), 500
         except Exception as e:
-            logging.critical(f"Error al autenticar Google Sheets desde variables de entorno: {e}", exc_info=True)
-            gc = None
+            logging.error(f"General error writing to Google Sheet: {e}", exc_info=True)
+            return jsonify({"error": f"Error recording sale in Google Sheets: {str(e)}"}), 500
 
-    # NO LLAMES authenticate_google_sheets() DIRECTAMENTE AQUÍ A NIVEL GLOBAL
-    # Vercel no garantiza que el estado persista entre invocaciones.
-    # La autenticación se intentará en cada request si 'gc' no está inicializado.
+        return jsonify({"message": "Sale successfully recorded in Google Sheets."}), 200
 
-    @app.route('/api/record-sale', methods=['POST'])
-    def record_sale():
-        """
-        Endpoint para registrar una venta en la hoja de Google del vendedor correspondiente.
-        """
-        # Asegura que la autenticación se intente si gc aún no está inicializado
-        if gc is None:
-            authenticate_google_sheets()
-            if gc is None: # Si la autenticación falló incluso después de reintentarlo
-                return jsonify({"error": "El servicio de Google Sheets no está disponible. Contacta al administrador. (Autenticación fallida)"}), 503
+    except Exception as e:
+        logging.error(f"General error in /api/record-sale endpoint: {e}", exc_info=True)
+        return jsonify({"error": f"Internal server error: {str(e)}"}), 500
 
-        if not GOOGLE_SHEET_ID:
-            logging.error("GOOGLE_SHEET_ID no configurado en las variables de entorno de Vercel.")
-            return jsonify({"error": "Configuración del ID de la hoja de Google faltante."}), 500
-
-        try:
-            data = request.get_json()
-            if not data:
-                logging.warning("Solicitud POST sin datos JSON en /api/record-sale.")
-                return jsonify({"error": "Se requiere enviar datos JSON."}), 400
-
-            seller_name = data.get('sellerName')
-            if not seller_name:
-                logging.warning("Nombre del vendedor no proporcionado en los datos de la venta.")
-                return jsonify({"error": "Nombre del vendedor es requerido."}), 400
-
-            # Prepara los datos de la venta para ser insertados en Google Sheets
-            # El orden debe coincidir con los encabezados en tu Google Sheet (Parte 2.3)
-            sale_record_row = [
-                datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                seller_name,
-                data.get('gameName'),
-                data.get('itemLabel'),
-                data.get('amountUSD'),
-                data.get('totalPrice'),
-                data.get('currencySymbol'),
-                data.get('playerId'),
-                data.get('playerName'),
-                data.get('countryName')
-            ]
-
-            try:
-                # Abrir la hoja de cálculo por su ID
-                spreadsheet = gc.open_by_key(GOOGLE_SHEET_ID)
-                logging.info(f"Hoja de cálculo '{GOOGLE_SHEET_ID}' abierta exitosamente.")
-                
-                # Seleccionar la hoja de trabajo (tab) del vendedor
-                # EL NOMBRE DE ESTA PESTAÑA DEBE COINCIDIR EXACTAMENTE CON seller_name
-                worksheet = spreadsheet.worksheet(seller_name)
-                logging.info(f"Hoja de trabajo '{seller_name}' seleccionada exitosamente.")
-
-                # Añadir la fila al final de la hoja de trabajo
-                worksheet.append_row(sale_record_row)
-                logging.info(f"Venta registrada exitosamente para {seller_name} en Google Sheet.")
-
-            except gspread.exceptions.SpreadsheetNotFound:
-                logging.error(f"Google Sheet con ID '{GOOGLE_SHEET_ID}' no encontrada. Asegúrate de que la ID sea correcta y la cuenta de servicio tenga acceso.")
-                return jsonify({"error": f"La hoja de cálculo principal de Google no fue encontrada. Revisa la GOOGLE_SHEET_ID."}), 404
-            except gspread.exceptions.WorksheetNotFound:
-                logging.error(f"Hoja de trabajo (tab) '{seller_name}' no encontrada en la Google Sheet. Asegúrate de que exista una pestaña con ese nombre exacto.")
-                return jsonify({"error": f"No se encontró una pestaña para el vendedor '{seller_name}' en la Google Sheet."}), 404
-            except gspread.exceptions.APIError as api_err:
-                logging.error(f"Error de API de Google Sheets: {api_err.response.text}")
-                return jsonify({"error": f"Error en la API de Google Sheets: {api_err.response.text}"}), 500
-            except Exception as e:
-                logging.error(f"Error al escribir en Google Sheet: {e}", exc_info=True)
-                return jsonify({"error": f"Error al registrar la venta en Google Sheets: {str(e)}"}), 500
-
-            return jsonify({"message": "Venta registrada exitosamente en Google Sheets."}), 200
-
-        except Exception as e:
-            logging.error(f"Error general en el endpoint /api/record-sale: {e}", exc_info=True)
-            return jsonify({"error": f"Error interno del servidor: {str(e)}"}), 500
-
-    # Esto es necesario para que Vercel encuentre la aplicación Flask
-    # Aunque no se llama directamente aquí, Vercel lo importará.
-    
+# `app` is the Flask instance that Vercel expects as an entry point.
