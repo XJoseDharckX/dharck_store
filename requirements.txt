@@ -1,6 +1,0 @@
-Flask
-pandas
-openpyxl
-Flask-Cors
-gspread
-oauth2client
