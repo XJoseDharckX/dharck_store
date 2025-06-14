@@ -1,21 +1,4 @@
-    {
-      "version": 2,
-      "builds": [
-        {
-          "src": "api/*.py",
-          "use": "@vercel/python"
-        }
-      ],
-      "routes": [
-        {
-          "src": "/api/exchange-rates",
-          "dest": "/api/exchange_rates.py"
-        },
-        {
-          "src": "/api/record-sale",
-          "dest": "/api/record_sale.py"
-        }
-      ],
-      "outputDirectory": "public/index.html"
-    }
-    
+{
+  "version": 2,
+  "outputDirectory": "public"
+}
