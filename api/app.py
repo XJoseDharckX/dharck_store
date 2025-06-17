@@ -1,8 +1,10 @@
-# Instala estas librerías en tu entorno de Vercel (requirements.txt):
+# Instala estas librerías en tu entorno de Vercel (deberán estar en tu requirements.txt):
 # Flask
 # pandas
 # openpyxl
 # Flask-Cors
+# gspread
+# oauth2client
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -11,29 +13,73 @@ import os
 import json
 from datetime import datetime
 import logging
+import gspread # Para interactuar con Google Sheets
+from oauth2client.service_account import ServiceAccountCredentials # Para la autenticación
+import base64 # Necesario para decodificar las credenciales base64
 
+# Inicializa Flask. En Vercel, 'app' es el punto de entrada que espera.
 app = Flask(__name__)
 
+# Configura el logger para ver los mensajes en los logs de Vercel
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Configura CORS. En producción, ¡CAMBIA '*' por el dominio de tu frontend!
+# Configura CORS. EN PRODUCCIÓN, ¡CAMBIA '*' por el dominio real de tu frontend en Vercel!
 # Por ejemplo: CORS(app, resources={r"/*": {"origins": "https://tudominio.vercel.app"}})
+# Para desarrollo local (vercel dev), '*' puede ser útil inicialmente.
 CORS(app) 
 
-# Ruta base para los archivos Excel de ventas.
-# En Vercel, este directorio se creará en el entorno de tu función serverless.
-EXCEL_SALES_DIR = os.path.join(os.path.dirname(__file__), 'ventas_excel')
+# --- Configuración de Google Sheets API (obtenida de Variables de Entorno de Vercel) ---
+# Las credenciales de la cuenta de servicio se pasan como una cadena base64 codificada.
+# ESTAS VARIABLES SE CONFIGURARÁN EN EL DASHBOARD DE VERCEL (Parte 3.2 de las instrucciones).
+GOOGLE_CREDS_BASE64 = os.environ.get('GOOGLE_SERVICE_ACCOUNT_CREDENTIALS_BASE64')
+# El ID de tu Google Sheet principal también viene de una variable de entorno.
+GOOGLE_SHEET_ID = os.environ.get('GOOGLE_SHEET_ID')
 
-# Ruta para el archivo Excel de tasas de cambio
-# Este archivo DEBE estar en la carpeta 'data/' dentro de tu proyecto.
-# os.path.dirname(__file__) -> api/
-# os.path.dirname(os.path.dirname(__file__)) -> raíz del proyecto
+# Alcances (scopes) necesarios para acceder a Google Sheets
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive.file']
+gc = None # Variable global para el cliente de gspread
+
+def authenticate_google_sheets():
+    """
+    Autentica la cuenta de servicio con Google Sheets API usando las credenciales de las variables de entorno.
+    Esta función se ejecutará al inicio de la función serverless o cuando sea necesario.
+    """
+    global gc
+    if not GOOGLE_CREDS_BASE64:
+        logging.critical("Error: La variable de entorno GOOGLE_SERVICE_ACCOUNT_CREDENTIALS_BASE64 no está configurada.")
+        return
+
+    try:
+        # Decodifica la cadena base64 a bytes, luego a una cadena UTF-8, y finalmente a JSON
+        creds_json_str = base64.b64decode(GOOGLE_CREDS_BASE64).decode('utf-8')
+        creds_info = json.loads(creds_json_str)
+        
+        creds = ServiceAccountCredentials.from_json(creds_info, SCOPES)
+        gc = gspread.authorize(creds)
+        logging.info("Autenticación de Google Sheets exitosa desde variables de entorno.")
+    except Exception as e:
+        logging.critical(f"Error al autenticar Google Sheets desde variables de entorno: {e}", exc_info=True)
+        gc = None
+
+# NO LLAMES authenticate_google_sheets() DIRECTAMENTE AQUÍ A NIVEL GLOBAL
+# En un entorno serverless como Vercel, el estado no persiste entre invocaciones.
+# La autenticación se intentará en cada request si 'gc' no está inicializado,
+# lo cual es un patrón común para funciones serverless.
+
+# --- Configuración del archivo Excel local (para tasas de cambio) ---
+# En Vercel, la ruta se construye para apuntar al archivo `tasas_de_cambio.xlsx`
+# dentro de la carpeta `data` que está en la raíz del proyecto.
+# os.path.dirname(__file__) -> /var/task/api
+# os.path.dirname(os.path.dirname(__file__)) -> /var/task/
+# os.path.join(...) -> /var/task/data/tasas_de_cambio.xlsx
 EXCEL_RATES_FILE_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'tasas_de_cambio.xlsx')
 
 @app.route('/api/exchange-rates', methods=['GET'])
 def get_exchange_rates():
     """
     Endpoint para obtener las tasas de cambio desde un archivo Excel local.
+    Este endpoint ahora también tiene un fallback de datos si el archivo Excel no se encuentra
+    durante el despliegue en Vercel.
     """
     try:
         if not os.path.exists(EXCEL_RATES_FILE_PATH):
@@ -129,7 +175,7 @@ def get_exchange_rates():
                         {"name": "SIMPE", "details": "63223852"},
                         {"name": "Titular", "details": "Solange Granja Duarte"},
                         {"name": "¡IMPORTANTE!", "details": "¡No colocar conceptos EN LOS PAGOS!"}
-                    ]
+                        ]
                 }
             ]
             return jsonify(country_data_fallback)
@@ -146,24 +192,28 @@ def get_exchange_rates():
                     logging.warning(f"Error al decodificar JSON en paymentMethods para {rate.get('name')}: {rate['paymentMethods']}")
                     rate['paymentMethods'] = [] 
 
-        logging.info("Tasas de cambio cargadas exitosamente desde Excel local.")
+        logging.info("Tasas de cambio cargadas exitosamente desde Excel local en serverless function.")
         return jsonify(rates)
 
-    except FileNotFoundError:
-        return jsonify({"error": "Archivo de tasas de cambio (tasas_de_cambio.xlsx) no encontrado."}), 404
-    except pd.errors.EmptyDataError:
-        return jsonify({"error": "El archivo de Excel de tasas de cambio está vacío o no tiene datos."}), 500
     except Exception as e:
         logging.error(f"Error al obtener las tasas de cambio: {e}")
         return jsonify({"error": f"Error interno del servidor al cargar tasas de cambio: {str(e)}"}), 500
 
-
 @app.route('/api/record-sale', methods=['POST'])
 def record_sale():
     """
-    Endpoint para registrar una venta en el archivo Excel del vendedor correspondiente.
-    Recibe los datos del pedido en formato JSON.
+    Endpoint para registrar una venta en la hoja de Google del vendedor correspondiente.
     """
+    # Asegura que la autenticación se intente si gc aún no está inicializado
+    if gc is None:
+        authenticate_google_sheets()
+        if gc is None: # Si la autenticación falló incluso después de reintentarlo
+            return jsonify({"error": "El servicio de Google Sheets no está disponible. Contacta al administrador. (Autenticación fallida)"}), 503
+
+    if not GOOGLE_SHEET_ID:
+        logging.error("GOOGLE_SHEET_ID no configurado en las variables de entorno de Vercel.")
+        return jsonify({"error": "Configuración del ID de la hoja de Google faltante."}), 500
+
     try:
         data = request.get_json()
         if not data:
@@ -175,131 +225,57 @@ def record_sale():
             logging.warning("Nombre del vendedor no proporcionado en los datos de la venta.")
             return jsonify({"error": "Nombre del vendedor es requerido."}), 400
 
-        # Generar el nombre del archivo Excel para el vendedor
-        excel_filename = f"Ventas {seller_name}.xlsx"
-        excel_filepath = os.path.join(EXCEL_SALES_DIR, excel_filename)
+        # Prepara los datos de la venta para ser insertados en Google Sheets
+        # El orden DEBE coincidir con los encabezados en tu Google Sheet (Parte 2.3 de las instrucciones)
+        sale_record_row = [
+            datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            seller_name,
+            data.get('gameName'),
+            data.get('itemLabel'),
+            data.get('amountUSD'),
+            data.get('totalPrice'),
+            data.get('currencySymbol'),
+            data.get('playerId'),
+            data.get('playerName'),
+            data.get('countryName')
+        ]
 
-        # Crear el directorio si no existe (importante para el entorno de Vercel)
-        os.makedirs(EXCEL_SALES_DIR, exist_ok=True)
+        try:
+            # Abrir la hoja de cálculo por su ID (obtenida de la variable de entorno)
+            spreadsheet = gc.open_by_key(GOOGLE_SHEET_ID)
+            logging.info(f"Hoja de cálculo '{GOOGLE_SHEET_ID}' abierta exitosamente.")
+            
+            # Seleccionar la hoja de trabajo (pestaña) del vendedor
+            # EL NOMBRE DE ESTA PESTAÑA DEBE COINCIDIR EXACTAMENTE CON el 'seller_name'
+            worksheet = spreadsheet.worksheet(seller_name)
+            logging.info(f"Hoja de trabajo '{seller_name}' seleccionada exitosamente.")
 
-        # Preparar los datos de la venta
-        sale_record = {
-            'Fecha_Hora': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'Vendedor': seller_name,
-            'Juego': data.get('gameName'),
-            'Articulo_Label': data.get('itemLabel'),
-            'Monto_USD': data.get('amountUSD'),
-            'Total_Pagado': data.get('totalPrice'),
-            'Moneda': data.get('currencySymbol'),
-            'ID_Jugador': data.get('playerId'),
-            'Nombre_Jugador': data.get('playerName'),
-            'Pais': data.get('countryName') # Se reintroduce el campo País
-        }
+            # Añadir la fila al final de la hoja de trabajo
+            worksheet.append_row(sale_record_row)
+            logging.info(f"Venta registrada exitosamente para {seller_name} en Google Sheet.")
 
-        # Verificar si el archivo Excel existe
-        if os.path.exists(excel_filepath):
-            try:
-                df = pd.read_excel(excel_filepath, engine='openpyxl')
-                # Concatenar el nuevo registro. Usamos pd.DataFrame con un solo registro
-                new_row_df = pd.DataFrame([sale_record])
-                df = pd.concat([df, new_row_df], ignore_index=True)
-                df.to_excel(excel_filepath, index=False, engine='openpyxl')
-                logging.info(f"Venta registrada exitosamente para {seller_name} en {excel_filepath}")
-            except Exception as e:
-                logging.error(f"Error al actualizar el archivo Excel existente {excel_filepath}: {e}")
-                return jsonify({"error": f"Error al actualizar el registro de ventas: {str(e)}"}), 500
-        else:
-            # Si el archivo no existe, crear uno nuevo con la fila actual
-            try:
-                df = pd.DataFrame([sale_record])
-                df.to_excel(excel_filepath, index=False, engine='openpyxl')
-                logging.info(f"Nuevo archivo de ventas creado para {seller_name}: {excel_filepath}")
-            except Exception as e:
-                logging.error(f"Error al crear un nuevo archivo Excel {excel_filepath}: {e}")
-                return jsonify({"error": f"Error al crear el registro de ventas: {str(e)}"}), 500
+        except gspread.exceptions.SpreadsheetNotFound:
+            logging.error(f"Google Sheet con ID '{GOOGLE_SHEET_ID}' no encontrada. Asegúrate de que la ID sea correcta y la cuenta de servicio tenga acceso.")
+            return jsonify({"error": f"La hoja de cálculo principal de Google no fue encontrada. Revisa la GOOGLE_SHEET_ID en Vercel y los permisos."}), 404
+        except gspread.exceptions.WorksheetNotFound:
+            logging.error(f"Hoja de trabajo (tab) '{seller_name}' no encontrada en la Google Sheet. Asegúrate de que exista una pestaña con ese nombre EXACTO.")
+            return jsonify({"error": f"No se encontró una pestaña para el vendedor '{seller_name}' en la Google Sheet. Revisa los nombres de las pestañas."}), 404
+        except gspread.exceptions.APIError as api_err:
+            logging.error(f"Error de API de Google Sheets: {api_err.response.text}")
+            # Puedes parsear api_err.response.text para mensajes más específicos si lo deseas
+            return jsonify({"error": f"Error en la API de Google Sheets: {api_err.response.text}. Revisa los permisos de la cuenta de servicio."}), 500
+        except Exception as e:
+            logging.error(f"Error general al escribir en Google Sheet: {e}", exc_info=True)
+            return jsonify({"error": f"Error al registrar la venta en Google Sheets: {str(e)}"}), 500
 
-        return jsonify({"message": "Venta registrada exitosamente."}), 200
+        return jsonify({"message": "Venta registrada exitosamente en Google Sheets."}), 200
 
     except Exception as e:
-        logging.error(f"Error en el endpoint /api/record-sale: {e}", exc_info=True)
+        logging.error(f"Error general en el endpoint /api/record-sale: {e}", exc_info=True)
         return jsonify({"error": f"Error interno del servidor: {str(e)}"}), 500
 
 if __name__ == '__main__':
-    # --- CONSIDERACIONES PARA DESPLIEGUE EN PRODUCCIÓN ---
-    # La línea `app.run(host='0.0.0.0', port=5000, debug=True)` es IDEAL SOLO PARA DESARROLLO.
-    # En un entorno de producción (como un VPS de Contabo), NO debes usar app.run() directamente.
-    # Necesitas un servidor WSGI (Web Server Gateway Interface) como Gunicorn o uWSGI
-    # para servir la aplicación de manera robusta y eficiente, y luego un proxy inverso
-    # como Nginx para manejar las solicitudes web, SSL, y balanceo de carga.
-
-    # Pasos conceptuales para producción:
-    # 1. Instalar Gunicorn:
-    #    pip install gunicorn
-    # 2. Ejecutar Gunicorn (NO dentro de este script, sino desde la terminal de tu VPS):
-    #    gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
-    #    - `--workers 4`: Número de procesos de Gunicorn (ajusta según los núcleos de tu CPU).
-    #    - `--bind 0.0.0.0:5000`: Escucha en todas las interfaces en el puerto 5000.
-    #    - `app:app`: Indica a Gunicorn que encuentre la instancia de Flask llamada 'app'
-    #                 dentro del módulo 'app.py' (este archivo).
-    #    Para mantener Gunicorn corriendo en segundo plano, se recomienda usar un sistema
-    #    de inicio como `systemd`.
-
-    # 3. Configurar Nginx como Proxy Inverso:
-    #    Nginx escuchará las solicitudes HTTP/HTTPS de tus usuarios y las reenviará a Gunicorn.
-    #    Esto permite servir tu frontend estático y tu backend Flask bajo el mismo dominio
-    #    (o subdominios) y manejar SSL.
-    #    Ejemplo de configuración de Nginx (en /etc/nginx/sites-available/tudominio.conf):
-    #    server {
-    #        listen 80;
-    #        server_name tudominio.com www.tudominio.com; # Tu dominio real
-
-    #        location /api/exchange-rates {
-    #            proxy_pass http://127.0.0.1:5000; # Reenvía a Gunicorn
-    #            proxy_set_header Host $host;
-    #            proxy_set_header X-Real-IP $remote_addr;
-    #            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    #            proxy_set_header X-Forwarded-Proto $scheme;
-    #        }
-
-    #        location /api/record-sale {
-    #            proxy_pass http://127.0.0.1:5000; # Reenvía a Gunicorn
-    #            proxy_set_header Host $host;
-    #            proxy_set_header X-Real-IP $remote_addr;
-    #            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    #            proxy_set_header X-Forwarded-Proto $scheme;
-    #        }
-
-    #        # Sirve tu frontend estático
-    #        location / {
-    #            root /var/www/html/dharck-store; # Ruta a tus archivos HTML, CSS, JS, Imagenes
-    #            try_files $uri $uri/ =404;
-    #        }
-    #    }
-    #    Luego de configurar Nginx:
-    #    sudo nginx -t           # Probar la configuración
-    #    sudo systemctl restart nginx # Reiniciar Nginx
-
-    # 4. Configurar `systemd` para Gunicorn (opcional, pero MUY RECOMENDADO):
-    #    Crea un archivo de servicio systemd (ej. `/etc/systemd/system/dharckstore.service`)
-    #    [Unit]
-    #    Description=Gunicorn instance for Dharck Store Flask app
-    #    After=network.target
-
-    #    [Service]
-    #    User=tu_usuario_linux # El usuario bajo el que correrá Gunicorn
-    #    Group=www-data      # O un grupo adecuado
-    #    WorkingDirectory=/path/to/your/flask/app # El directorio donde está app.py
-    #    ExecStart=/usr/local/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
-    #    Restart=always
-    #    [Install]
-    #    WantedBy=multi-user.target
-    #    Luego:
-    #    sudo systemctl daemon-reload
-    #    sudo systemctl start dharckstore
-    #    sudo systemctl enable dharckstore # Para que inicie con el sistema
-    #    sudo systemctl status dharckstore # Para verificar el estado
-
-    # En resumen, la línea `app.run` no debe ser usada en producción porque carece de
-    # características como la gestión de procesos, reinicio automático, rendimiento
-    # y seguridad que Gunicorn y Nginx proporcionan.
+    # Esta sección se ejecuta solo si corres el script directamente (por ejemplo, para pruebas locales).
+    # En Vercel, el servidor web se encargará de ejecutar tu aplicación Flask.
+    # No es necesario ejecutar `app.run()` en el entorno de producción de Vercel.
     app.run(host='0.0.0.0', port=5000, debug=True)
