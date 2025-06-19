@@ -1,4 +1,32 @@
-node_modules/
-package.json
-package-lock.json
-requirements.txt
+# Ignorar carpetas y archivos que no son necesarios para el despliegue en Vercel.
+# Esto ayuda a acelerar las construcciones y evita problemas de dependencias innecesarias.
+
+# Ignorar el directorio .git (ya lo ignora por defecto, pero es buena práctica)
+.git/
+
+# Ignorar node_modules si tienes dependencias de Node.js que no usas en el build de Vercel
+# o si manejas las dependencias de Node.js de otra forma.
+# node_modules/
+
+# Ignorar archivos de Python que no son parte de las funciones serverless
+# o que son solo para desarrollo local
+__pycache__/
+*.pyc
+venv/
+env/
+.venv/
+
+# Ignorar archivos de configuración de desarrollo local o sensibles
+# package.json
+# package-lock.json
+# yarn.lock
+# npm-debug.log*
+
+# Ignorar credenciales de servicio, ya que se usan variables de entorno
+# your-service-account-key.json 
+
+# Ignorar cualquier archivo que sea solo para pruebas o documentación
+# tests/
+# docs/
+# README.md
+# README.txt
