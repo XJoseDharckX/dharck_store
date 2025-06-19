@@ -690,7 +690,7 @@
                 { value: 10.00, label: '1048💎', imageUrl: '/image/prize-4.png' },
                 { value: 19.50, label: '2096💎', imageUrl: '/image/prize-5.png' },
                 { value: 29.00, label: '3144💎', imageUrl: '/image/prize-6.png' },
-                { value: 48.00, label: '5240💎', imageUrl: '/image/prize-6.png' },
+                { value: 48.00, label: '5240�', imageUrl: '/image/prize-6.png' },
                 { value: 62.00, label: '6812💎', imageUrl: '/image/prize-6.png' },
                 { value: 92.00, label: '9956💎', imageUrl: '/image/prize-7.png' },
                 { value: 178.00, label: '19912💎', imageUrl: '/image/prize-7.png' },
@@ -989,27 +989,30 @@
                     itemDiv.classList.add('amount-item'); 
                     itemDiv.dataset.value = amount.value; 
 
-                    // Las rutas de las imágenes en este array (e.g., '/image/7day.png')
-                    // asumen que la carpeta 'image' está directamente dentro de la carpeta 'public'
-                    // en la raíz de tu proyecto de Vercel.
-                    // ¡MUY IMPORTANTE! Verifica que los nombres de los archivos PNG
-                    // (como '7day.png', 'FFMENSUAL.png', 'logo1.png', etc.)
-                    // en tu carpeta 'public/image/' en Vercel tengan la CAPITALIZACIÓN EXACTA
-                    // que se usa aquí en el código.
-                    // Hemos añadido un 'onerror' para depuración: si la imagen no carga,
-                    // verás un placeholder y un mensaje de error en la consola del navegador.
-                    itemDiv.innerHTML = `
-                        <img 
-                            src="${amount.imageUrl}" 
-                            alt="${amount.label}" 
-                            class="item-image" 
-                            width="80" 
-                            height="80" 
-                            loading="lazy"
-                            onerror="this.onerror=null;this.src='https://placehold.co/80x80/cccccc/000000?text=Error';console.error('Failed to load image: ${amount.imageUrl}');"
-                        >
-                        <span class="item-label">${amount.label}</span>
-                    `;
+                    const imgElement = document.createElement('img');
+                    imgElement.src = amount.imageUrl;
+                    imgElement.alt = amount.label;
+                    imgElement.classList.add('item-image');
+                    imgElement.width = 80;
+                    imgElement.height = 80;
+                    imgElement.loading = 'lazy';
+                    
+                    // Añade un manejador de error para depuración
+                    imgElement.onerror = function() {
+                        this.onerror = null; // Previene bucles infinitos si el fallback también falla
+                        this.src = 'https://placehold.co/80x80/cccccc/000000?text=Error'; // Placeholder
+                        console.error('Failed to load image:', amount.imageUrl); // Log en la consola
+                    };
+
+                    // Mensaje de depuración para la URL de la imagen
+                    console.log('Attempting to load image:', amount.imageUrl); 
+
+                    const labelSpan = document.createElement('span');
+                    labelSpan.classList.add('item-label');
+                    labelSpan.textContent = amount.label;
+
+                    itemDiv.appendChild(imgElement);
+                    itemDiv.appendChild(labelSpan);
 
                     itemDiv.addEventListener('click', () => {
                         selectedAmountUSD = parseFloat(amount.value);
@@ -1181,7 +1184,7 @@
                 `🆔 *ID del Jugador*: ${userIdInput.value.trim()}\n` +
                 `👤 *Nombre del Jugador*: ${userNameInput.value.trim()}\n` +
                 `💼 *Vendedor*: ${selectedSeller}\n` + 
-                `� *Juego/Artículo*: ${selectedAmountLabel} (${selectedGame})\n` +
+                `🎮 *Juego/Artículo*: ${selectedAmountLabel} (${selectedGame})\n` +
                 `💸 *Monto a Pagar*: ${totalPrice.toFixed(2)} ${currencySymbol}\n` +
                 `  _(Base: ${selectedAmountUSD.toFixed(2)} USD + comisión)_\n` +
                 `🌎 *País*: ${selectedCountry}\n\n` +
