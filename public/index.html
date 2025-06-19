@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RECARGAS DHARCK STORE</title>
+    <!-- La ruta /Imagenes/logo1.png asume que 'logo1.png' está en la carpeta 'public/Imagenes/' en tu proyecto de Vercel. -->
     <link rel="icon" href="/Imagenes/logo1.png" type="image/png">
 </head>
 <body>
@@ -494,6 +495,7 @@
 
     </style>
 
+    <!-- La ruta /logo.png asume que 'logo.png' está directamente en la carpeta 'public/' de tu proyecto de Vercel. -->
     <img src="/logo.png" alt="DHARCK STORE Logo Background" class="background-logo">
 
     <!-- Header para el título de la aplicación -->
@@ -502,6 +504,7 @@
             <h1 class="dharck-store-title">
                 DHARCK STORE
             </h1>
+            <!-- La ruta /logo.png asume que 'logo.png' está directamente en la carpeta 'public/' de tu proyecto de Vercel. -->
             <img src="/logo.png" alt="Logotipo de la TIENDA DHARCK" class="title-logo">    
         </div>
     </header>
@@ -678,6 +681,8 @@
         // ¡IMPORTANTE! Asegúrate de que tus imágenes de artículos sean optimizadas y de tamaño adecuado (ej. 80x80px comprimidas a WebP o PNG ligero).
         const gameOptions = [
             { name: 'LORDS MOBILE', amounts: [
+                // Las rutas '/Imagenes/nombre-de-archivo.png' asumen que las imágenes están en la carpeta 'public/Imagenes/' de tu proyecto de Vercel.
+                // Asegúrate de que los nombres de los archivos (incluyendo mayúsculas/minúsculas y extensión) coincidan exactamente.
                 { value: 2.30, label: 'PASE SEMANAL', imageUrl: '/Imagenes/7day.png' },
                 { value: 19.90, label: 'PASE MENSUAL', imageUrl: '/Imagenes/30day.png' },
                 { value: 2.30, label: '209💎', imageUrl: '/Imagenes/prize-2.png' },
@@ -984,8 +989,9 @@
                     itemDiv.classList.add('amount-item'); 
                     itemDiv.dataset.value = amount.value; 
 
-                    // IMPORTANTE: Ajustar la ruta de las imágenes para que coincida con tu estructura de Vercel
-                    // Asumo que tienes una carpeta 'Imagenes' dentro de 'public'
+                    // IMPORTANTE: Asegúrate de que los archivos de imagen como '7day.png', '100.png', etc.,
+                    // estén en tu carpeta 'public/Imagenes/' y que los nombres (incluyendo mayúsculas/minúsculas y extensión)
+                    // coincidan exactamente con estas rutas.
                     itemDiv.innerHTML = `
                         <img src="${amount.imageUrl}" alt="${amount.label}" class="item-image" width="80" height="80" loading="lazy">
                         <span class="item-label">${amount.label}</span>
