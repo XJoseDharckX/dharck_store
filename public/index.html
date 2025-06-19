@@ -694,7 +694,7 @@
                 { value: 62.00, label: '6812💎', imageUrl: '/Imagenes/prize-6.png' },
                 { value: 92.00, label: '9956💎', imageUrl: '/Imagenes/prize-7.png' },
                 { value: 178.00, label: '19912💎', imageUrl: '/Imagenes/prize-7.png' },
-                { value: 270.00, label: '30392💎', imageUrl: '/Imagenes/prize-7.png' },
+                { value: 270.00, label: '30392�', imageUrl: '/Imagenes/prize-7.png' },
                 { value: 440.00, label: '50304💎', imageUrl: '/Imagenes/icon-happy.png' },
             ] },
             { name: 'LORDS MOBILE PROMOCION', amounts: [
@@ -989,9 +989,10 @@
                     itemDiv.classList.add('amount-item'); 
                     itemDiv.dataset.value = amount.value; 
 
-                    // IMPORTANTE: Asegúrate de que los archivos de imagen como '7day.png', '100.png', etc.,
-                    // estén en tu carpeta 'public/Imagenes/' y que los nombres (incluyendo mayúsculas/minúsculas y extensión)
-                    // coincidan exactamente con estas rutas.
+                    // Las rutas de las imágenes en este array (e.g., '/Imagenes/7day.png')
+                    // asumen que la carpeta 'Imagenes' está directamente dentro de la carpeta 'public'
+                    // en la raíz de tu proyecto de Vercel.
+                    // Ejemplo de ruta completa en el servidor: https://tudominio.vercel.app/Imagenes/7day.png
                     itemDiv.innerHTML = `
                         <img src="${amount.imageUrl}" alt="${amount.label}" class="item-image" width="80" height="80" loading="lazy">
                         <span class="item-label">${amount.label}</span>
