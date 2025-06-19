@@ -26,7 +26,7 @@
             position: relative;
             overflow-x: hidden;
             padding: 0; /* Remover padding aquí, se gestionará en el header y form-container */
-            box-sizing: border;
+            box-sizing: border-box;
         }
       
         @keyframes gradient-animation {
@@ -688,7 +688,7 @@
                 { value: 2.30, label: '209💎', imageUrl: '/image/prize-2.png' },
                 { value: 5.20, label: '524💎', imageUrl: '/image/prize-3.png' },
                 { value: 10.00, label: '1048💎', imageUrl: '/image/prize-4.png' },
-                { value: 19.50, label: '2096�', imageUrl: '/image/prize-5.png' },
+                { value: 19.50, label: '2096💎', imageUrl: '/image/prize-5.png' },
                 { value: 29.00, label: '3144💎', imageUrl: '/image/prize-6.png' },
                 { value: 48.00, label: '5240💎', imageUrl: '/image/prize-6.png' },
                 { value: 62.00, label: '6812💎', imageUrl: '/image/prize-6.png' },
@@ -992,9 +992,22 @@
                     // Las rutas de las imágenes en este array (e.g., '/image/7day.png')
                     // asumen que la carpeta 'image' está directamente dentro de la carpeta 'public'
                     // en la raíz de tu proyecto de Vercel.
-                    // Ejemplo de ruta completa en el servidor: https://tudominio.vercel.app/image/7day.png
+                    // ¡MUY IMPORTANTE! Verifica que los nombres de los archivos PNG
+                    // (como '7day.png', 'FFMENSUAL.png', 'logo1.png', etc.)
+                    // en tu carpeta 'public/image/' en Vercel tengan la CAPITALIZACIÓN EXACTA
+                    // que se usa aquí en el código.
+                    // Hemos añadido un 'onerror' para depuración: si la imagen no carga,
+                    // verás un placeholder y un mensaje de error en la consola del navegador.
                     itemDiv.innerHTML = `
-                        <img src="${amount.imageUrl}" alt="${amount.label}" class="item-image" width="80" height="80" loading="lazy">
+                        <img 
+                            src="${amount.imageUrl}" 
+                            alt="${amount.label}" 
+                            class="item-image" 
+                            width="80" 
+                            height="80" 
+                            loading="lazy"
+                            onerror="this.onerror=null;this.src='https://placehold.co/80x80/cccccc/000000?text=Error';console.error('Failed to load image: ${amount.imageUrl}');"
+                        >
                         <span class="item-label">${amount.label}</span>
                     `;
 
@@ -1168,7 +1181,7 @@
                 `🆔 *ID del Jugador*: ${userIdInput.value.trim()}\n` +
                 `👤 *Nombre del Jugador*: ${userNameInput.value.trim()}\n` +
                 `💼 *Vendedor*: ${selectedSeller}\n` + 
-                `🎮 *Juego/Artículo*: ${selectedAmountLabel} (${selectedGame})\n` +
+                `� *Juego/Artículo*: ${selectedAmountLabel} (${selectedGame})\n` +
                 `💸 *Monto a Pagar*: ${totalPrice.toFixed(2)} ${currencySymbol}\n` +
                 `  _(Base: ${selectedAmountUSD.toFixed(2)} USD + comisión)_\n` +
                 `🌎 *País*: ${selectedCountry}\n\n` +
