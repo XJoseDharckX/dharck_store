@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RECARGAS DHARCK STORE</title>
-    <!-- La ruta /Imagenes/logo1.png asume que 'logo1.png' está en la carpeta 'public/Imagenes/' en tu proyecto de Vercel. -->
-    <link rel="icon" href="/Imagenes/logo1.png" type="image/png">
+    <!-- La ruta /image/logo1.png asume que 'logo1.png' está en la carpeta 'public/image/' en tu proyecto de Vercel. -->
+    <link rel="icon" href="/image/logo1.png" type="image/png">
 </head>
 <body>
 
@@ -26,7 +26,7 @@
             position: relative;
             overflow-x: hidden;
             padding: 0; /* Remover padding aquí, se gestionará en el header y form-container */
-            box-sizing: border-box;
+            box-sizing: border;
         }
       
         @keyframes gradient-animation {
@@ -681,53 +681,53 @@
         // ¡IMPORTANTE! Asegúrate de que tus imágenes de artículos sean optimizadas y de tamaño adecuado (ej. 80x80px comprimidas a WebP o PNG ligero).
         const gameOptions = [
             { name: 'LORDS MOBILE', amounts: [
-                // Las rutas '/Imagenes/nombre-de-archivo.png' asumen que las imágenes están en la carpeta 'public/Imagenes/' de tu proyecto de Vercel.
+                // Las rutas '/image/nombre-de-archivo.png' asumen que las imágenes están en la carpeta 'public/image/' en tu proyecto de Vercel.
                 // Asegúrate de que los nombres de los archivos (incluyendo mayúsculas/minúsculas y extensión) coincidan exactamente.
-                { value: 2.30, label: 'PASE SEMANAL', imageUrl: '/Imagenes/7day.png' },
-                { value: 19.90, label: 'PASE MENSUAL', imageUrl: '/Imagenes/30day.png' },
-                { value: 2.30, label: '209💎', imageUrl: '/Imagenes/prize-2.png' },
-                { value: 5.20, label: '524💎', imageUrl: '/Imagenes/prize-3.png' },
-                { value: 10.00, label: '1048💎', imageUrl: '/Imagenes/prize-4.png' },
-                { value: 19.50, label: '2096💎', imageUrl: '/Imagenes/prize-5.png' },
-                { value: 29.00, label: '3144💎', imageUrl: '/Imagenes/prize-6.png' },
-                { value: 48.00, label: '5240💎', imageUrl: '/Imagenes/prize-6.png' },
-                { value: 62.00, label: '6812💎', imageUrl: '/Imagenes/prize-6.png' },
-                { value: 92.00, label: '9956💎', imageUrl: '/Imagenes/prize-7.png' },
-                { value: 178.00, label: '19912💎', imageUrl: '/Imagenes/prize-7.png' },
-                { value: 270.00, label: '30392�', imageUrl: '/Imagenes/prize-7.png' },
-                { value: 440.00, label: '50304💎', imageUrl: '/Imagenes/icon-happy.png' },
+                { value: 2.30, label: 'PASE SEMANAL', imageUrl: '/image/7day.png' },
+                { value: 19.90, label: 'PASE MENSUAL', imageUrl: '/image/30day.png' },
+                { value: 2.30, label: '209💎', imageUrl: '/image/prize-2.png' },
+                { value: 5.20, label: '524💎', imageUrl: '/image/prize-3.png' },
+                { value: 10.00, label: '1048💎', imageUrl: '/image/prize-4.png' },
+                { value: 19.50, label: '2096�', imageUrl: '/image/prize-5.png' },
+                { value: 29.00, label: '3144💎', imageUrl: '/image/prize-6.png' },
+                { value: 48.00, label: '5240💎', imageUrl: '/image/prize-6.png' },
+                { value: 62.00, label: '6812💎', imageUrl: '/image/prize-6.png' },
+                { value: 92.00, label: '9956💎', imageUrl: '/image/prize-7.png' },
+                { value: 178.00, label: '19912💎', imageUrl: '/image/prize-7.png' },
+                { value: 270.00, label: '30392💎', imageUrl: '/image/prize-7.png' },
+                { value: 440.00, label: '50304💎', imageUrl: '/image/icon-happy.png' },
             ] },
             { name: 'LORDS MOBILE PROMOCION', amounts: [
-                { value: 5.20, label: '💎499+', imageUrl: '/Imagenes/prize-2.png' },
-                { value: 12.00, label: '💎999+', imageUrl: '/Imagenes/prize-3.png' },
-                { value: 20.00, label: '💎1999+', imageUrl: '/Imagenes/prize-4.png' },
-                { value: 25.50, label: '💎2499+', imageUrl: '/Imagenes/prize-5.png' },
-                { value: 30.00, label: '💎2999+', imageUrl: '/Imagenes/prize-6.png' },
-                { value: 48.50, label: '💎4999+', imageUrl: '/Imagenes/prize-7.png' },
-                { value: 95.00, label: '💎9999+', imageUrl: '/Imagenes/icon-happy.png' },
+                { value: 5.20, label: '💎499+', imageUrl: '/image/prize-2.png' },
+                { value: 12.00, label: '💎999+', imageUrl: '/image/prize-3.png' },
+                { value: 20.00, label: '💎1999+', imageUrl: '/image/prize-4.png' },
+                { value: 25.50, label: '💎2499+', imageUrl: '/image/prize-5.png' },
+                { value: 30.00, label: '💎2999+', imageUrl: '/image/prize-6.png' },
+                { value: 48.50, label: '💎4999+', imageUrl: '/image/prize-7.png' },
+                { value: 95.00, label: '💎9999+', imageUrl: '/image/icon-happy.png' },
             ] },
             
             { name: 'BLOOD STRIKE', amounts: [
-                { value: 0.89, label: '100+5🧈', imageUrl: '/Imagenes/100.png' },
-                { value: 2.50, label: '300+20🧈', imageUrl: '/Imagenes/300.png' },
-                { value: 4.30, label: '500+40🧈', imageUrl: '/Imagenes/500.png' },
-                { value: 8.50, label: '1000+100🧈', imageUrl: '/Imagenes/1000.png' },
-                { value: 17.60, label: '2000+200🧈', imageUrl: '/Imagenes/2000.png' },
-                { value: 42.00, label: '5000+800🧈', imageUrl: '/Imagenes/5000.png' },
-                { value: 3.50, label: 'PASE ELITE🧈', imageUrl: '/Imagenes/elite.png' },
-                { value: 8.51, label: 'PASE PREMIUM🧈', imageUrl: '/Imagenes/premium.png' },
-                { value: 2.00, label: 'PASE DE NIVEL🧈', imageUrl: '/Imagenes/mejora.png' },
+                { value: 0.89, label: '100+5🧈', imageUrl: '/image/100.png' },
+                { value: 2.50, label: '300+20🧈', imageUrl: '/image/300.png' },
+                { value: 4.30, label: '500+40🧈', imageUrl: '/image/500.png' },
+                { value: 8.50, label: '1000+100🧈', imageUrl: '/image/1000.png' },
+                { value: 17.60, label: '2000+200🧈', imageUrl: '/image/2000.png' },
+                { value: 42.00, label: '5000+800🧈', imageUrl: '/image/5000.png' },
+                { value: 3.50, label: 'PASE ELITE🧈', imageUrl: '/image/elite.png' },
+                { value: 8.51, label: 'PASE PREMIUM🧈', imageUrl: '/image/premium.png' },
+                { value: 2.00, label: 'PASE DE NIVEL🧈', imageUrl: '/image/mejora.png' },
             ] },
              { name: 'FREE FIRE', amounts: [
-                { value: 1.80, label: '💎SEMANAL', imageUrl: '/Imagenes/ffsemanal.png' },
-                { value: 8.50, label: '💎MENSUAL', imageUrl: '/Imagenes/ffmensual.png' },
-                { value: 0.99, label: '💎100+10', imageUrl: '/Imagenes/prize-2.png' },
-                { value: 1.90, label: '💎200+20', imageUrl: '/Imagenes/prize-3.png' },
-                { value: 2.80, label: '💎310+31', imageUrl: '/Imagenes/prize-4.png' },
-                { value: 4.60, label: '💎520+52', imageUrl: '/Imagenes/prize-5.png' },
-                { value: 9.50, label: '💎1069+106', imageUrl: '/Imagenes/prize-6.png' },
-                { value: 18.00, label: '💎2180+218', imageUrl: '/Imagenes/prize-7.png' },
-                { value: 40.00, label: '💎5600+560', imageUrl: '/Imagenes/prize-7.png' },
+                { value: 1.80, label: '💎SEMANAL', imageUrl: '/image/ffsemanal.png' },
+                { value: 8.50, label: '💎MENSUAL', imageUrl: '/image/ffmensual.png' },
+                { value: 0.99, label: '💎100+10', imageUrl: '/image/prize-2.png' },
+                { value: 1.90, label: '💎200+20', imageUrl: '/image/prize-3.png' },
+                { value: 2.80, label: '💎310+31', imageUrl: '/image/prize-4.png' },
+                { value: 4.60, label: '💎520+52', imageUrl: '/image/prize-5.png' },
+                { value: 9.50, label: '💎1069+106', imageUrl: '/image/prize-6.png' },
+                { value: 18.00, label: '💎2180+218', imageUrl: '/image/prize-7.png' },
+                { value: 40.00, label: '💎5600+560', imageUrl: '/image/prize-7.png' },
             ] },
 
 
@@ -989,10 +989,10 @@
                     itemDiv.classList.add('amount-item'); 
                     itemDiv.dataset.value = amount.value; 
 
-                    // Las rutas de las imágenes en este array (e.g., '/Imagenes/7day.png')
-                    // asumen que la carpeta 'Imagenes' está directamente dentro de la carpeta 'public'
+                    // Las rutas de las imágenes en este array (e.g., '/image/7day.png')
+                    // asumen que la carpeta 'image' está directamente dentro de la carpeta 'public'
                     // en la raíz de tu proyecto de Vercel.
-                    // Ejemplo de ruta completa en el servidor: https://tudominio.vercel.app/Imagenes/7day.png
+                    // Ejemplo de ruta completa en el servidor: https://tudominio.vercel.app/image/7day.png
                     itemDiv.innerHTML = `
                         <img src="${amount.imageUrl}" alt="${amount.label}" class="item-image" width="80" height="80" loading="lazy">
                         <span class="item-label">${amount.label}</span>
@@ -1220,3 +1220,4 @@
     </script>
 </body>
 </html>
+�
