@@ -692,7 +692,7 @@
                 { value: 270.00, label: '30392💎', imageUrl: '/Imagenes/prize-7.png' },
                 { value: 440.00, label: '50304💎', imageUrl: '/Imagenes/icon-happy.png' },
             ] },
-           { name: 'LORDS MOBILE PROMOCION', amounts: [
+            { name: 'LORDS MOBILE PROMOCION', amounts: [
                 { value: 5.20, label: '💎499+', imageUrl: '/Imagenes/prize-2.png' },
                 { value: 12.00, label: '💎999+', imageUrl: '/Imagenes/prize-3.png' },
                 { value: 20.00, label: '💎1999+', imageUrl: '/Imagenes/prize-4.png' },
@@ -701,7 +701,7 @@
                 { value: 48.50, label: '💎4999+', imageUrl: '/Imagenes/prize-7.png' },
                 { value: 95.00, label: '💎9999+', imageUrl: '/Imagenes/icon-happy.png' },
             ] },
-           
+            
             { name: 'BLOOD STRIKE', amounts: [
                 { value: 0.89, label: '100+5🧈', imageUrl: '/Imagenes/100.png' },
                 { value: 2.50, label: '300+20🧈', imageUrl: '/Imagenes/300.png' },
@@ -894,33 +894,6 @@
         const paymentMethodsListDiv = document.getElementById('paymentMethodsList');
         const transferWarningMessage = document.getElementById('transferWarningMessage');
 
-        // La URL base de la API ya no es necesaria si no se realizan llamadas al backend
-        // const BASE_API_URL = 'https://dharckstore-recargas.vercel.app/api'; 
-
-
-        // La función fetchExchangeRates ya no es necesaria
-        /*
-        async function fetchExchangeRates() {
-            try {
-                const response = await fetch(`${BASE_API_URL}/exchange-rates`); 
-                if (!response.ok) {
-                    throw new Error(`Error HTTP: ${response.status}`);
-                }
-                const data = await response.json();
-                countryData = data; 
-                loadCountryOptions(); 
-                showMessage('Tasas de cambio actualizadas correctamente desde el servidor.', 'success');
-            } catch (error) {
-                console.error('Error al obtener las tasas de cambio:', error);
-                showMessage('Error al cargar las tasas de cambio desde el servidor. Usando datos de ejemplo (hardcodeados).', 'info');
-                countryData = [
-                    // ... tus datos hardcodeados ...
-                ];
-                loadCountryOptions(); 
-            }
-        }
-        */
-
 
         // Función para validar todos los campos y habilitar/deshabilitar el botón de Confirmar Transferencia
         function updateConfirmTransferButtonState() {
@@ -1011,6 +984,8 @@
                     itemDiv.classList.add('amount-item'); 
                     itemDiv.dataset.value = amount.value; 
 
+                    // IMPORTANTE: Ajustar la ruta de las imágenes para que coincida con tu estructura de Vercel
+                    // Asumo que tienes una carpeta 'Imagenes' dentro de 'public'
                     itemDiv.innerHTML = `
                         <img src="${amount.imageUrl}" alt="${amount.label}" class="item-image" width="80" height="80" loading="lazy">
                         <span class="item-label">${amount.label}</span>
@@ -1182,14 +1157,15 @@
             // -----------------------------------------------------
             
             const whatsappMessageContent =
-                `📝DHARCK STORE:\n\n` +
-                `🆔: ${userIdInput.value.trim()}\n` +
-                `👤Nombre: ${userNameInput.value.trim()}\n` +
-                `💼Vendedor: ${selectedSeller}\n` + 
-                `🎮Artículo: ${selectedAmountLabel} (${selectedGame})\n` +
-                `💰Monto: ${totalPrice.toFixed(2)} ${currencySymbol}\n` +
-                `🌎País: ${selectedCountry}\n\n` +
-                `❗Importante! Por favor, envíame el comprobante de pago.`;
+                `📝 *Pedido de Recarga - DHARCK STORE*:\n\n` +
+                `🆔 *ID del Jugador*: ${userIdInput.value.trim()}\n` +
+                `👤 *Nombre del Jugador*: ${userNameInput.value.trim()}\n` +
+                `💼 *Vendedor*: ${selectedSeller}\n` + 
+                `🎮 *Juego/Artículo*: ${selectedAmountLabel} (${selectedGame})\n` +
+                `💸 *Monto a Pagar*: ${totalPrice.toFixed(2)} ${currencySymbol}\n` +
+                `  _(Base: ${selectedAmountUSD.toFixed(2)} USD + comisión)_\n` +
+                `🌎 *País*: ${selectedCountry}\n\n` +
+                `⚠️ *¡Importante!*: Por favor, envíame el comprobante de pago.`;
 
             // Abrir WhatsApp en una nueva pestaña/ventana
             window.open(`https://wa.me/${whatsappRecipientNumber}?text=${encodeURIComponent(whatsappMessageContent)}`, '_blank');
