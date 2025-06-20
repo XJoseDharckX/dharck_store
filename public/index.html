@@ -270,7 +270,7 @@
             width: 100px; /* Imágenes más grandes */
             height: 100px;
             object-fit: contain;
-            margin-bottom: 10px; /* Ajuste para separar de los labels */
+            margin-bottom: 5px; /* Ajuste para separar de los labels */
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 255, 255, 0.4); /* Pequeño resplandor en la imagen */
             z-index: 1; /* Asegurar que la imagen esté encima del brillo */
@@ -290,16 +290,22 @@
             font-size: 1.2em; /* Texto más grande */
             line-height: 1.3;
             display: block; /* Asegura que el label esté en su propia fila */
-            margin-bottom: 5px; /* Espacio entre label y precio */
+            margin-bottom: 5px; /* Espacio entre label y precios */
             word-break: break-word; /* Romper palabras largas */
             overflow-wrap: break-word; /* Compatible con navegadores antiguos */
         }
         .amount-item.selected .item-label {
             color: #1A052E; /* Texto oscuro cuando está seleccionado */
         }
-        .item-price-local { /* Nuevo estilo para el precio local */
+        .item-price-usd { /* NUEVO ESTILO: Precio en USD */
+            color: #A9A9A9; /* Gris claro para el precio USD */
+            font-size: 0.85em; /* Tamaño un poco más pequeño */
+            font-weight: normal; /* No negrita */
+            margin-bottom: 2px; /* Espacio entre USD y precio local */
+        }
+        .item-price-local { /* Estilo para el precio local */
             color: #00FF00; /* Verde neón */
-            font-size: 0.9em;
+            font-size: 0.95em; /* Un poco más grande que el USD */
             font-weight: bold;
             text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
             display: block; /* Asegura que el precio esté en su propia fila */
@@ -1041,7 +1047,7 @@
             { name: 'MOBILE LEGENDS', logoUrl: '/image/mobile_legends_logo.png', inputRequirement: 'id_server_name', amounts: [
                 { value: 0.89, label: '50💎', imageUrl: '/image/ml_50.png' },
                 { value: 2.50, label: '100💎', imageUrl: '/image/ml_100.png' },
-                { value: 4.30, label: '150�', imageUrl: '/image/ml_150.png' },
+                { value: 4.30, label: '150💎', imageUrl: '/image/ml_150.png' },
                 { value: 8.50, label: '200💎', imageUrl: '/image/ml_200.png' },
                 { value: 17.60, label: '250💎', imageUrl: '/image/ml_250.png' },
                 { value: 42.00, label: '300💎', imageUrl: '/image/ml_300.png' },
@@ -1378,14 +1384,24 @@
                         labelSpan.classList.add('item-label');
                         labelSpan.textContent = amount.label;
 
-                        const priceLocalSpan = document.createElement('span');
-                        priceLocalSpan.classList.add('item-price-local');
-                        const localPrice = amount.value * countryInfo.exchangeRate;
-                        priceLocalSpan.textContent = `${formatNumber(localPrice)} ${countryInfo.symbol}`; 
-
                         itemTextContainer.appendChild(labelSpan);
-                        itemTextContainer.appendChild(priceLocalSpan);
 
+                        // Lógica condicional para mostrar el precio: USD o moneda local
+                        if (selectedCountry === '') {
+                            // Mostrar solo precio en USD si no hay país seleccionado
+                            const priceUsdSpan = document.createElement('span');
+                            priceUsdSpan.classList.add('item-price-usd');
+                            priceUsdSpan.textContent = `${amount.value.toFixed(2)} USD`; 
+                            itemTextContainer.appendChild(priceUsdSpan);
+                        } else {
+                            // Mostrar precio en moneda local si hay país seleccionado
+                            const priceLocalSpan = document.createElement('span');
+                            priceLocalSpan.classList.add('item-price-local');
+                            const localPrice = amount.value * countryInfo.exchangeRate;
+                            priceLocalSpan.textContent = `${formatNumber(localPrice)} ${countryInfo.symbol}`; 
+                            itemTextContainer.appendChild(priceLocalSpan);
+                        }
+                        
                         itemDiv.appendChild(imgElement);
                         itemDiv.appendChild(itemTextContainer); 
 
@@ -1724,7 +1740,7 @@
 
             // Generar información del artículo seleccionado para el mensaje de WhatsApp
             const selectedItemForWhatsapp = selectedAmount ? 
-                `- ${selectedAmount.label} (${formatNumber(selectedAmount.value * (countryData.find(c => c.name === selectedCountry) || defaultCountryInfo).exchangeRate)} ${(countryData.find(c => c.name === selectedCountry) || defaultCountryInfo).symbol})` : 
+                `- ${selectedAmount.label} (${selectedAmount.value.toFixed(2)} USD / ${formatNumber(selectedAmount.value * (countryData.find(c => c.name === selectedCountry) || defaultCountryInfo).exchangeRate)} ${(countryData.find(c => c.name === selectedCountry) || defaultCountryInfo).symbol})` : 
                 'No se seleccionó ningún artículo.';
 
             const sellerInfo = sellerData.find(seller => seller.name === selectedSeller);
