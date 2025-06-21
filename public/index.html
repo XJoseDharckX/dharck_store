@@ -6,6 +6,16 @@
     <title>RECARGAS DHARCK STORE</title>
     <!-- La ruta /image/logo1.png asume que 'logo1.png' está en la carpeta 'public/image/' en tu proyecto de Vercel. -->
     <link rel="icon" href="/image/logo1.png" type="image/png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0RB1V3F1WL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0RB1V3F1WL');
+</script>
+
 </head>
 <body>
 
@@ -51,6 +61,7 @@
             align-items: center; /* Centrar el contenido verticalmente */
             margin-bottom: 30px; /* Espacio entre el header y el formulario */
             border-bottom: 2px solid #00FFFF; /* Borde inferior de neón */
+            position: relative; /* Necesario para posicionar el botón de soporte */
         }
 
         .dharck-store-title-container {
@@ -96,6 +107,39 @@
         .title-logo:hover {
             transform: scale(1.05) rotate(5deg); /* Efecto de hover sutil */
         }
+
+        /* ESTILOS PARA EL BOTÓN DE SOPORTE TÉCNICO */
+        .support-button {
+            position: absolute;
+            right: 20px; /* Posicionarlo a la derecha del header */
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(to right, #FF00FF, #8E2DE2); /* Degradado magenta-morado */
+            color: #FFFFFF;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.7); /* Resplandor magenta */
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Espacio entre icono y texto */
+        }
+        .support-button:hover {
+            background: linear-gradient(to right, #8E2DE2, #FF00FF); /* Invertir degradado al hover */
+            box-shadow: 0 0 25px rgba(255, 0, 255, 1); /* Resplandor más fuerte */
+            transform: translateY(-50%) scale(1.05); /* Ligeramente más grande */
+        }
+        .support-icon {
+            width: 20px;
+            height: 20px;
+            fill: #FFFFFF; /* Color del icono */
+        }
+        /* FIN DE ESTILOS PARA EL BOTÓN DE SOPORTE TÉCNICO */
+
 
         /* Colores de los cuadros más claros y llamativos */
         .form-container, .section-container {
@@ -507,17 +551,37 @@
             100% { opacity: 1; transform: scale(1.05); }
         }
 
+        /* ESTILO PARA EL VENDEDOR DESTACADO */
+        .highlighted-seller {
+            color: #FFD700 !important; /* Color amarillo dorado vibrante */
+            font-weight: bold !important;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.8); /* Resplandor amarillo */
+        }
+
         /* Media Queries para Responsive Design */
         @media (max-width: 992px) { /* Tablets y pantallas medianas */
             #gameButtonsContainer, #amountButtons {
                 grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Intentará 3+ columnas */
                 gap: 18px;
             }
+            .support-button {
+                right: 15px; /* Ajustar posición en tablets */
+                padding: 8px 12px;
+                font-size: 0.85em;
+            }
         }
 
         @media (max-width: 768px) { /* Tabletas pequeñas y móviles grandes */
             .app-header {
                 padding: 10px 0;
+                flex-wrap: wrap; /* Permite que los elementos se envuelvan */
+                justify-content: center; /* Centrar el contenido cuando se envuelve */
+                height: auto; /* Altura auto para que se ajuste al contenido envuelto */
+            }
+            .dharck-store-title-container {
+                width: 100%; /* Ocupar todo el ancho para centrar */
+                justify-content: center; /* Centrar título y logo */
+                margin-bottom: 10px; /* Espacio debajo del título en móviles */
             }
             .dharck-store-title {
                 font-size: 2.2em; /* Reducir tamaño del título en móvil */
@@ -525,6 +589,15 @@
             }
             .title-logo {
                 height: 50px; /* Reducir tamaño del logo en móvil */
+            }
+            .support-button {
+                position: static; /* Cambiar a estático para que fluya con el contenido */
+                margin-top: 10px; /* Margen superior para separarlo del título */
+                transform: none; /* Eliminar transformación */
+                width: auto; /* Ancho automático */
+                max-width: 250px; /* Limitar ancho del botón */
+                margin-left: auto; /* Centrar horizontalmente si está en su propia línea */
+                margin-right: auto;
             }
             .form-container, .section-container { /* Aplicar a ambos contenedores */
                 padding: 20px;
@@ -587,6 +660,10 @@
             .amount-item {
                 min-height: 120px;
             }
+            .support-button {
+                font-size: 0.8em;
+                padding: 8px 10px;
+            }
         }
 
         @media (max-width: 400px) { /* Móviles muy pequeños */
@@ -618,6 +695,10 @@
                 padding: 15px;
                 margin-top: 15px; /* Ajustar margen */
             }
+            .support-button {
+                font-size: 0.75em;
+                padding: 6px 8px;
+            }
         }
 
     </style>
@@ -631,6 +712,13 @@
             <!-- La ruta /logo.png asume que 'logo.png' está directamente en la carpeta 'public/' en tu proyecto de Vercel. -->
             <img src="/image/logo.png" alt="Logotipo de la TIENDA DHARCK" class="title-logo">    
         </div>
+        <!-- BOTÓN DE SOPORTE TÉCNICO AÑADIDO AQUÍ -->
+        <button class="support-button" onclick="window.open('https://wa.me/584126027407?text=Hola,%20necesito%20soporte%20t%C3%A9cnico%20de%20Dharck%20Store.', '_blank')">
+            <svg class="support-icon" viewBox="0 0 24 24">
+                <path d="M12 2C6.477 2 2 6.477 2 12c0 3.313 1.606 6.279 4.093 8.163L4.5 22.5l2.25-1.5c1.844.975 3.966 1.547 6.25 1.547C17.523 22.5 22 18.023 22 12S17.523 2 12 2zm2.25 10.5H9.75v-1.5h4.5v1.5z"/>
+            </svg>
+            Soporte Técnico
+        </button>
     </header>
 
     <!-- Nuevo contenedor para la selección de país - MOVIDO ARRIBA -->
@@ -1467,10 +1555,15 @@
 
         // Función para cargar opciones de vendedor
         function loadSellerOptions() {
+            sellerSelect.innerHTML = '<option value="">-- ELIGE UN VENDEDOR --</option>'; // Asegurar opción inicial
             sellerData.forEach(seller => {
                 const option = document.createElement('option');
                 option.value = seller.name; 
                 option.textContent = seller.name;
+                // Destacar al vendedor "XJoseDharckX"
+                if (seller.name === 'XJoseDharckX') {
+                    option.classList.add('highlighted-seller');
+                }
                 sellerSelect.appendChild(option);
             });
         }
@@ -1567,7 +1660,11 @@
             transferWarningMessage.style.display = 'block'; 
             updateConfirmTransferButtonState();
 
-            priceSummaryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Desplazamiento suave a la sección de resumen de precio si ya hay un artículo seleccionado
+            // Si no hay juego o artículo seleccionado, no tiene sentido scrollear aún.
+            if (selectedAmount !== null) { 
+                priceSummaryDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         });
         
         // Función para actualizar el resumen del precio y los métodos de pago
@@ -1772,7 +1869,7 @@
                         playerInfo = `🆔 *UID*: ${userIdServerInput.value.trim()}\n🌐 *Servidor*: ${serverInput.value.trim()}`;
                         break;
                     case 'id_server_name': 
-                        playerInfo = `🆔 *ID del Jugador*: ${userIdServerInput.value.trim()}\n🌐 *Servidor*: ${serverInput.value.trim()}\n👤 *Nombre del Jugador*: ${userNameMLInput.value.trim()}`;
+                        playerInfo = `� *ID del Jugador*: ${userIdServerInput.value.trim()}\n🌐 *Servidor*: ${serverInput.value.trim()}\n👤 *Nombre del Jugador*: ${userNameMLInput.value.trim()}`;
                         break;
                     case 'id_only':
                         playerInfo = `🆔 *ID del Jugador*: ${userIdOnlyInput.value.trim()}`;
