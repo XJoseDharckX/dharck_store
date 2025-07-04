@@ -53,8 +53,90 @@ async function getSellerSheet(sellerName) {
   }
 }
 
+// Función para actualizar el estado de un pedido
+async function updateOrderStatus(rowNumber, status) {
+  try {
+    const doc = await getGoogleSheet();
+    
+    // Buscar en todas las hojas de vendedores
+    for (const [sellerName, sheetName] of Object.entries(SELLER_SHEET_MAPPING)) {
+      try {
+        const sheet = doc.sheetsByTitle[sheetName];
+        if (!sheet) continue;
+        
+        await sheet.loadCells();
+        
+        // Buscar la fila con el ID correspondiente
+        for (let i = 1; i < sheet.rowCount; i++) {
+          const idCell = sheet.getCell(i, 0); // Columna A (ID)
+          if (idCell.value == rowNumber) {
+            // Actualizar el estado en la columna correspondiente (asumiendo columna H)
+            const statusCell = sheet.getCell(i, 7);
+            statusCell.value = status;
+            await sheet.saveUpdatedCells();
+            
+            return {
+              success: true,
+              message: `Estado actualizado a ${status}`
+            };
+          }
+        }
+      } catch (error) {
+        console.error(`Error en hoja ${sheetName}:`, error);
+        continue;
+      }
+    }
+    
+    return {
+      success: false,
+      message: 'Pedido no encontrado'
+    };
+  } catch (error) {
+    console.error('Error actualizando estado:', error);
+    return {
+      success: false,
+      message: 'Error interno del servidor'
+    };
+  }
+}
+
+// Función para eliminar un pedido
+async function deleteOrder(rowNumber, sellerName) {
+  try {
+    const sheet = await getSellerSheet(sellerName);
+    await sheet.loadCells();
+    
+    // Buscar la fila con el ID correspondiente
+    for (let i = 1; i < sheet.rowCount; i++) {
+      const idCell = sheet.getCell(i, 0); // Columna A (ID)
+      if (idCell.value == rowNumber) {
+        // Eliminar la fila
+        await sheet.deleteRows(i + 1, 1); // +1 porque las filas empiezan en 1
+        
+        return {
+          success: true,
+          message: 'Pedido eliminado exitosamente'
+        };
+      }
+    }
+    
+    return {
+      success: false,
+      message: 'Pedido no encontrado'
+    };
+  } catch (error) {
+    console.error('Error eliminando pedido:', error);
+    return {
+      success: false,
+      message: 'Error interno del servidor'
+    };
+  }
+}
+
 module.exports = {
   getGoogleSheet,
   getSellerSheet,
+  updateOrderStatus,
+  deleteOrder,
   SELLER_SHEET_MAPPING
 };

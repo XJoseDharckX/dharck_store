@@ -1044,11 +1044,34 @@
             return types[inputRequirement] || 'Desconocido';
         }
 
-        function toggleGame(index) {
-            gameOptions[index].enabled = !gameOptions[index].enabled;
-            showSuccess(`${gameOptions[index].name} ${gameOptions[index].enabled ? 'habilitado' : 'deshabilitado'}`);
-            updateGameStats();
-            // Aquí podrías hacer una llamada a la API para guardar el estado
+        async function toggleGame(index) {
+            try {
+                gameOptions[index].enabled = !gameOptions[index].enabled;
+                
+                // Guardar en el backend
+                const response = await fetch(`${API_BASE_URL}/manage-games`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        games: gameOptions
+                    })
+                });
+                
+                if (response.ok) {
+                    showSuccess(`${gameOptions[index].name} ${gameOptions[index].enabled ? 'habilitado' : 'deshabilitado'}`);
+                    updateGameStats();
+                } else {
+                    // Revertir el cambio si falla
+                    gameOptions[index].enabled = !gameOptions[index].enabled;
+                    throw new Error('Error al actualizar el juego');
+                }
+            } catch (error) {
+                console.error('Error actualizando juego:', error);
+                showError('Error al actualizar el estado del juego');
+                loadGames(); // Recargar para mostrar el estado correcto
+            }
         }
 
         function enableAllGames() {
@@ -1108,10 +1131,34 @@
             updatePromotionStats();
         }
 
-        function togglePromotion(index) {
-            promotionOptions[index].active = !promotionOptions[index].active;
-            loadPromotions();
-            showSuccess(`Promoción ${promotionOptions[index].active ? 'activada' : 'desactivada'}`);
+        async function togglePromotion(index) {
+            try {
+                promotionOptions[index].active = !promotionOptions[index].active;
+                
+                // Guardar en el backend
+                const response = await fetch(`${API_BASE_URL}/manage-promotions`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        promotions: promotionOptions
+                    })
+                });
+                
+                if (response.ok) {
+                    loadPromotions();
+                    showSuccess(`Promoción ${promotionOptions[index].active ? 'activada' : 'desactivada'}`);
+                } else {
+                    // Revertir el cambio si falla
+                    promotionOptions[index].active = !promotionOptions[index].active;
+                    throw new Error('Error al actualizar la promoción');
+                }
+            } catch (error) {
+                console.error('Error actualizando promoción:', error);
+                showError('Error al actualizar el estado de la promoción');
+                loadPromotions(); // Recargar para mostrar el estado correcto
+            }
         }
 
         function editPromotion(index) {
@@ -1128,8 +1175,53 @@
         }
 
         function createPromotion() {
-            // Implementar modal de creación
-            showSuccess('Función de creación en desarrollo');
+            const name = prompt('Nombre de la promoción:');
+            if (!name) return;
+            
+            const game = prompt('Juego (ej: LORDS MOBILE):');
+            if (!game) return;
+            
+            const type = prompt('Tipo de promoción (ej: +20%):');
+            if (!type) return;
+            
+            const badge = prompt('Badge a mostrar (ej: 🔥 +20%):');
+            if (!badge) return;
+            
+            const articlesStr = prompt('Artículos separados por coma (ej: 1200+240, 2500+500):');
+            if (!articlesStr) return;
+            
+            const articles = articlesStr.split(',').map(a => a.trim());
+            
+            const newPromotion = {
+                name,
+                game,
+                type,
+                badge,
+                articles,
+                active: false
+            };
+            
+            fetch(`${API_BASE_URL}/manage-promotions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newPromotion)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.promotion) {
+                    promotionOptions.push(data.promotion);
+                    loadPromotions();
+                    showSuccess('Promoción creada exitosamente');
+                } else {
+                    throw new Error(data.error || 'Error al crear la promoción');
+                }
+            })
+            .catch(error => {
+                console.error('Error creando promoción:', error);
+                showError('Error al crear la promoción: ' + error.message);
+            });
         }
 
         function updatePromotionStats() {
@@ -1194,20 +1286,39 @@
             }
 
             try {
-                // Aquí deberías implementar la API para eliminar el pedido
-                // Por ahora, solo lo removemos de la tabla
+                // Obtener información del pedido para saber el vendedor
                 const row = document.querySelector(`tr[data-row-id="${rowId}"]`);
-                if (row) {
+                if (!row) {
+                    showError('Pedido no encontrado');
+                    return;
+                }
+                
+                const sellerCell = row.cells[6]; // Columna del vendedor
+                const sellerName = sellerCell.textContent.trim();
+                
+                const response = await fetch(`${API_BASE_URL}/delete-order`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        rowNumber: rowId,
+                        sellerName: sellerName
+                    })
+                });
+                
+                if (response.ok) {
                     row.remove();
                     updateOrderStats();
                     showSuccess('Pedido eliminado exitosamente');
+                } else {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Error al eliminar el pedido');
                 }
-                
-                // TODO: Implementar llamada a API para eliminar del backend
                 
             } catch (error) {
                 console.error('Error eliminando pedido:', error);
-                showError('Error al eliminar el pedido');
+                showError('Error al eliminar el pedido: ' + error.message);
             }
         }
 
