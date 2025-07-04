@@ -1,4 +1,10 @@
 {
   "version": 2,
+  "functions": {
+    "api/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "installCommand": "npm install",
   "outputDirectory": "public"
 }
