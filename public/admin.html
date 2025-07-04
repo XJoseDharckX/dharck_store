@@ -24,7 +24,7 @@
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 0 25px rgba(106, 13, 173, 0.6);
-            max-width: 1200px;
+            max-width: 1400px;
             width: 100%;
             color: #E0F7FA;
             margin-top: 20px;
@@ -34,26 +34,31 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            font-size: 0.9em;
         }
 
         .orders-table th, .orders-table td {
             border: 1px solid #6A0DAD;
-            padding: 12px;
+            padding: 8px;
             text-align: left;
+            word-wrap: break-word;
         }
 
         .orders-table th {
             background-color: #4A00E0;
             color: #00FFFF;
+            position: sticky;
+            top: 0;
         }
 
         .action-button {
-            padding: 8px 15px;
+            padding: 6px 12px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
-            margin: 0 5px;
+            margin: 0 3px;
+            font-size: 0.8em;
         }
 
         .sent-button {
@@ -65,6 +70,10 @@
             background: linear-gradient(to right, #ff1744, #d50000);
             color: white;
         }
+
+        .status-pending { color: #FFD700; }
+        .status-sent { color: #00FF00; }
+        .status-cancelled { color: #FF4444; }
 
         #loginForm {
             background-color: #1A004B;
@@ -87,6 +96,29 @@
             background-color: rgba(30, 0, 60, 0.9);
             color: #FFFFFF;
         }
+
+        .loading {
+            text-align: center;
+            color: #00FFFF;
+            padding: 20px;
+        }
+
+        .error {
+            color: #FF4444;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .refresh-button {
+            background: linear-gradient(to right, #00FFFF, #0080FF);
+            color: #0d001a;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -105,14 +137,23 @@
 
     <div id="adminPanel" class="admin-container" style="display: none;">
         <h1 style="color: #00FFFF; text-align: center;">Panel de Pedidos</h1>
+        <button class="refresh-button" onclick="loadOrders()">🔄 Actualizar Pedidos</button>
+        
+        <div id="loadingMessage" class="loading" style="display: none;">Cargando pedidos...</div>
+        <div id="errorMessage" class="error" style="display: none;"></div>
+        
         <table class="orders-table">
             <thead>
                 <tr>
                     <th>Fecha</th>
                     <th>Cliente</th>
+                    <th>Email/ID</th>
                     <th>Juego</th>
-                    <th>Monto</th>
+                    <th>Artículo</th>
+                    <th>USD</th>
+                    <th>Total</th>
                     <th>Vendedor</th>
+                    <th>País</th>
                     <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
@@ -124,7 +165,10 @@
     </div>
 
     <script>
-        // Credenciales de ejemplo (deberías manejar esto de forma más segura en producción)
+        // Configuración
+        const API_BASE_URL = window.location.origin + '/api';
+        
+        // Credenciales de administrador
         const ADMIN_CREDENTIALS = {
             username: 'jose',
             password: 'jose'
@@ -143,59 +187,99 @@
             }
         }
 
-        function loadOrders() {
-            // Aquí cargarías los pedidos desde tu base de datos o sistema de almacenamiento
-            // Este es un ejemplo de cómo se verían los datos
-            const orders = [
-                {
-                    date: '2024-01-20',
-                    client: 'Juan Pérez',
-                    game: 'Free Fire',
-                    amount: '500 diamantes',
-                    seller: 'Vendedor1',
-                    status: 'Pendiente'
-                }
-                // Más pedidos aquí
-            ];
-
+        async function loadOrders() {
+            const loadingMessage = document.getElementById('loadingMessage');
+            const errorMessage = document.getElementById('errorMessage');
             const tableBody = document.getElementById('ordersTableBody');
-            tableBody.innerHTML = orders.map(order => `
-                <tr>
-                    <td>${order.date}</td>
-                    <td>${order.client}</td>
-                    <td>${order.game}</td>
-                    <td>${order.amount}</td>
-                    <td>${order.seller}</td>
-                    <td>${order.status}</td>
-                    <td>
-                        <button class="action-button sent-button" onclick="markAsSent(this)">Enviado</button>
-                        <button class="action-button cancel-button" onclick="markAsCancelled(this)">Cancelar</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function markAsSent(button) {
-            const row = button.closest('tr');
-            // Aquí agregarías la lógica para actualizar en Google Sheets
-            // Ejemplo de cómo obtener los datos de la fila:
-            const orderData = {
-                date: row.cells[0].textContent,
-                client: row.cells[1].textContent,
-                game: row.cells[2].textContent,
-                amount: row.cells[3].textContent,
-                seller: row.cells[4].textContent
-            };
             
-            // Aquí irá la integración con Google Sheets API
-            console.log('Marcando como enviado:', orderData);
-            row.cells[5].textContent = 'Enviado';
+            loadingMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+            tableBody.innerHTML = '';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/get-orders`);
+                
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                const orders = data.orders || [];
+                
+                loadingMessage.style.display = 'none';
+                
+                if (orders.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="11" style="text-align: center; color: #888;">No hay pedidos registrados</td></tr>';
+                    return;
+                }
+                
+                tableBody.innerHTML = orders.map(order => `
+                    <tr data-row-id="${order.id}">
+                        <td>${order.fecha}</td>
+                        <td>${order.cliente}</td>
+                        <td>${order.emailId}</td>
+                        <td>${order.juego}</td>
+                        <td>${order.articulo}</td>
+                        <td>$${order.montoUSD}</td>
+                        <td>${order.totalLocal} ${order.moneda}</td>
+                        <td>${order.vendedor}</td>
+                        <td>${order.pais}</td>
+                        <td class="status-${order.estado.toLowerCase()}">${order.estado}</td>
+                        <td>
+                            ${order.estado === 'Pendiente' ? `
+                                <button class="action-button sent-button" onclick="updateOrderStatus(${order.id}, 'Enviado')">Enviado</button>
+                                <button class="action-button cancel-button" onclick="updateOrderStatus(${order.id}, 'Cancelado')">Cancelar</button>
+                            ` : `<span style="color: #888;">-</span>`}
+                        </td>
+                    </tr>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error cargando pedidos:', error);
+                loadingMessage.style.display = 'none';
+                errorMessage.textContent = 'Error al cargar los pedidos. Verifica la conexión.';
+                errorMessage.style.display = 'block';
+            }
         }
 
-        function markAsCancelled(button) {
-            const row = button.closest('tr');
-            row.cells[5].textContent = 'Cancelado';
+        async function updateOrderStatus(rowId, newStatus) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/update-order`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        rowNumber: rowId,
+                        status: newStatus
+                    })
+                });
+                
+                if (response.ok) {
+                    // Actualizar la fila en la tabla
+                    const row = document.querySelector(`tr[data-row-id="${rowId}"]`);
+                    if (row) {
+                        const statusCell = row.cells[9];
+                        statusCell.textContent = newStatus;
+                        statusCell.className = `status-${newStatus.toLowerCase()}`;
+                        
+                        // Ocultar botones de acción
+                        const actionsCell = row.cells[10];
+                        actionsCell.innerHTML = '<span style="color: #888;">-</span>';
+                    }
+                    
+                    alert(`Pedido marcado como ${newStatus}`);
+                } else {
+                    throw new Error('Error al actualizar el estado');
+                }
+            } catch (error) {
+                console.error('Error actualizando estado:', error);
+                alert('Error al actualizar el estado del pedido');
+            }
         }
+
+        // Cargar pedidos automáticamente cada 30 segundos
+        setInterval(loadOrders, 30000);
     </script>
 </body>
 </html>

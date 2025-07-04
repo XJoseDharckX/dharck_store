@@ -2073,7 +2073,7 @@
 
             try {
                 // Asegúrate de que tu BASE_API_URL esté configurada correctamente para tu despliegue en Vercel
-                const BASE_API_URL = 'https://dharckstore-recargas.vercel.app/api'; // Reemplaza con tu dominio real si es diferente
+                const BASE_API_URL = window.location.origin + '/api'; // Esta línea ya está correcta
                 const response = await fetch(`${BASE_API_URL}/record-sale`, { 
                     method: 'POST',
                     headers: {
