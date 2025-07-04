@@ -1046,7 +1046,8 @@
 
         async function toggleGame(index) {
             try {
-                gameOptions[index].enabled = !gameOptions[index].enabled;
+                const game = gameOptions[index];
+                game.enabled = !game.enabled;
                 
                 // Guardar en el backend
                 const response = await fetch(`${API_BASE_URL}/manage-games`, {
@@ -1055,16 +1056,21 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        games: gameOptions
+                        game: {
+                            name: game.name,
+                            enabled: game.enabled,
+                            inputRequirement: game.inputRequirement,
+                            logoUrl: game.logoUrl
+                        }
                     })
                 });
                 
                 if (response.ok) {
-                    showSuccess(`${gameOptions[index].name} ${gameOptions[index].enabled ? 'habilitado' : 'deshabilitado'}`);
-                    updateGameStats();
+                    showSuccess(`${game.name} ${game.enabled ? 'habilitado' : 'deshabilitado'}`);
+                    loadGames(); // Recargar para mostrar el estado actualizado
                 } else {
                     // Revertir el cambio si falla
-                    gameOptions[index].enabled = !gameOptions[index].enabled;
+                    game.enabled = !game.enabled;
                     throw new Error('Error al actualizar el juego');
                 }
             } catch (error) {
@@ -1133,7 +1139,8 @@
 
         async function togglePromotion(index) {
             try {
-                promotionOptions[index].active = !promotionOptions[index].active;
+                const promo = promotionOptions[index];
+                promo.active = !promo.active;
                 
                 // Guardar en el backend
                 const response = await fetch(`${API_BASE_URL}/manage-promotions`, {
@@ -1142,16 +1149,24 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        promotions: promotionOptions
+                        promotion: {
+                            id: promo.id,
+                            name: promo.name,
+                            game: promo.game,
+                            type: promo.type,
+                            badge: promo.badge,
+                            articles: promo.articles,
+                            active: promo.active
+                        }
                     })
                 });
                 
                 if (response.ok) {
                     loadPromotions();
-                    showSuccess(`Promoción ${promotionOptions[index].active ? 'activada' : 'desactivada'}`);
+                    showSuccess(`Promoción ${promo.active ? 'activada' : 'desactivada'}`);
                 } else {
                     // Revertir el cambio si falla
-                    promotionOptions[index].active = !promotionOptions[index].active;
+                    promo.active = !promo.active;
                     throw new Error('Error al actualizar la promoción');
                 }
             } catch (error) {
@@ -1258,13 +1273,30 @@
                         statusCell.textContent = newStatus;
                         statusCell.className = `status-badge status-${newStatus.toLowerCase()}`;
                         
-                        // Actualizar botones de acción
+                        // Actualizar botones de acción según el estado
                         const actionsCell = row.querySelector('.action-buttons');
-                        actionsCell.innerHTML = `
-                            <button class="btn btn-danger btn-sm" onclick="deleteOrder(${rowId})">
-                                <i class="fas fa-trash"></i> Eliminar
-                            </button>
-                        `;
+                        if (newStatus === 'Pendiente') {
+                            actionsCell.innerHTML = `
+                                <button class="btn btn-success btn-sm" onclick="updateOrderStatus(${rowId}, 'Enviado')">
+                                    <i class="fas fa-check"></i> Enviado
+                                </button>
+                                <button class="btn btn-warning btn-sm" onclick="updateOrderStatus(${rowId}, 'Cancelado')">
+                                    <i class="fas fa-times"></i> Cancelar
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteOrder(${rowId})">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            `;
+                        } else {
+                            actionsCell.innerHTML = `
+                                <button class="btn btn-primary btn-sm" onclick="updateOrderStatus(${rowId}, 'Pendiente')">
+                                    <i class="fas fa-undo"></i> Reactivar
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteOrder(${rowId})">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            `;
+                        }
                         
                         row.setAttribute('data-status', newStatus.toLowerCase());
                     }

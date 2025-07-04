@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RECARGAS DHARCK STORE</title>
-    <!-- La ruta /image/logo1.png asume que 'logo1.png' está en la carpeta 'public/image/' en tu proyecto de Vercel. -->
     <link rel="icon" href="/image/logo1.png" type="image/png">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0RB1V3F1WL"></script>
@@ -20,125 +19,137 @@
 <body>
 
     <style>
-        /* Fuentes */
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #4A00E0, #8E2DE2, #FF00FF, #00FFFF, #00FF00); /* Degradado más claro y vibrante */
-            background-size: 400% 400%;
-            animation: gradient-animation 20s ease infinite; /* Animación más lenta y suave */
+        /* Importar fuentes modernas */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        
+        /* Variables CSS para colores consistentes */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --dark-gradient: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            
+            --text-primary: #ffffff;
+            --text-secondary: #e8f4fd;
+            --text-accent: #00f2fe;
+            --text-dark: #2c3e50;
+            
+            --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.15);
+            --shadow-heavy: 0 15px 35px rgba(0, 0, 0, 0.2);
+            --shadow-neon: 0 0 20px rgba(0, 242, 254, 0.4);
+            
+            --border-radius: 16px;
+            --border-radius-small: 8px;
+            --border-radius-large: 24px;
+        }
 
-            display: flex;
-            flex-direction: column; /* Cambiado a columna para apilar el header y el form-container */
-            align-items: center;
-            justify-content: flex-start; /* Alinear arriba para el header fijo */
-            min-height: 100vh;
+        * {
             margin: 0;
-            position: relative;
-            overflow-x: hidden;
-            padding: 0; /* Remover padding aquí, se gestionará en el header y form-container */
+            padding: 0;
             box-sizing: border-box;
         }
-      
-        @keyframes gradient-animation {
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* LOGO DE FONDO ELIMINADO */
-
-        /* NUEVO ESTILO: Header de título */
+        /* Header mejorado */
         .app-header {
-            width: 100%;
-            background: linear-gradient(to right, #1A004B, #6A0DAD, #1A004B); /* Degradado oscuro y vibrante para el header */
-            padding: 15px 0; /* Padding vertical */
-            box-shadow: 0 5px 25px rgba(138, 43, 226, 0.8), 0 0 40px rgba(0, 255, 255, 0.5); /* Sombra intensa */
-            z-index: 100; /* Asegurar que esté por encima de todo */
-            position: sticky; /* Se queda en la parte superior al hacer scroll */
+            background: linear-gradient(135deg, rgba(44, 62, 80, 0.95) 0%, rgba(52, 73, 94, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid rgba(0, 242, 254, 0.3);
+            box-shadow: var(--shadow-medium);
+            padding: 20px 0;
+            position: sticky;
             top: 0;
-            display: flex;
-            justify-content: center; /* Centrar el contenido horizontalmente */
-            align-items: center; /* Centrar el contenido verticalmente */
-            margin-bottom: 30px; /* Espacio entre el header y el formulario */
-            border-bottom: 2px solid #00FFFF; /* Borde inferior de neón */
-            position: relative; /* Necesario para posicionar el botón de soporte */
+            z-index: 100;
+            margin-bottom: 30px;
         }
 
         .dharck-store-title-container {
             display: flex;
             align-items: center;
-            justify-content: center; /* Centrar dentro del header */
-            width: 100%; /* Ocupar todo el ancho disponible del header */
-            max-width: 900px; /* Limitar ancho del contenido del título */
-            padding: 0 20px; /* Padding horizontal para el contenido del título */
-            box-sizing: border-box;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
         }
+
         .dharck-store-title {
-            /* Colores más definidos para el texto del título */
-            color: #00FFFF; /* Cian brillante, más legible */
-            text-shadow: 0 0 10px rgba(0, 255, 255, 1), 0 0 20px rgba(0, 255, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.6); /* Resplandor cian */
-            animation: none; /* Eliminar animación del título para mayor claridad */
-            font-weight: bold;
-            font-size: 3.5em; /* Título aún más grande */
-            line-height: 1;
-            margin: 0;
-            margin-right: 25px; /* Más espacio entre texto y logo */
-            background: none; /* Eliminar background-clip ya que ahora es color sólido */
-            -webkit-background-clip: unset;
-            background-clip: unset;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-right: 20px;
+            text-shadow: 0 0 30px rgba(0, 242, 254, 0.5);
+            animation: titleGlow 2s ease-in-out infinite alternate;
         }
-        /* Animación para el título (si se quiere mantener algo) */
-        @keyframes header-neon-glow {
-            0% { text-shadow: 0 0 8px #00FFFF, 0 0 15px #00FFFF, 0 0 25px #00FFFF; }
-            50% { text-shadow: 0 0 12px #00FFFF, 0 0 20px #00FFFF, 0 0 35px #00FFFF; }
-            100% { text-shadow: 0 0 8px #00FFFF, 0 0 15px #00FFFF, 0 0 25px #00FFFF; }
-        }
-        .dharck-store-title {
-            animation: header-neon-glow 1.5s infinite alternate; /* Aplicar una animación de brillo */
+
+        @keyframes titleGlow {
+            from { filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(0, 242, 254, 0.8)); }
         }
 
         .title-logo {
-            height: 80px; /* Logo más grande en el header */
-            width: auto;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.8), 0 0 35px rgba(255, 0, 255, 0.8); /* Doble resplandor neón */
-            transition: transform 0.3s ease;
-        }
-        .title-logo:hover {
-            transform: scale(1.05) rotate(5deg); /* Efecto de hover sutil */
+            box-shadow: var(--shadow-neon);
+            transition: all 0.3s ease;
         }
 
-        /* ESTILOS PARA EL BOTÓN DE SOPORTE TÉCNICO */
+        .title-logo:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.8);
+        }
+
+        /* Botón de soporte mejorado */
         .support-button {
             position: absolute;
-            right: 20px; /* Posicionarlo a la derecha del header */
-            top: 50%;
-            transform: translateY(-50%);
-            background: linear-gradient(to right, #FF00FF, #8E2DE2); /* Degradado magenta-morado */
-            color: #FFFFFF;
-            padding: 10px 15px;
+            right: 20px;
+            background: var(--warning-gradient);
             border: none;
-            border-radius: 8px;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-weight: 600;
             cursor: pointer;
-            font-size: 0.9em;
-            font-weight: bold;
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.7); /* Resplandor magenta */
             transition: all 0.3s ease;
+            box-shadow: var(--shadow-light);
             display: flex;
             align-items: center;
-            gap: 8px; /* Espacio entre icono y texto */
+            gap: 8px;
         }
+
         .support-button:hover {
-            background: linear-gradient(to right, #8E2DE2, #FF00FF); /* Invertir degradado al hover */
-            box-shadow: 0 0 25px rgba(255, 0, 255, 1); /* Resplandor más fuerte */
-            transform: translateY(-50%) scale(1.05); /* Ligeramente más grande */
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
         }
+
         .support-icon {
             width: 20px;
             height: 20px;
-            fill: #FFFFFF; /* Color del icono */
+            fill: currentColor;
         }
-        /* FIN DE ESTILOS PARA EL BOTÓN DE SOPORTE TÉCNICO */
 
 
         /* Colores de los cuadros más claros y llamativos */
@@ -1320,33 +1331,27 @@
                 { value: 270.00, label: '30392💎', imageUrl: '/image/prize-7.png' },
                 { value: 440.00, label: '50304💎', imageUrl: '/image/icon-happy.png' },
             ] },
-            { name: 'LORDS MOBILE PROMOCION', logoUrl: '/image/lm2.png', inputRequirement: 'id_name', amounts: [
-                { value: 5.20, label: '💎499+20%', imageUrl: '/image/prize-2.png' },
-                { value: 12.00, label: '💎999+20%', imageUrl: '/image/prize-3.png' },
-                { value: 20.00, label: '💎1999+20%', imageUrl: '/image/prize-4.png' },
-                { value: 25.50, label: '💎2499+20%', imageUrl: '/image/prize-5.png' },
-                { value: 30.00, label: '💎2999+20%', imageUrl: '/image/prize-6.png' },
-                { value: 48.50, label: '💎4999+20%', imageUrl: '/image/prize-7.png' },
-                { value: 95.00, label: '💎9999+20%', imageUrl: '/image/icon-happy.png' },
-            ] },
             { name: 'BLOOD STRIKE', logoUrl: '/image/bs.png', inputRequirement: 'id_only', amounts: [
-                { value: 0.89, label: '100+5', imageUrl: '/image/100.png' },
-                { value: 2.50, label: '300+20', imageUrl: '/image/300.png' },
-                { value: 4.30, label: '500+40', imageUrl: '/image/500.png' },
-                { value: 8.50, label: '1000+100', imageUrl: '/image/1000.png' },
-                { value: 17.60, label: '2000+200', imageUrl: '/image/2000.png' },
-                { value: 42.00, label: '5000+800', imageUrl: '/image/5000.png' },
-                { value: 3.50, label: 'PASE ELITE', imageUrl: '/image/elite.png' },
-                { value: 8.51, label: 'PASE PREMIUM', imageUrl: '/image/premium.png' },
-                { value: 2.00, label: 'PASE DE NIVEL', imageUrl: '/image/mejora.png' },
+                { value: 0.89, label: '100+5🧈', imageUrl: '/image/100.png' },
+                { value: 2.50, label: '300+20🧈', imageUrl: '/image/300.png' },
+                { value: 4.30, label: '500+40🧈', imageUrl: '/image/500.png' },
+                { value: 8.50, label: '1000+100🧈', imageUrl: '/image/1000.png' },
+                { value: 17.60, label: '2000+200🧈', imageUrl: '/image/2000.png' },
+                { value: 42.00, label: '5000+800🧈', imageUrl: '/image/5000.png' },
+                { value: 3.50, label: 'PASE ELITE🧈', imageUrl: '/image/elite.png' },
+                { value: 8.51, label: 'PASE PREMIUM🧈', imageUrl: '/image/premium.png' },
+                { value: 2.00, label: 'PASE DE NIVEL🧈', imageUrl: '/image/mejora.png' },
             ] },
-            { name: 'FREE FIRE', logoUrl: '/image/ffs.png', inputRequirement: 'id_name', amounts: [
-                { value: 1.20, label: '100💎', imageUrl: '/image/ff1.png' },
-                { value: 2.50, label: '210💎', imageUrl: '/image/ff1.png' },
-                { value: 6.00, label: '520💎', imageUrl: '/image/ff1.png' },
-                { value: 12.00, label: '1080💎', imageUrl: '/image/ff1.png' },
-                { value: 24.00, label: '2200💎', imageUrl: '/image/ff1.png' },
-                { value: 60.00, label: '5600💎', imageUrl: '/image/ff1.png' },
+            { name: 'FREE FIRE', logoUrl: '/image/ff1.png', inputRequirement: 'id_name', amounts: [
+                { value: 1.80, label: '💎SEMANAL', imageUrl: '/image/ffs.png' },
+                { value: 9.50, label: '💎MENSUAL', imageUrl: '/image/ffm.png' },
+                { value: 0.99, label: '💎100+10', imageUrl: '/image/prize-2.png' },
+                { value: 1.90, label: '💎200+20', imageUrl: '/image/prize-3.png' },
+                { value: 2.80, label: '💎310+31', imageUrl: '/image/prize-4.png' },
+                { value: 4.60, label: '💎520+52', imageUrl: '/image/prize-5.png' },
+                { value: 9.50, label: '💎1069+106', imageUrl: '/image/prize-6.png' },
+                { value: 18.00, label: '💎2180+218', imageUrl: '/image/prize-7.png' },
+                { value: 40.00, label: '💎5600+560', imageUrl: '/image/prize-7.png' },
             ] },
             { name: 'GENSHIN IMPACT', logoUrl: '/image/gi.png', inputRequirement: 'id_server', amounts: [
                 { value: 4.8, label: 'PASE LUNAR', imageUrl: '/image/bl.png' },
