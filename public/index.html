@@ -1257,32 +1257,12 @@
         const PROMOTION_CONFIG = {
             'LORDS MOBILE': {
                 active: ACTIVE_PROMOTIONS.LORDS_MOBILE_PROMO,
-                type: '+20%',
-                badge: '🔥 +20%',
-                animation: 'promo-pulse',
-                articles: ['209💎', '524💎', '1048💎', '2096💎', '3144💎'] // Artículos en promoción
-            },
-            'FREE FIRE': {
-                active: ACTIVE_PROMOTIONS.FREE_FIRE_WEEKEND,
-                type: '+15%',
-                badge: '⚡ +15%',
-                animation: 'promo-glow',
-                articles: ['520💎', '1080💎', '2200💎']
-            },
-            'DELTA FORCE STEAM': {
-                active: ACTIVE_PROMOTIONS.DELTA_FORCE_SPECIAL,
                 type: '+25%',
-                badge: '💥 +25%',
-                animation: 'promo-shake',
-                articles: ['680+70 Coins', '1280+200 Coins', '1680+300 Coins']
+                badge: '🔥 +25%',
+                animation: 'promo-pulse',
+                articles: ['499+CUPON', '999+CUPON', '1999+CUPON', '2499+CUPON', '2999+CUPON', '4999+CUPON', '9999+CUPON',] // Artículos en promoción
             },
-            'BLOOD STRIKE': {
-                active: ACTIVE_PROMOTIONS.BLOOD_STRIKE_BONUS,
-                type: '+10%',
-                badge: '🎁 +10%',
-                animation: 'promo-bounce',
-                articles: ['1000+100', '2000+200', '5000+800']
-            }
+
         };
 
         // Función para verificar si un artículo está en promoción
@@ -1306,7 +1286,14 @@
         // para una carga rápida de la página.
         const gameOptions = [
             { name: 'LORDS MOBILE', logoUrl: '/image/lm1.png', inputRequirement: 'id_name', amounts: [
-                { value: 2.30, label: 'PASE SEMANAL', imageUrl: '/image/7day.png' },
+//                { value: 5.20, label: '💎499+CUPON', imageUrl: '/image/prize-2.png' },
+//                { value: 12.00, label: '💎999+CUPON', imageUrl: '/image/prize-3.png' },
+                { value: 20.00, label: '💎1999+CUPON', imageUrl: '/image/prize-4.png' },
+//                { value: 25.50, label: '💎2499+CUPON', imageUrl: '/image/prize-5.png' },
+//                { value: 30.00, label: '💎2999+CUPON', imageUrl: '/image/prize-6.png' },
+                { value: 48.50, label: '💎4999+CUPON', imageUrl: '/image/prize-7.png' },
+//                { value: 95.00, label: '💎9999+CUPON', imageUrl: '/image/icon-happy.png' },    
+            { value: 2.30, label: 'PASE SEMANAL', imageUrl: '/image/7day.png' },
                 { value: 19.90, label: 'PASE MENSUAL', imageUrl: '/image/30day.png' },
                 { value: 2.30, label: '209💎', imageUrl: '/image/prize-2.png' },
                 { value: 5.20, label: '524💎', imageUrl: '/image/prize-3.png' },
