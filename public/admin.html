@@ -213,23 +213,22 @@
                     return;
                 }
                 
+                // Corregir el mapeo de datos
                 tableBody.innerHTML = orders.map(order => `
                     <tr data-row-id="${order.id}">
-                        <td>${order.fecha}</td>
-                        <td>${order.cliente}</td>
-                        <td>${order.emailId}</td>
-                        <td>${order.juego}</td>
-                        <td>${order.articulo}</td>
-                        <td>$${order.montoUSD}</td>
-                        <td>${order.totalLocal} ${order.moneda}</td>
-                        <td>${order.vendedor}</td>
-                        <td>${order.pais}</td>
-                        <td class="status-${order.estado.toLowerCase()}">${order.estado}</td>
+                        <td>${order.fecha_hora || 'N/A'}</td>
+                        <td>N/A</td> <!-- Cliente no disponible en API actual -->
+                        <td>N/A</td> <!-- Email/ID no disponible en API actual -->
+                        <td>${order.juego || 'N/A'}</td>
+                        <td>${order.articulo || 'N/A'}</td>
+                        <td>$${parseFloat(order.monto_total || 0).toFixed(2)}</td>
+                        <td>N/A</td> <!-- Total local no disponible -->
+                        <td>${order.vendedor || 'N/A'}</td>
+                        <td>N/A</td> <!-- País no disponible en API actual -->
+                        <td class="status-pending">Pendiente</td> <!-- Estado por defecto -->
                         <td>
-                            ${order.estado === 'Pendiente' ? `
-                                <button class="action-button sent-button" onclick="updateOrderStatus(${order.id}, 'Enviado')">Enviado</button>
-                                <button class="action-button cancel-button" onclick="updateOrderStatus(${order.id}, 'Cancelado')">Cancelar</button>
-                            ` : `<span style="color: #888;">-</span>`}
+                            <button class="action-button sent-button" onclick="updateOrderStatus(${order.id}, 'Enviado')">Enviado</button>
+                            <button class="action-button cancel-button" onclick="updateOrderStatus(${order.id}, 'Cancelado')">Cancelar</button>
                         </td>
                     </tr>
                 `).join('');
@@ -283,3 +282,31 @@
     </script>
 </body>
 </html>
+
+// En la función displayOrders, agregar columna de ganancia:
+
+function displayOrders(orders) {
+    orders.forEach(order => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${order.fecha_hora || 'N/A'}</td>
+            <td>${order.vendedor || 'N/A'}</td>
+            <td>N/A</td>
+            <td>${order.juego || 'N/A'}</td>
+            <td>${order.articulo || 'N/A'}</td>
+            <td>${order.cantidad || 'N/A'}</td>
+            <td>$${parseFloat(order.monto_total || 0).toFixed(2)} USD</td>
+            <td class="ganancia-column">$${parseFloat(order.ganancia || 0).toFixed(2)} USD</td>
+            <td>
+                <select class="status-select" data-row-id="${order.id}">
+                    <option value="pendiente">Pendiente</option>
+                    <option value="completado">Completado</option>
+                    <option value="cancelado">Cancelado</option>
+                </select>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+    
+    // ... existing code ...
+}

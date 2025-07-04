@@ -297,6 +297,106 @@
         }
         /* FIN DE ESTILOS PARA LOS BOTONES DE JUEGO */
 
+        /* ESTILOS PARA EL SISTEMA DE PROMOCIONES */
+        .promo-item {
+            position: relative;
+            overflow: visible !important;
+            border: 2px solid #ff6b35 !important;
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.5) !important;
+        }
+
+        .promo-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: bold;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            animation: promo-badge-glow 2s infinite alternate;
+        }
+
+        @keyframes promo-badge-glow {
+            0% { box-shadow: 0 0 15px rgba(255, 107, 53, 0.8); }
+            100% { box-shadow: 0 0 25px rgba(255, 107, 53, 1), 0 0 35px rgba(247, 147, 30, 0.8); }
+        }
+
+        /* Animaciones de promoción */
+        @keyframes promo-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes promo-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 107, 53, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(255, 107, 53, 0.8); }
+        }
+
+        @keyframes promo-shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+
+        @keyframes promo-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .promo-pulse {
+            animation: promo-pulse 2s ease-in-out infinite;
+        }
+
+        .promo-glow {
+            animation: promo-glow 1.5s ease-in-out infinite;
+        }
+
+        .promo-shake {
+            animation: promo-shake 0.5s ease-in-out infinite;
+        }
+
+        .promo-bounce {
+            animation: promo-bounce 1s ease-in-out infinite;
+        }
+
+        /* Efecto hover mejorado para items en promoción */
+        .promo-item:hover {
+            transform: scale(1.08) !important;
+            box-shadow: 0 0 25px rgba(255, 107, 53, 0.8) !important;
+        }
+
+        /* Estilo especial para el badge cuando el item está seleccionado */
+        .promo-item.selected .promo-badge {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            animation: promo-pulse 1s ease-in-out infinite;
+        }
+
+        /* Efecto especial para artículos en promoción */
+        .promo-item::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #FF6B35, #F7931E, #FF6B35);
+            background-size: 200% 200%;
+            border-radius: 17px;
+            z-index: -1;
+            animation: promo-border-flow 3s linear infinite;
+        }
+
+        @keyframes promo-border-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        /* FIN DE ESTILOS PARA EL SISTEMA DE PROMOCIONES */
+
 
         /* Estilos específicos para el selector de artículos */
         .amount-item {
@@ -1093,6 +1193,17 @@
         // Número de WhatsApp Business predeterminado (fallback si no se encuentra el vendedor)
         const DEFAULT_WHATSAPP_NUMBER = '584126027407'; 
 
+        // Configuración de ganancias por artículo (SOLO PARA ADMINISTRADORES - NO VISIBLE AL PÚBLICO)
+        const SELLER_PROFIT_CONFIG = {
+            'FREE FIRE': 0.40,
+            'DELTA FORCE STEAM': 0.60, 
+            'DELTA FORCE GARENA': 0.60,
+            'CALL OF DUTY MOBILE': 0.70,
+            'PUBG MOBILE': 0.50,
+            'MOBILE LEGENDS': 0.45,
+            'DEFAULT': 0.50
+        };
+
         // Elementos ocultos (ahora solo para datos del formulario)
         const gameHidden = document.getElementById('gameHidden');
         const amountUSDHidden = document.getElementById('amountUSDHidden');
@@ -1133,6 +1244,61 @@
         const exactAccountNameInput = document.getElementById('exactAccountNameInput');
 
 
+        // Sistema de promociones dinámicas (fácil activar/desactivar)
+        const ACTIVE_PROMOTIONS = {
+            // Activar/desactivar promociones cambiando true/false
+            'LORDS_MOBILE_PROMO': true,  // Promoción +20% Lords Mobile
+            'FREE_FIRE_WEEKEND': false,  // Promoción fin de semana Free Fire
+            'DELTA_FORCE_SPECIAL': false, // Promoción especial Delta Force
+            'BLOOD_STRIKE_BONUS': false   // Promoción bonus Blood Strike
+        };
+
+        // Configuración de promociones por juego
+        const PROMOTION_CONFIG = {
+            'LORDS MOBILE': {
+                active: ACTIVE_PROMOTIONS.LORDS_MOBILE_PROMO,
+                type: '+20%',
+                badge: '🔥 +20%',
+                animation: 'promo-pulse',
+                articles: ['209💎', '524💎', '1048💎', '2096💎', '3144💎'] // Artículos en promoción
+            },
+            'FREE FIRE': {
+                active: ACTIVE_PROMOTIONS.FREE_FIRE_WEEKEND,
+                type: '+15%',
+                badge: '⚡ +15%',
+                animation: 'promo-glow',
+                articles: ['520💎', '1080💎', '2200💎']
+            },
+            'DELTA FORCE STEAM': {
+                active: ACTIVE_PROMOTIONS.DELTA_FORCE_SPECIAL,
+                type: '+25%',
+                badge: '💥 +25%',
+                animation: 'promo-shake',
+                articles: ['680+70 Coins', '1280+200 Coins', '1680+300 Coins']
+            },
+            'BLOOD STRIKE': {
+                active: ACTIVE_PROMOTIONS.BLOOD_STRIKE_BONUS,
+                type: '+10%',
+                badge: '🎁 +10%',
+                animation: 'promo-bounce',
+                articles: ['1000+100', '2000+200', '5000+800']
+            }
+        };
+
+        // Función para verificar si un artículo está en promoción
+        function isArticleInPromotion(gameName, articleLabel) {
+            const gamePromo = PROMOTION_CONFIG[gameName];
+            return gamePromo && gamePromo.active && gamePromo.articles.includes(articleLabel);
+        }
+
+        // Función para obtener información de promoción
+        function getPromotionInfo(gameName, articleLabel) {
+            if (isArticleInPromotion(gameName, articleLabel)) {
+                return PROMOTION_CONFIG[gameName];
+            }
+            return null;
+        }
+
         // Datos de juegos y sus precios base en USD
         // Se añade 'logoUrl' para cada juego para los botones.
         // NOTA: Asegúrate de que todas las imágenes referenciadas aquí (logoUrl y imageUrl)
@@ -1154,36 +1320,33 @@
                 { value: 270.00, label: '30392💎', imageUrl: '/image/prize-7.png' },
                 { value: 440.00, label: '50304💎', imageUrl: '/image/icon-happy.png' },
             ] },
-//            { name: 'LORDS MOBILE PROMOCION', logoUrl: '/image/lm2.png', inputRequirement: 'id_name', amounts: [
-//                { value: 5.20, label: '💎499+20%', imageUrl: '/image/prize-2.png' },
-//                { value: 12.00, label: '💎999+20%', imageUrl: '/image/prize-3.png' },
-//                { value: 20.00, label: '💎1999+20%', imageUrl: '/image/prize-4.png' },
-//                { value: 25.50, label: '💎2499+20%', imageUrl: '/image/prize-5.png' },
-//                { value: 30.00, label: '💎2999+20%', imageUrl: '/image/prize-6.png' },
-//                { value: 48.50, label: '💎4999+20%', imageUrl: '/image/prize-7.png' },
-//                { value: 95.00, label: '💎9999+20%', imageUrl: '/image/icon-happy.png' },
-//            ] },
-            { name: 'BLOOD STRIKE', logoUrl: '/image/bs.png', inputRequirement: 'id_only', amounts: [
-                { value: 0.89, label: '100+5🧈', imageUrl: '/image/100.png' },
-                { value: 2.50, label: '300+20🧈', imageUrl: '/image/300.png' },
-                { value: 4.30, label: '500+40🧈', imageUrl: '/image/500.png' },
-                { value: 8.50, label: '1000+100🧈', imageUrl: '/image/1000.png' },
-                { value: 17.60, label: '2000+200🧈', imageUrl: '/image/2000.png' },
-                { value: 42.00, label: '5000+800🧈', imageUrl: '/image/5000.png' },
-                { value: 3.50, label: 'PASE ELITE🧈', imageUrl: '/image/elite.png' },
-                { value: 8.51, label: 'PASE PREMIUM🧈', imageUrl: '/image/premium.png' },
-                { value: 2.00, label: 'PASE DE NIVEL🧈', imageUrl: '/image/mejora.png' },
+            { name: 'LORDS MOBILE PROMOCION', logoUrl: '/image/lm2.png', inputRequirement: 'id_name', amounts: [
+                { value: 5.20, label: '💎499+20%', imageUrl: '/image/prize-2.png' },
+                { value: 12.00, label: '💎999+20%', imageUrl: '/image/prize-3.png' },
+                { value: 20.00, label: '💎1999+20%', imageUrl: '/image/prize-4.png' },
+                { value: 25.50, label: '💎2499+20%', imageUrl: '/image/prize-5.png' },
+                { value: 30.00, label: '💎2999+20%', imageUrl: '/image/prize-6.png' },
+                { value: 48.50, label: '💎4999+20%', imageUrl: '/image/prize-7.png' },
+                { value: 95.00, label: '💎9999+20%', imageUrl: '/image/icon-happy.png' },
             ] },
-            { name: 'FREE FIRE', logoUrl: '/image/ff1.png', inputRequirement: 'id_name', amounts: [
-                { value: 1.80, label: '💎SEMANAL', imageUrl: '/image/ffs.png' },
-                { value: 9.50, label: '💎MENSUAL', imageUrl: '/image/ffm.png' },
-                { value: 0.99, label: '💎100+10', imageUrl: '/image/prize-2.png' },
-                { value: 1.90, label: '💎200+20', imageUrl: '/image/prize-3.png' },
-                { value: 2.80, label: '💎310+31', imageUrl: '/image/prize-4.png' },
-                { value: 4.60, label: '💎520+52', imageUrl: '/image/prize-5.png' },
-                { value: 9.50, label: '💎1069+106', imageUrl: '/image/prize-6.png' },
-                { value: 18.00, label: '💎2180+218', imageUrl: '/image/prize-7.png' },
-                { value: 40.00, label: '💎5600+560', imageUrl: '/image/prize-7.png' },
+            { name: 'BLOOD STRIKE', logoUrl: '/image/bs.png', inputRequirement: 'id_only', amounts: [
+                { value: 0.89, label: '100+5', imageUrl: '/image/100.png' },
+                { value: 2.50, label: '300+20', imageUrl: '/image/300.png' },
+                { value: 4.30, label: '500+40', imageUrl: '/image/500.png' },
+                { value: 8.50, label: '1000+100', imageUrl: '/image/1000.png' },
+                { value: 17.60, label: '2000+200', imageUrl: '/image/2000.png' },
+                { value: 42.00, label: '5000+800', imageUrl: '/image/5000.png' },
+                { value: 3.50, label: 'PASE ELITE', imageUrl: '/image/elite.png' },
+                { value: 8.51, label: 'PASE PREMIUM', imageUrl: '/image/premium.png' },
+                { value: 2.00, label: 'PASE DE NIVEL', imageUrl: '/image/mejora.png' },
+            ] },
+            { name: 'FREE FIRE', logoUrl: '/image/ffs.png', inputRequirement: 'id_name', amounts: [
+                { value: 1.20, label: '100💎', imageUrl: '/image/ff1.png' },
+                { value: 2.50, label: '210💎', imageUrl: '/image/ff1.png' },
+                { value: 6.00, label: '520💎', imageUrl: '/image/ff1.png' },
+                { value: 12.00, label: '1080💎', imageUrl: '/image/ff1.png' },
+                { value: 24.00, label: '2200💎', imageUrl: '/image/ff1.png' },
+                { value: 60.00, label: '5600💎', imageUrl: '/image/ff1.png' },
             ] },
             { name: 'GENSHIN IMPACT', logoUrl: '/image/gi.png', inputRequirement: 'id_server', amounts: [
                 { value: 4.8, label: 'PASE LUNAR', imageUrl: '/image/bl.png' },
@@ -1603,6 +1766,16 @@
                         const labelSpan = document.createElement('span');
                         labelSpan.classList.add('item-label');
                         labelSpan.textContent = amount.label;
+
+                        // Verificar si está en promoción y agregar badge
+                        const promoInfo = getPromotionInfo(selectedGame, amount.label);
+                        if (promoInfo) {
+                            itemDiv.classList.add('promo-item', promoInfo.animation);
+                            const promoBadge = document.createElement('span');
+                            promoBadge.classList.add('promo-badge');
+                            promoBadge.textContent = promoInfo.badge;
+                            itemDiv.appendChild(promoBadge);
+                        }
 
                         itemTextContainer.appendChild(labelSpan);
 
