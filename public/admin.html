@@ -5,163 +5,764 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Administrativo - DHARCK STORE</title>
     <link rel="icon" href="/image/logo1.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Mantener los estilos base del body */
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #4A00E0, #8E2DE2);
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            color: #333;
         }
 
-        .admin-container {
-            background-color: #1A004B;
-            border: 2px solid #6A0DAD;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 0 25px rgba(106, 13, 173, 0.6);
-            max-width: 1400px;
-            width: 100%;
-            color: #E0F7FA;
-            margin-top: 20px;
-        }
-
-        .orders-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            font-size: 0.9em;
-        }
-
-        .orders-table th, .orders-table td {
-            border: 1px solid #6A0DAD;
-            padding: 8px;
-            text-align: left;
-            word-wrap: break-word;
-        }
-
-        .orders-table th {
-            background-color: #4A00E0;
-            color: #00FFFF;
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             position: sticky;
             top: 0;
+            z-index: 1000;
         }
 
-        .action-button {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            margin: 0 3px;
-            font-size: 0.8em;
-        }
-
-        .sent-button {
-            background: linear-gradient(to right, #00e676, #00c853);
-            color: #0d001a;
-        }
-
-        .cancel-button {
-            background: linear-gradient(to right, #ff1744, #d50000);
+        .header h1 {
             color: white;
+            text-align: center;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            font-weight: 600;
         }
 
-        .status-pending { color: #FFD700; }
-        .status-sent { color: #00FF00; }
-        .status-cancelled { color: #FF4444; }
+        /* Login Form */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 80px);
+            padding: 1rem;
+        }
 
-        #loginForm {
-            background-color: #1A004B;
-            padding: 30px;
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: 20px;
-            border: 2px solid #6A0DAD;
-            max-width: 400px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-card h2 {
+            color: #4a5568;
+            margin-bottom: 2rem;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
+            text-align: left;
         }
 
-        input[type="text"], input[type="password"] {
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #6A0DAD;
-            border-radius: 8px;
-            background-color: rgba(30, 0, 60, 0.9);
-            color: #FFFFFF;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
         }
 
-        .loading {
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Tabs Navigation */
+        .tabs-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            margin: 1rem;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .tabs-nav {
+            display: flex;
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .tabs-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 1rem;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+        }
+
+        .tab-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .tab-button.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            padding: 2rem;
+            min-height: 500px;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: clamp(0.7rem, 1.8vw, 0.8rem);
+        }
+
+        /* Table Container */
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            color: white;
+            padding: 0.8rem 0.5rem;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            font-size: clamp(0.7rem, 1.8vw, 0.85rem);
+        }
+
+        .data-table td {
+            padding: 0.6rem 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: middle;
+            font-size: clamp(0.7rem, 1.8vw, 0.8rem);
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #f7fafc;
+        }
+
+        /* Status badges */
+        .status-badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 15px;
+            font-size: clamp(0.6rem, 1.5vw, 0.7rem);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .status-sent {
+            background: #c6f6d5;
+            color: #2f855a;
+        }
+
+        .status-cancelled {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .status-enabled {
+            background: #c6f6d5;
+            color: #2f855a;
+        }
+
+        .status-disabled {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        /* Action buttons in table */
+        .action-buttons {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+        }
+
+        /* Game Cards */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .game-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .game-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .game-info h3 {
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+        }
+
+        .game-toggle {
+            margin-left: auto;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #48bb78;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Promotion Cards */
+        .promotions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .promotion-card {
+            background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+            border: 2px solid #f56565;
+            border-radius: 15px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promotion-card.active {
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+            border-color: #48bb78;
+        }
+
+        .promotion-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #f56565;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0 15px 0 15px;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .promotion-card.active .promotion-badge {
+            background: #48bb78;
+        }
+
+        /* Loading and Error states */
+        .loading, .error, .empty-state {
             text-align: center;
-            color: #00FFFF;
-            padding: 20px;
+            padding: 3rem;
+            color: #4a5568;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            color: #667eea;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .error {
-            color: #FF4444;
-            text-align: center;
-            padding: 10px;
+            color: #e53e3e;
         }
 
-        .refresh-button {
-            background: linear-gradient(to right, #00FFFF, #0080FF);
-            color: #0d001a;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-bottom: 20px;
+        /* Logout button */
+        .logout-btn {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1001;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 0.8rem 1rem;
+            }
+
+            .login-card {
+                padding: 1.5rem;
+                margin: 0.5rem;
+            }
+
+            .tabs-container {
+                margin: 0.5rem;
+            }
+
+            .tab-content {
+                padding: 1rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.8rem;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .promotions-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 0.2rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 0.4rem 0.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .data-table th:nth-child(n+6),
+            .data-table td:nth-child(n+6) {
+                display: none;
+            }
+
+            .btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            .btn-sm {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Success notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+            max-width: 300px;
+            word-wrap: break-word;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="loginForm">
-        <h2 style="color: #00FFFF; text-align: center;">Acceso Administrativo</h2>
-        <div class="form-group">
-            <label for="username">Usuario:</label>
-            <input type="text" id="username" required>
+    <!-- Login Form -->
+    <div id="loginContainer" class="login-container">
+        <div class="login-card">
+            <h2><i class="fas fa-shield-alt"></i> Acceso Administrativo</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username"><i class="fas fa-user"></i> Usuario:</label>
+                    <input type="text" id="username" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Contraseña:</label>
+                    <input type="password" id="password" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </button>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" required>
-        </div>
-        <button class="action-button sent-button" onclick="login()">Iniciar Sesión</button>
     </div>
 
-    <div id="adminPanel" class="admin-container" style="display: none;">
-        <h1 style="color: #00FFFF; text-align: center;">Panel de Pedidos</h1>
-        <button class="refresh-button" onclick="loadOrders()">🔄 Actualizar Pedidos</button>
-        
-        <div id="loadingMessage" class="loading" style="display: none;">Cargando pedidos...</div>
-        <div id="errorMessage" class="error" style="display: none;"></div>
-        
-        <table class="orders-table">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Cliente</th>
-                    <th>Email/ID</th>
-                    <th>Juego</th>
-                    <th>Artículo</th>
-                    <th>USD</th>
-                    <th>Total</th>
-                    <th>Vendedor</th>
-                    <th>País</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="ordersTableBody">
-                <!-- Los pedidos se cargarán aquí dinámicamente -->
-            </tbody>
-        </table>
+    <!-- Admin Panel -->
+    <div id="adminPanel" style="display: none;">
+        <div class="header">
+            <h1><i class="fas fa-tachometer-alt"></i> Panel de Administración - DHARCK STORE</h1>
+        </div>
+
+        <button class="btn btn-danger logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </button>
+
+        <div class="tabs-container">
+            <div class="tabs-nav">
+                <button class="tab-button active" onclick="switchTab('orders')">
+                    <i class="fas fa-shopping-cart"></i> Pedidos
+                </button>
+                <button class="tab-button" onclick="switchTab('games')">
+                    <i class="fas fa-gamepad"></i> Juegos
+                </button>
+                <button class="tab-button" onclick="switchTab('promotions')">
+                    <i class="fas fa-tags"></i> Promociones
+                </button>
+                <button class="tab-button" onclick="switchTab('settings')">
+                    <i class="fas fa-cog"></i> Configuración
+                </button>
+            </div>
+
+            <!-- Orders Tab -->
+            <div id="ordersTab" class="tab-content">
+                <div class="tab-panel active">
+                    <div class="controls">
+                        <div>
+                            <button class="btn btn-primary" onclick="loadOrders()">
+                                <i class="fas fa-sync-alt"></i> Actualizar
+                            </button>
+                            <button class="btn btn-warning" onclick="exportOrders()">
+                                <i class="fas fa-download"></i> Exportar
+                            </button>
+                        </div>
+                        <div id="orderStats" class="order-stats">
+                            <span id="totalOrders">Total: 0</span> |
+                            <span id="pendingOrders">Pendientes: 0</span> |
+                            <span id="sentOrders">Enviados: 0</span>
+                        </div>
+                    </div>
+
+                    <div id="loadingMessage" class="loading" style="display: none;">
+                        <i class="fas fa-spinner"></i>
+                        <p>Cargando pedidos...</p>
+                    </div>
+
+                    <div id="errorMessage" class="error" style="display: none;"></div>
+
+                    <div class="table-container">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th><i class="fas fa-calendar"></i> Fecha</th>
+                                        <th><i class="fas fa-gamepad"></i> Juego</th>
+                                        <th><i class="fas fa-box"></i> Artículo</th>
+                                        <th><i class="fas fa-sort-numeric-up"></i> Cantidad</th>
+                                        <th><i class="fas fa-dollar-sign"></i> Monto</th>
+                                        <th><i class="fas fa-chart-line"></i> Ganancia</th>
+                                        <th><i class="fas fa-user-tie"></i> Vendedor</th>
+                                        <th><i class="fas fa-info-circle"></i> Estado</th>
+                                        <th><i class="fas fa-cogs"></i> Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersTableBody">
+                                    <!-- Los pedidos se cargarán aquí dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="emptyState" class="empty-state" style="display: none;">
+                        <i class="fas fa-inbox" style="font-size: 3rem; color: #cbd5e0; margin-bottom: 1rem;"></i>
+                        <h3>No hay pedidos registrados</h3>
+                        <p>Los pedidos aparecerán aquí cuando se registren ventas.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Games Tab -->
+            <div id="gamesTab" class="tab-content">
+                <div class="tab-panel">
+                    <div class="controls">
+                        <div>
+                            <button class="btn btn-success" onclick="enableAllGames()">
+                                <i class="fas fa-check-circle"></i> Habilitar Todos
+                            </button>
+                            <button class="btn btn-warning" onclick="disableAllGames()">
+                                <i class="fas fa-times-circle"></i> Deshabilitar Todos
+                            </button>
+                        </div>
+                        <div>
+                            <span id="enabledGamesCount">Habilitados: 0</span> |
+                            <span id="totalGamesCount">Total: 0</span>
+                        </div>
+                    </div>
+
+                    <div class="games-grid" id="gamesGrid">
+                        <!-- Los juegos se cargarán aquí dinámicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Promotions Tab -->
+            <div id="promotionsTab" class="tab-content">
+                <div class="tab-panel">
+                    <div class="controls">
+                        <div>
+                            <button class="btn btn-success" onclick="createPromotion()">
+                                <i class="fas fa-plus"></i> Nueva Promoción
+                            </button>
+                            <button class="btn btn-primary" onclick="loadPromotions()">
+                                <i class="fas fa-sync-alt"></i> Actualizar
+                            </button>
+                        </div>
+                        <div>
+                            <span id="activePromotionsCount">Activas: 0</span> |
+                            <span id="totalPromotionsCount">Total: 0</span>
+                        </div>
+                    </div>
+
+                    <div class="promotions-grid" id="promotionsGrid">
+                        <!-- Las promociones se cargarán aquí dinámicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settingsTab" class="tab-content">
+                <div class="tab-panel">
+                    <div class="controls">
+                        <h3><i class="fas fa-cog"></i> Configuración del Sistema</h3>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Configuración</th>
+                                        <th>Valor Actual</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Auto-refresh de pedidos</td>
+                                        <td><span class="status-badge status-enabled">30 segundos</span></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm">
+                                                <i class="fas fa-edit"></i> Modificar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Notificaciones</td>
+                                        <td><span class="status-badge status-enabled">Habilitadas</span></td>
+                                        <td>
+                                            <button class="btn btn-warning btn-sm">
+                                                <i class="fas fa-bell-slash"></i> Deshabilitar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Backup automático</td>
+                                        <td><span class="status-badge status-enabled">Diario</span></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm">
+                                                <i class="fas fa-edit"></i> Configurar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -174,74 +775,377 @@
             password: 'jose'
         };
 
+        // Configuración de juegos (copiada del index.html)
+        const gameOptions = [
+            { name: 'LORDS MOBILE', logoUrl: '/image/lm1.png', inputRequirement: 'id_name', enabled: true },
+            { name: 'LORDS MOBILE PROMOCION', logoUrl: '/image/lm2.png', inputRequirement: 'id_name', enabled: true },
+            { name: 'BLOOD STRIKE', logoUrl: '/image/bs.png', inputRequirement: 'id_only', enabled: true },
+            { name: 'FREE FIRE', logoUrl: '/image/ffs.png', inputRequirement: 'id_name', enabled: true },
+            { name: 'GENSHIN IMPACT', logoUrl: '/image/gi.png', inputRequirement: 'id_server', enabled: true },
+            { name: 'PUBG MOBILE', logoUrl: '/image/pm1.png', inputRequirement: 'id_only', enabled: true },
+            { name: 'DELTA FORCE STEAM', logoUrl: '/image/dfss.png', inputRequirement: 'id_only', enabled: true },
+            { name: 'DELTA FORCE GARENA', logoUrl: '/image/dfsg.png', inputRequirement: 'id_only', enabled: true },
+            { name: 'CALL OF DUTY MOBILE', logoUrl: '/image/codm.png', inputRequirement: 'cod_full', enabled: true },
+        ];
+
+        // Configuración de promociones
+        const promotionOptions = [
+            {
+                id: 'LORDS_MOBILE_PROMO',
+                name: 'Lords Mobile +20%',
+                game: 'LORDS MOBILE',
+                type: '+20%',
+                badge: '🔥 +20%',
+                articles: ['💎499+20%', '💎999+20%', '💎1999+20%'],
+                active: true
+            },
+            {
+                id: 'FREE_FIRE_WEEKEND',
+                name: 'Free Fire Fin de Semana',
+                game: 'FREE FIRE',
+                type: '+15%',
+                badge: '🎉 +15%',
+                articles: ['100💎', '210💎', '520💎'],
+                active: false
+            },
+            {
+                id: 'DELTA_FORCE_SPECIAL',
+                name: 'Delta Force Especial',
+                game: 'DELTA FORCE STEAM',
+                type: '+10%',
+                badge: '⚡ +10%',
+                articles: ['300+20 Coins', '680+70 Coins'],
+                active: false
+            },
+            {
+                id: 'BLOOD_STRIKE_BONUS',
+                name: 'Blood Strike Bonus',
+                game: 'BLOOD STRIKE',
+                type: '+10%',
+                badge: '🎁 +10%',
+                articles: ['1000+100', '2000+200', '5000+800'],
+                active: false
+            }
+        ];
+
+        let ordersData = [];
+        let autoRefreshInterval;
+        let currentTab = 'orders';
+
+        // Event Listeners
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            login();
+        });
+
+        // Funciones de autenticación
         function login() {
-            const username = document.getElementById('username').value;
+            const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
 
             if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('loginContainer').style.display = 'none';
                 document.getElementById('adminPanel').style.display = 'block';
-                loadOrders();
+                initializeAdmin();
             } else {
-                alert('Credenciales incorrectas');
+                showError('Credenciales incorrectas. Por favor, verifica tu usuario y contraseña.');
             }
         }
 
+        function logout() {
+            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                document.getElementById('adminPanel').style.display = 'none';
+                document.getElementById('loginContainer').style.display = 'flex';
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                stopAutoRefresh();
+            }
+        }
+
+        function initializeAdmin() {
+            loadOrders();
+            loadGames();
+            loadPromotions();
+            startAutoRefresh();
+        }
+
+        function startAutoRefresh() {
+            autoRefreshInterval = setInterval(() => {
+                if (currentTab === 'orders') {
+                    loadOrders();
+                }
+            }, 30000); // 30 segundos
+        }
+
+        function stopAutoRefresh() {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+            }
+        }
+
+        // Funciones de pestañas
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            // Actualizar botones de navegación
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Mostrar/ocultar contenido de pestañas
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            const targetPanel = document.querySelector(`#${tabName}Tab .tab-panel`);
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+            }
+
+            // Cargar datos específicos de la pestaña
+            switch(tabName) {
+                case 'orders':
+                    loadOrders();
+                    break;
+                case 'games':
+                    loadGames();
+                    break;
+                case 'promotions':
+                    loadPromotions();
+                    break;
+            }
+        }
+
+        // Funciones de carga de datos - PEDIDOS
         async function loadOrders() {
             const loadingMessage = document.getElementById('loadingMessage');
             const errorMessage = document.getElementById('errorMessage');
             const tableBody = document.getElementById('ordersTableBody');
+            const emptyState = document.getElementById('emptyState');
             
-            loadingMessage.style.display = 'block';
-            errorMessage.style.display = 'none';
-            tableBody.innerHTML = '';
+            showLoading(true);
+            hideError();
+            emptyState.style.display = 'none';
             
             try {
                 const response = await fetch(`${API_BASE_URL}/get-orders`);
                 
                 if (!response.ok) {
-                    throw new Error(`Error HTTP: ${response.status}`);
+                    throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`);
                 }
                 
                 const data = await response.json();
-                const orders = data.orders || [];
+                ordersData = data.orders || [];
                 
-                loadingMessage.style.display = 'none';
+                showLoading(false);
                 
-                if (orders.length === 0) {
-                    tableBody.innerHTML = '<tr><td colspan="11" style="text-align: center; color: #888;">No hay pedidos registrados</td></tr>';
+                if (ordersData.length === 0) {
+                    tableBody.innerHTML = '';
+                    emptyState.style.display = 'block';
+                    updateStats(0, 0, 0);
                     return;
                 }
                 
-                // Corregir el mapeo de datos
-                tableBody.innerHTML = orders.map(order => `
-                    <tr data-row-id="${order.id}">
-                        <td>${order.fecha_hora || 'N/A'}</td>
-                        <td>N/A</td> <!-- Cliente no disponible en API actual -->
-                        <td>N/A</td> <!-- Email/ID no disponible en API actual -->
-                        <td>${order.juego || 'N/A'}</td>
-                        <td>${order.articulo || 'N/A'}</td>
-                        <td>$${parseFloat(order.monto_total || 0).toFixed(2)}</td>
-                        <td>N/A</td> <!-- Total local no disponible -->
-                        <td>${order.vendedor || 'N/A'}</td>
-                        <td>N/A</td> <!-- País no disponible en API actual -->
-                        <td class="status-pending">Pendiente</td> <!-- Estado por defecto -->
-                        <td>
-                            <button class="action-button sent-button" onclick="updateOrderStatus(${order.id}, 'Enviado')">Enviado</button>
-                            <button class="action-button cancel-button" onclick="updateOrderStatus(${order.id}, 'Cancelado')">Cancelar</button>
-                        </td>
-                    </tr>
-                `).join('');
+                displayOrders(ordersData);
+                updateOrderStats();
                 
             } catch (error) {
                 console.error('Error cargando pedidos:', error);
-                loadingMessage.style.display = 'none';
-                errorMessage.textContent = 'Error al cargar los pedidos. Verifica la conexión.';
-                errorMessage.style.display = 'block';
+                showLoading(false);
+                showError(`Error al cargar los pedidos: ${error.message}`);
+                tableBody.innerHTML = '';
             }
         }
 
+        function displayOrders(orders) {
+            const tableBody = document.getElementById('ordersTableBody');
+            
+            tableBody.innerHTML = orders.map((order, index) => {
+                const rowId = order.id || index;
+                const fecha = formatDate(order.fecha_hora);
+                const monto = parseFloat(order.monto_total || 0).toFixed(2);
+                const ganancia = parseFloat(order.ganancia || 0).toFixed(2);
+                const status = order.estado || 'Pendiente';
+                
+                return `
+                    <tr data-row-id="${rowId}" data-status="${status.toLowerCase()}">
+                        <td>${fecha}</td>
+                        <td>${order.juego || 'N/A'}</td>
+                        <td>${order.articulo || 'N/A'}</td>
+                        <td>${order.cantidad || 1}</td>
+                        <td>$${monto}</td>
+                        <td>$${ganancia}</td>
+                        <td>${order.vendedor || 'N/A'}</td>
+                        <td>
+                            <span class="status-badge status-${status.toLowerCase().replace(' ', '-')}">
+                                ${status}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                ${status === 'Pendiente' ? `
+                                    <button class="btn btn-success btn-sm" onclick="updateOrderStatus(${rowId}, 'Enviado')">
+                                        <i class="fas fa-check"></i> Enviado
+                                    </button>
+                                    <button class="btn btn-warning btn-sm" onclick="updateOrderStatus(${rowId}, 'Cancelado')">
+                                        <i class="fas fa-times"></i> Cancelar
+                                    </button>
+                                ` : ''}
+                                <button class="btn btn-danger btn-sm" onclick="deleteOrder(${rowId})">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Funciones de carga de datos - JUEGOS
+        function loadGames() {
+            const gamesGrid = document.getElementById('gamesGrid');
+            
+            gamesGrid.innerHTML = gameOptions.map((game, index) => {
+                return `
+                    <div class="game-card">
+                        <div class="game-header">
+                            <img src="${game.logoUrl}" alt="${game.name}" class="game-logo" onerror="this.src='/image/logo1.png'">
+                            <div class="game-info">
+                                <h3>${game.name}</h3>
+                                <p>Tipo: ${getInputTypeLabel(game.inputRequirement)}</p>
+                            </div>
+                            <div class="game-toggle">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" ${game.enabled ? 'checked' : ''} onchange="toggleGame(${index})">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="game-status">
+                            <span class="status-badge ${game.enabled ? 'status-enabled' : 'status-disabled'}">
+                                ${game.enabled ? 'Habilitado' : 'Deshabilitado'}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            updateGameStats();
+        }
+
+        function getInputTypeLabel(inputRequirement) {
+            const types = {
+                'id_only': 'Solo ID',
+                'id_name': 'ID + Nombre',
+                'id_server': 'ID + Servidor',
+                'cod_full': 'Datos completos'
+            };
+            return types[inputRequirement] || 'Desconocido';
+        }
+
+        function toggleGame(index) {
+            gameOptions[index].enabled = !gameOptions[index].enabled;
+            showSuccess(`${gameOptions[index].name} ${gameOptions[index].enabled ? 'habilitado' : 'deshabilitado'}`);
+            updateGameStats();
+            // Aquí podrías hacer una llamada a la API para guardar el estado
+        }
+
+        function enableAllGames() {
+            gameOptions.forEach(game => game.enabled = true);
+            loadGames();
+            showSuccess('Todos los juegos han sido habilitados');
+        }
+
+        function disableAllGames() {
+            if (confirm('¿Estás seguro de deshabilitar todos los juegos?')) {
+                gameOptions.forEach(game => game.enabled = false);
+                loadGames();
+                showSuccess('Todos los juegos han sido deshabilitados');
+            }
+        }
+
+        function updateGameStats() {
+            const enabled = gameOptions.filter(game => game.enabled).length;
+            const total = gameOptions.length;
+            
+            document.getElementById('enabledGamesCount').textContent = `Habilitados: ${enabled}`;
+            document.getElementById('totalGamesCount').textContent = `Total: ${total}`;
+        }
+
+        // Funciones de carga de datos - PROMOCIONES
+        function loadPromotions() {
+            const promotionsGrid = document.getElementById('promotionsGrid');
+            
+            promotionsGrid.innerHTML = promotionOptions.map((promo, index) => {
+                return `
+                    <div class="promotion-card ${promo.active ? 'active' : ''}">
+                        <div class="promotion-badge">
+                            ${promo.active ? 'ACTIVA' : 'INACTIVA'}
+                        </div>
+                        <h3>${promo.name}</h3>
+                        <p><strong>Juego:</strong> ${promo.game}</p>
+                        <p><strong>Tipo:</strong> ${promo.type}</p>
+                        <p><strong>Badge:</strong> ${promo.badge}</p>
+                        <p><strong>Artículos:</strong> ${promo.articles.join(', ')}</p>
+                        
+                        <div class="action-buttons" style="margin-top: 1rem;">
+                            <button class="btn ${promo.active ? 'btn-warning' : 'btn-success'} btn-sm" onclick="togglePromotion(${index})">
+                                <i class="fas ${promo.active ? 'fa-pause' : 'fa-play'}"></i>
+                                ${promo.active ? 'Desactivar' : 'Activar'}
+                            </button>
+                            <button class="btn btn-primary btn-sm" onclick="editPromotion(${index})">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="deletePromotion(${index})">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            updatePromotionStats();
+        }
+
+        function togglePromotion(index) {
+            promotionOptions[index].active = !promotionOptions[index].active;
+            loadPromotions();
+            showSuccess(`Promoción ${promotionOptions[index].active ? 'activada' : 'desactivada'}`);
+        }
+
+        function editPromotion(index) {
+            // Implementar modal de edición
+            showSuccess('Función de edición en desarrollo');
+        }
+
+        function deletePromotion(index) {
+            if (confirm('¿Estás seguro de eliminar esta promoción?')) {
+                promotionOptions.splice(index, 1);
+                loadPromotions();
+                showSuccess('Promoción eliminada');
+            }
+        }
+
+        function createPromotion() {
+            // Implementar modal de creación
+            showSuccess('Función de creación en desarrollo');
+        }
+
+        function updatePromotionStats() {
+            const active = promotionOptions.filter(promo => promo.active).length;
+            const total = promotionOptions.length;
+            
+            document.getElementById('activePromotionsCount').textContent = `Activas: ${active}`;
+            document.getElementById('totalPromotionsCount').textContent = `Total: ${total}`;
+        }
+
+        // Funciones de actualización de estado de pedidos
         async function updateOrderStatus(rowId, newStatus) {
+            if (!confirm(`¿Estás seguro de marcar este pedido como ${newStatus}?`)) {
+                return;
+            }
+
             try {
                 const response = await fetch(`${API_BASE_URL}/update-order`, {
                     method: 'POST',
@@ -258,55 +1162,160 @@
                     // Actualizar la fila en la tabla
                     const row = document.querySelector(`tr[data-row-id="${rowId}"]`);
                     if (row) {
-                        const statusCell = row.cells[9];
+                        const statusCell = row.querySelector('.status-badge');
                         statusCell.textContent = newStatus;
-                        statusCell.className = `status-${newStatus.toLowerCase()}`;
+                        statusCell.className = `status-badge status-${newStatus.toLowerCase()}`;
                         
-                        // Ocultar botones de acción
-                        const actionsCell = row.cells[10];
-                        actionsCell.innerHTML = '<span style="color: #888;">-</span>';
+                        // Actualizar botones de acción
+                        const actionsCell = row.querySelector('.action-buttons');
+                        actionsCell.innerHTML = `
+                            <button class="btn btn-danger btn-sm" onclick="deleteOrder(${rowId})">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        `;
+                        
+                        row.setAttribute('data-status', newStatus.toLowerCase());
                     }
                     
-                    alert(`Pedido marcado como ${newStatus}`);
+                    updateOrderStats();
+                    showSuccess(`Pedido marcado como ${newStatus} exitosamente`);
                 } else {
                     throw new Error('Error al actualizar el estado');
                 }
             } catch (error) {
                 console.error('Error actualizando estado:', error);
-                alert('Error al actualizar el estado del pedido');
+                showError('Error al actualizar el estado del pedido');
             }
         }
 
-        // Cargar pedidos automáticamente cada 30 segundos
-        setInterval(loadOrders, 30000);
+        async function deleteOrder(rowId) {
+            if (!confirm('¿Estás seguro de que deseas eliminar este pedido? Esta acción no se puede deshacer.')) {
+                return;
+            }
+
+            try {
+                // Aquí deberías implementar la API para eliminar el pedido
+                // Por ahora, solo lo removemos de la tabla
+                const row = document.querySelector(`tr[data-row-id="${rowId}"]`);
+                if (row) {
+                    row.remove();
+                    updateOrderStats();
+                    showSuccess('Pedido eliminado exitosamente');
+                }
+                
+                // TODO: Implementar llamada a API para eliminar del backend
+                
+            } catch (error) {
+                console.error('Error eliminando pedido:', error);
+                showError('Error al eliminar el pedido');
+            }
+        }
+
+        // Funciones de utilidad
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleString('es-ES', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch {
+                return dateString;
+            }
+        }
+
+        function updateOrderStats() {
+            const rows = document.querySelectorAll('#ordersTableBody tr');
+            const total = rows.length;
+            const pending = document.querySelectorAll('tr[data-status="pendiente"]').length;
+            const sent = document.querySelectorAll('tr[data-status="enviado"]').length;
+            
+            updateStats(total, pending, sent);
+        }
+
+        function updateStats(total, pending, sent) {
+            document.getElementById('totalOrders').textContent = `Total: ${total}`;
+            document.getElementById('pendingOrders').textContent = `Pendientes: ${pending}`;
+            document.getElementById('sentOrders').textContent = `Enviados: ${sent}`;
+        }
+
+        function exportOrders() {
+            if (ordersData.length === 0) {
+                showError('No hay pedidos para exportar');
+                return;
+            }
+
+            const csvContent = generateCSV(ordersData);
+            downloadCSV(csvContent, 'pedidos_dharck_store.csv');
+        }
+
+        function generateCSV(data) {
+            const headers = ['Fecha', 'Juego', 'Artículo', 'Cantidad', 'Monto', 'Ganancia', 'Vendedor', 'Estado'];
+            const csvRows = [headers.join(',')];
+            
+            data.forEach(order => {
+                const row = [
+                    order.fecha_hora || '',
+                    order.juego || '',
+                    order.articulo || '',
+                    order.cantidad || 1,
+                    order.monto_total || 0,
+                    order.ganancia || 0,
+                    order.vendedor || '',
+                    order.estado || 'Pendiente'
+                ];
+                csvRows.push(row.join(','));
+            });
+            
+            return csvRows.join('\n');
+        }
+
+        function downloadCSV(content, filename) {
+            const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Funciones de UI
+        function showLoading(show) {
+            document.getElementById('loadingMessage').style.display = show ? 'block' : 'none';
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            setTimeout(() => {
+                errorElement.style.display = 'none';
+            }, 5000);
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            // Crear notificación temporal
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
     </script>
 </body>
 </html>
-
-// En la función displayOrders, agregar columna de ganancia:
-
-function displayOrders(orders) {
-    orders.forEach(order => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${order.fecha_hora || 'N/A'}</td>
-            <td>${order.vendedor || 'N/A'}</td>
-            <td>N/A</td>
-            <td>${order.juego || 'N/A'}</td>
-            <td>${order.articulo || 'N/A'}</td>
-            <td>${order.cantidad || 'N/A'}</td>
-            <td>$${parseFloat(order.monto_total || 0).toFixed(2)} USD</td>
-            <td class="ganancia-column">$${parseFloat(order.ganancia || 0).toFixed(2)} USD</td>
-            <td>
-                <select class="status-select" data-row-id="${order.id}">
-                    <option value="pendiente">Pendiente</option>
-                    <option value="completado">Completado</option>
-                    <option value="cancelado">Cancelado</option>
-                </select>
-            </td>
-        `;
-        tableBody.appendChild(row);
-    });
-    
-    // ... existing code ...
-}
