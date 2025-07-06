@@ -3,48 +3,51 @@ const { getSellerSheet } = require('./sheets-config');
 // Configuración completa de ganancias por artículo específico (en USD)
 const ARTICLE_PROFIT_CONFIG = {
   // LORDS MOBILE
-  'PASE SEMANAL': 0.40,
-  'PASE MENSUAL': 1.50,
-  '209💎': 0.45,
-  '524💎': 0.80,
-  '1048💎': 1.20,
-  '2096💎': 1.80,
-  '3144💎': 2.50,
-  '5240💎': 3.50,
-  '6812💎': 4.20,
-  '9956💎': 5.50,
-  '19912💎': 10.00,
-  '30392💎': 15.00,
-  '50304💎': 22.00,
+  'PASE SEMANAL': 0.25,
+  'PASE MENSUAL': 0.7,
+  '209💎': 0.25,
+  '524💎': 0.30,
+  '1048💎': 0.40,
+  '2096💎': 0.70,
+  '3144💎': 1.00,
+  '5240💎': 2.00,
+  '6812💎': 3.00,
+  '9956💎': 6.00,
+  '19912💎': 8.00,
+  '30392💎': 10.00,
+  '50304💎': 18.00,
   
   // LORDS MOBILE PROMOCION (NUEVO)
-  '💎499+20%': 0.80,
-  '💎999+20%': 1.30,
-  '💎1999+20%': 2.00,
-  '💎2499+20%': 2.50,
-  '💎2999+20%': 2.80,
-  '💎4999+20%': 4.50,
-  '💎9999+20%': 8.50,
+  '💎499+20%': 0.25,
+  '💎999+20%': 0.50,
+  '💎1999+20%': 0.70,
+  '💎2499+20%': 0.70,
+  '💎2999+20%': 0.70,
+  '💎4999+20%': 0.70,
+  '💎9999+20%': 0.70,
   
   // BLOOD STRIKE
-  '100+5': 0.25,
-  '300+20': 0.40,
-  '500+40': 0.60,
+  '100+5': 0.10,
+  '300+20': 0.20,
+  '500+40': 0.50,
   '1000+100': 1.00,
   '2000+200': 1.50,
-  '5000+800': 3.50,
-  'PASE ELITE': 0.50,
+  '5000+800': 1.50,
+  'PASE ELITE': 0.30,
   'PASE PREMIUM': 1.00,
-  'PASE DE NIVEL': 0.35,
+  'PASE DE NIVEL': 0.20,
   
   // FREE FIRE
-  '100💎': 0.30,
-  '210💎': 0.40,
-  '520💎': 0.60,
-  '1080💎': 1.00,
-  '2200💎': 1.50,
-  '5600💎': 3.00,
-  
+  '💎100+10': 0.10,
+  '💎200+20': 0.20,
+  '💎310+31': 0.30,
+  '💎520+52': 0.40,
+  '💎1069+106': 0.50,
+  '💎2180+218': 1.50,
+  '💎5600+560': 3.00,
+  '💎SEMANAL': 0.20,
+  '💎MENSUAL': 0.40,
+
   // GENSHIN IMPACT
   'PASE LUNAR': 0.70,
   '60': 0.25,
@@ -86,12 +89,12 @@ const ARTICLE_PROFIT_CONFIG = {
   '19440+5832 Coins': 13.50,
   
   // CALL OF DUTY MOBILE
-  '80 CP': 0.35,
-  '420 CP': 0.80,
-  '880 CP': 1.20,
-  '2400 CP': 2.00,
-  '5000 CP': 3.50,
-  '10800 CP': 6.00,
+  '80 CP': 0.20,
+  '420 CP': 0.50,
+  '880 CP': 0.70,
+  '2400 CP': 0.70,
+  '5000 CP': 1.50,
+  '10800 CP': 4.00,
   
   // Ganancia por defecto si no se encuentra el artículo específico
   'DEFAULT': 0.50
@@ -128,6 +131,9 @@ function isArticleInPromotion(gameName, articleLabel) {
     const gamePromo = PROMOTION_CONFIG[gameName];
     return gamePromo && gamePromo.active && gamePromo.articles.includes(articleLabel);
 }
+
+// FUNCIÓN ELIMINADA: formatArticleName ya no es necesaria
+// Ahora se registra directamente el itemLabel original
 
 module.exports = async (req, res) => {
   // Configurar CORS
@@ -172,10 +178,10 @@ module.exports = async (req, res) => {
         ganancia = ganancia * 1.2; // 20% más de ganancia en promociones
     }
     
-    // Preparar datos con indicador de promoción
+    // Preparar datos con formato actualizado
     const rowData = {
         '📦Juego': gameName,
-        '📦Artículo': itemLabel + (isArticleInPromotion(gameName, itemLabel) ? ' 🔥PROMO' : ''),
+        '📦Artículo': itemLabel + (isArticleInPromotion(gameName, itemLabel) ? ' 🔥PROMO' : ''), // ← CORREGIDO: usar itemLabel directamente
         '📦Cantidad': 1,
         '📦Monto_total': amountUSD,
         '📦Ganancia': ganancia,
