@@ -480,15 +480,15 @@
             }
         }
 
-        // Mostrar pedidos en la tabla
+        // Mostrar pedidos en la tabla (línea ~493)
         function displayOrders(ordersData) {
             const tableBody = document.getElementById('ordersTableBody');
             
             tableBody.innerHTML = ordersData.map(order => {
                 const statusClass = order.status === 'sent' ? 'status-sent' : 
-                                  order.status === 'cancelled' ? 'status-cancelled' : 'status-pending';
+                              order.status === 'cancelled' ? 'status-cancelled' : 'status-pending';
                 const statusText = order.status === 'sent' ? 'Enviado' : 
-                                 order.status === 'cancelled' ? 'Cancelado' : 'Pendiente';
+                             order.status === 'cancelled' ? 'Cancelado' : 'Pendiente';
                 
                 return `
                     <tr>
@@ -496,8 +496,8 @@
                         <td>${order.game || 'N/A'}</td>
                         <td>${order.amount || 'N/A'}</td>
                         <td>${order.quantity || 1}</td>
-                        <td>${order.totalPrice || 'N/A'}</td>
-                        <td>${order.playerName || order.email || 'N/A'}</td>
+                        <td>$${order.totalPrice || 'N/A'}</td>
+                        <td>${order.playerName || 'N/A'}</td>
                         <td>${order.seller || 'N/A'}</td>
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                     </tr>

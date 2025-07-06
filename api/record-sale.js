@@ -103,7 +103,7 @@ const ARTICLE_PROFIT_CONFIG = {
 // Función para verificar si un artículo está en promoción
 function isArticleInPromotion(gameName, articleLabel) {
     const ACTIVE_PROMOTIONS = {
-        'LORDS_MOBILE_PROMO': true,
+        'LORDS_MOBILE_PROMO': false,
         'FREE_FIRE_WEEKEND': false,
         'DELTA_FORCE_SPECIAL': false,
         'BLOOD_STRIKE_BONUS': false
@@ -180,12 +180,12 @@ module.exports = async (req, res) => {
     
     // Preparar datos con formato actualizado
     const rowData = {
-        'Juego': gameName,
-        'Artículo': itemLabel + (isArticleInPromotion(gameName, itemLabel) ? ' 🔥PROMO' : ''),
-        'Cantidad': 1,
-        'Monto_total': amountUSD,
-        'Ganancia': ganancia,
-        'Fecha_hora': new Date().toLocaleString('es-ES', { 
+        '📦Juego': gameName,
+        '📦Artículo': itemLabel + (isArticleInPromotion(gameName, itemLabel) ? ' 🔥PROMO' : ''),
+        '📦Cantidad': 1,
+        '📦Monto_total': amountUSD,
+        '📦Ganancia': ganancia,
+        '📦Fecha_hora': new Date().toLocaleString('es-ES', { 
             timeZone: 'America/Caracas',
             year: 'numeric',
             month: '2-digit',

@@ -22,41 +22,40 @@ module.exports = async (req, res) => {
     for (const [sellerName, sheetName] of Object.entries(SELLER_SHEET_MAPPING)) {
       try {
         const sheet = doc.sheetsByTitle[sheetName];
-        if (sheet) {
-          const rows = await sheet.getRows();
-          
-          const sellerOrders = rows.map(row => ({
-            id: row.rowNumber,
-            vendedor: sellerName,
-            juego: row.get('📦Juego') || '',
-            articulo: row.get('📦Artículo') || '',
-            cantidad: row.get('📦Cantidad') || 1,
-            monto_total: row.get('📦Monto_total') || 0,
-            ganancia: row.get('📦Ganancia') || 0,
-            fecha_hora: row.get('📦Fecha_hora') || ''
-          }));
-          
-          allOrders.push(...sellerOrders);
+        if (!sheet) {
+          console.log(`Hoja no encontrada: ${sheetName}`);
+          continue;
         }
-      } catch (sheetError) {
-        console.warn(`Error al obtener datos de la hoja ${sheetName}:`, sheetError.message);
+        
+        const rows = await sheet.getRows();
+        
+        const sellerOrders = rows.map(row => ({
+          timestamp: row.get('📦Fecha_hora') || new Date().toISOString(),
+          game: row.get('📦Juego') || 'N/A',
+          amount: row.get('📦Artículo') || 'N/A',
+          quantity: row.get('📦Cantidad') || 1,
+          totalPrice: row.get('📦Monto_total') || 'N/A',
+          seller: sellerName,
+          playerName: 'N/A', // No disponible en la estructura actual
+          email: 'N/A', // No disponible en la estructura actual
+          status: 'pending' // Estado por defecto
+        }));
+        
+        allOrders.push(...sellerOrders);
+        
+      } catch (error) {
+        console.error(`Error procesando hoja ${sheetName}:`, error);
+        continue;
       }
     }
     
     // Ordenar por fecha (más recientes primero)
-    allOrders.sort((a, b) => new Date(b.fecha_hora) - new Date(a.fecha_hora));
+    allOrders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
     
-    res.status(200).json({ 
-      success: true, 
-      orders: allOrders,
-      total: allOrders.length
-    });
+    res.status(200).json(allOrders);
     
   } catch (error) {
-    console.error('Error al obtener las órdenes:', error);
-    res.status(500).json({ 
-      error: 'Error interno del servidor', 
-      details: error.message 
-    });
+    console.error('Error al obtener pedidos:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
