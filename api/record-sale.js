@@ -100,6 +100,114 @@ const ARTICLE_PROFIT_CONFIG = {
   'DEFAULT': 0.50
 };
 
+// Configuración de ganancias personalizadas para XJoseDharckX
+const XJOSEDHARCKX_PROFIT_CONFIG = {
+  // LORDS MOBILE - Ganancias personalizadas para XJoseDharckX
+  'PASE SEMANAL': 0.30,
+  'PASE MENSUAL': 0.90,
+  '209💎': 0.30,
+  '524💎': 0.40,
+  '1048💎': 0.50,
+  '2096💎': 1.00,
+  '3144💎': 2.00,
+  '5240💎': 3.00,
+  '6812💎': 4.00,
+  '9956💎': 8.00,
+  '19912💎': 10.00,
+  '30392💎': 15.00,
+  '50304💎': 23.00,
+  
+  // LORDS MOBILE PROMOCION (CORREGIDO - usar labels exactos de index.html)
+  '💎499+CUPON': 0.40,
+  '💎999+CUPON': 1.00,
+  '💎1999+CUPON': 1.00,
+  '💎2499+CUPON': 1.00,
+  '💎2999+CUPON': 1.00,
+  '💎4999+CUPON': 1.00,
+  '💎9999+CUPON': 1.00,
+  
+  // BLOOD STRIKE
+  '100+5': 0.20,
+  '300+20': 0.50,
+  '500+40': 1.00,
+  '1000+100': 1.80,
+  '2000+200': 4.30,
+  '5000+800': 9.00,
+  'PASE ELITE': 0.50,
+  'PASE PREMIUM': 1.60,
+  'PASE DE NIVEL': 0.50,
+  
+  // FREE FIRE
+  '💎100+10': 0.10,
+  '💎200+20': 0.60,
+  '💎310+31': 0.40,
+  '💎520+52': 0.80,
+  '💎1069+106': 1.30,
+  '💎2180+218': 3.00,
+  '💎5600+560': 5.00,
+  '💎SEMANAL': 0.60,
+  '💎MENSUAL': 1.00,
+
+  // GENSHIN IMPACT
+  'PASE LUNAR': 1.00,
+  '60': 0.15,
+  '300+30': 1.00,
+  '980+110': 2.00,
+  '1980+260': 3.00,
+  '3280+600': 8.80,
+  '6480+1600': 16.80,
+  
+  // PUBG MOBILE
+  '60': 0.10,
+  '300+25': 1.00,
+  '600+60': 0.85,
+  '1500+300': 1.90,
+  '3000+850': 3.80,
+  '6000+2100': 7.00,
+  
+  // DELTA FORCE STEAM
+  '60 Coins': 0.25,
+  '300+20 Coins': 0.50,
+  '420+40 Coins': 0.60,
+  '680+70 Coins': 0.70,
+  '1280+200 Coins': 1.20,
+  '1680+300 Coins': 1.40,
+  '3280+670 Coins': 2.50,
+  '6480+1620 Coins': 4.00,
+  '12960+3240 Coins': 8.00,
+  '19440+4860 Coins': 12.00,
+  
+  // DELTA FORCE GARENA
+  '300+36 Coins': 0.55,
+  '420+62 Coins': 0.65,
+  '680+105 Coins': 0.75,
+  '1280+264 Coins': 1.30,
+  '1680+385 Coins': 1.50,
+  '3280+834 Coins': 2.70,
+  '6480+1944 Coins': 4.50,
+  '12960+3888 Coins': 9.00,
+  '19440+5832 Coins': 13.50,
+  
+  // CALL OF DUTY MOBILE
+  '80 CP': 0.20,
+  '420 CP': 0.80,
+  '880 CP': 0.80,
+  '2400 CP': 0.80,
+  '5000 CP': 4.40,
+  '10800 CP': 9.50,
+  
+  // Ganancia por defecto si no se encuentra el artículo específico
+  'DEFAULT': 0.50
+};
+
+// Función para obtener la configuración de ganancias según el vendedor
+function getProfitConfig(vendedor) {
+  if (vendedor === 'XJoseDharckX') {
+    return XJOSEDHARCKX_PROFIT_CONFIG;
+  }
+  return ARTICLE_PROFIT_CONFIG;
+}
+
 // Función para verificar si un artículo está en promoción
 function isArticleInPromotion(gameName, articleLabel) {
     const ACTIVE_PROMOTIONS = {
@@ -170,8 +278,11 @@ module.exports = async (req, res) => {
     // Obtener la hoja del vendedor específico
     const sheet = await getSellerSheet(sellerName);
     
-    // Calcular ganancia específica por artículo
-    let ganancia = ARTICLE_PROFIT_CONFIG[itemLabel] || ARTICLE_PROFIT_CONFIG['DEFAULT'];
+    // Obtener configuración de ganancias específica del vendedor
+    const profitConfig = getProfitConfig(sellerName);
+    
+    // Calcular ganancia específica por artículo usando configuración del vendedor
+    let ganancia = profitConfig[itemLabel] || profitConfig['DEFAULT'];
     
     // Aplicar bonus de ganancia si está en promoción
     if (isArticleInPromotion(gameName, itemLabel)) {
@@ -181,7 +292,7 @@ module.exports = async (req, res) => {
     // Preparar datos con formato actualizado
     const rowData = {
         '📦Juego': gameName,
-        '📦Artículo': itemLabel + (isArticleInPromotion(gameName, itemLabel) ? ' 🔥PROMO' : ''),
+        '📦Artículo': itemLabel + (isArticleInPromotion(gameName, itemLabel) ? ' 🔥PROMO' : ''), // Nombre correcto del artículo
         '📦Cantidad': 1,
         '📦Monto_total': amountUSD,
         '📦Ganancia': ganancia,
