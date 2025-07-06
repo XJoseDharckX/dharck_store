@@ -3,7 +3,9 @@ const { JWT } = require('google-auth-library');
 const { getSellerSheet } = require('./sheets-config');
 
 // Configuración de autenticación
-const GOOGLE_SHEETS_PRIVATE_KEY = process.env.GOOGLE_SHEETS_PRIVATE_KEY?.replace(/\\n/g, '\n');
+const GOOGLE_SHEETS_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+const GOOGLE_SERVICE_ACCOUNT_EMAIL = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+const GOOGLE_SHEET_ID = process.env.GOOGLE_SHEET_ID;
 const GOOGLE_SHEETS_CLIENT_EMAIL = process.env.GOOGLE_SHEETS_CLIENT_EMAIL;
 const GOOGLE_SHEETS_DOCUMENT_ID = process.env.GOOGLE_SHEETS_DOCUMENT_ID;
 
@@ -129,13 +131,13 @@ module.exports = async (req, res) => {
 
     // Configurar autenticación JWT
     const serviceAccountAuth = new JWT({
-      email: GOOGLE_SHEETS_CLIENT_EMAIL,
+      email: GOOGLE_SERVICE_ACCOUNT_EMAIL,
       key: GOOGLE_SHEETS_PRIVATE_KEY,
       scopes: ['https://www.googleapis.com/auth/spreadsheets']
     });
 
     // Conectar al documento
-    const doc = new GoogleSpreadsheet(GOOGLE_SHEETS_DOCUMENT_ID, serviceAccountAuth);
+    const doc = new GoogleSpreadsheet(GOOGLE_SHEET_ID, serviceAccountAuth);
     await doc.loadInfo();
 
     // Obtener la hoja de pedidos pendientes
