@@ -107,7 +107,7 @@
         }
 
         .main-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
         }
@@ -124,6 +124,32 @@
             align-items: center;
             justify-content: space-between;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .filter-group label {
+            font-size: 0.8rem;
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        .filter-group input, .filter-group select {
+            padding: 0.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.9rem;
         }
 
         .btn {
@@ -155,9 +181,20 @@
             color: white;
         }
 
+        .btn-warning {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            color: white;
+        }
+
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .stats {
@@ -190,13 +227,13 @@
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .data-table th {
             background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
             color: white;
-            padding: 1rem 0.8rem;
+            padding: 1rem 0.6rem;
             text-align: left;
             font-weight: 600;
             position: sticky;
@@ -205,7 +242,7 @@
         }
 
         .data-table td {
-            padding: 0.8rem;
+            padding: 0.8rem 0.6rem;
             border-bottom: 1px solid #e2e8f0;
             vertical-align: middle;
         }
@@ -217,7 +254,7 @@
         .status-badge {
             padding: 0.3rem 0.8rem;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
         }
@@ -227,7 +264,7 @@
             color: #c53030;
         }
 
-        .status-sent {
+        .status-delivered {
             background: #c6f6d5;
             color: #2f855a;
         }
@@ -235,6 +272,17 @@
         .status-cancelled {
             background: #fed7d7;
             color: #c53030;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
         }
 
         .loading {
@@ -311,6 +359,10 @@
                 align-items: stretch;
             }
 
+            .filters {
+                justify-content: center;
+            }
+
             .stats {
                 justify-content: center;
             }
@@ -318,7 +370,11 @@
             .data-table th,
             .data-table td {
                 padding: 0.5rem 0.3rem;
-                font-size: 0.8rem;
+                font-size: 0.75rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
             }
         }
     </style>
@@ -356,18 +412,34 @@
 
         <div class="main-container">
             <div class="controls">
-                <div>
+                <div class="filters">
                     <button class="btn btn-primary" onclick="loadOrders()">
-                        <i class="fas fa-sync-alt"></i> Actualizar Pedidos
+                        <i class="fas fa-sync-alt"></i> Actualizar
                     </button>
-                    <button class="btn btn-success" onclick="exportToExcel()">
-                        <i class="fas fa-file-excel"></i> Exportar a Excel
+                    
+                    <div class="filter-group">
+                        <label>Filtrar por fecha:</label>
+                        <input type="date" id="dateFilter" onchange="filterByDate()">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Estado:</label>
+                        <select id="statusFilter" onchange="filterByStatus()">
+                            <option value="">Todos</option>
+                            <option value="Pendiente">Pendientes</option>
+                            <option value="Entregado">Entregados</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-warning" onclick="clearFilters()">
+                        <i class="fas fa-times"></i> Limpiar Filtros
                     </button>
                 </div>
+                
                 <div class="stats">
                     <div class="stat-item" id="totalOrders">Total: 0</div>
                     <div class="stat-item" id="pendingOrders">Pendientes: 0</div>
-                    <div class="stat-item" id="sentOrders">Enviados: 0</div>
+                    <div class="stat-item" id="deliveredOrders">Entregados: 0</div>
                 </div>
             </div>
 
@@ -383,14 +455,16 @@
                     <table class="data-table">
                         <thead>
                             <tr>
+                                <th><i class="fas fa-hashtag"></i> ID</th>
                                 <th><i class="fas fa-calendar"></i> Fecha</th>
                                 <th><i class="fas fa-gamepad"></i> Juego</th>
                                 <th><i class="fas fa-box"></i> Artículo</th>
-                                <th><i class="fas fa-sort-numeric-up"></i> Cantidad</th>
-                                <th><i class="fas fa-dollar-sign"></i> Total</th>
-                                <th><i class="fas fa-user"></i> Cliente</th>
+                                <th><i class="fas fa-dollar-sign"></i> Monto USD</th>
+                                <th><i class="fas fa-user"></i> Jugador</th>
                                 <th><i class="fas fa-user-tie"></i> Vendedor</th>
+                                <th><i class="fas fa-flag"></i> País</th>
                                 <th><i class="fas fa-info-circle"></i> Estado</th>
+                                <th><i class="fas fa-cogs"></i> Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="ordersTableBody">
@@ -403,7 +477,7 @@
             <div id="emptyState" class="empty-state" style="display: none;">
                 <i class="fas fa-inbox" style="font-size: 3rem; color: #cbd5e0; margin-bottom: 1rem;"></i>
                 <h3>No hay pedidos registrados</h3>
-                <p>Los pedidos aparecerán aquí cuando se registren ventas.</p>
+                <p>Los pedidos aparecerán aquí cuando se registren desde la página principal.</p>
             </div>
         </div>
     </div>
@@ -411,12 +485,13 @@
     <script>
         // Configuración de autenticación
         const ADMIN_CREDENTIALS = {
-            username: 'admin',
-            password: 'dharck2024'
+            username: 'Jose',
+            password: '32147818'
         };
 
         // Variables globales
-        let orders = [];
+        let allOrders = [];
+        let filteredOrders = [];
 
         // Función de login
         document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -454,21 +529,22 @@
             emptyState.style.display = 'none';
             
             try {
-                const response = await fetch('/api/get-orders');
+                const response = await fetch('/api/get-pending-orders');
                 
                 if (!response.ok) {
                     throw new Error(`Error ${response.status}: ${response.statusText}`);
                 }
                 
-                orders = await response.json();
+                allOrders = await response.json();
+                filteredOrders = [...allOrders];
                 
                 loadingMessage.style.display = 'none';
                 
-                if (orders.length === 0) {
+                if (allOrders.length === 0) {
                     emptyState.style.display = 'block';
                     tableBody.innerHTML = '';
                 } else {
-                    displayOrders(orders);
+                    displayOrders(filteredOrders);
                     updateStats();
                 }
                 
@@ -480,26 +556,40 @@
             }
         }
 
-        // Mostrar pedidos en la tabla (línea ~493)
+        // Mostrar pedidos en la tabla
         function displayOrders(ordersData) {
             const tableBody = document.getElementById('ordersTableBody');
             
             tableBody.innerHTML = ordersData.map(order => {
-                const statusClass = order.status === 'sent' ? 'status-sent' : 
-                              order.status === 'cancelled' ? 'status-cancelled' : 'status-pending';
-                const statusText = order.status === 'sent' ? 'Enviado' : 
-                             order.status === 'cancelled' ? 'Cancelado' : 'Pendiente';
+                const statusClass = order.Estado === 'Entregado' ? 'status-delivered' : 'status-pending';
+                const statusText = order.Estado === 'Entregado' ? 'Entregado' : 'Pendiente';
                 
                 return `
                     <tr>
-                        <td>${new Date(order.timestamp).toLocaleString('es-ES')}</td>
-                        <td>${order.game || 'N/A'}</td>
-                        <td>${order.amount || 'N/A'}</td>
-                        <td>${order.quantity || 1}</td>
-                        <td>$${order.totalPrice || 'N/A'}</td>
-                        <td>${order.playerName || 'N/A'}</td>
-                        <td>${order.seller || 'N/A'}</td>
+                        <td><strong>${order.ID_Pedido}</strong></td>
+                        <td>${new Date(order.Fecha_Hora).toLocaleString('es-ES')}</td>
+                        <td>${order.Juego}</td>
+                        <td>${order.Artículo}</td>
+                        <td>$${order.Monto_USD}</td>
+                        <td>
+                            <strong>${order.Nombre_Jugador}</strong><br>
+                            <small>ID: ${order.ID_Jugador}</small>
+                        </td>
+                        <td>${order.Vendedor}</td>
+                        <td>${order.País}</td>
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-primary" onclick="viewOrderDetails('${order.ID_Pedido}')">
+                                    <i class="fas fa-eye"></i> Ver
+                                </button>
+                                ${order.Estado === 'Pendiente' ? `
+                                    <button class="btn btn-sm btn-success" onclick="markAsDelivered('${order.ID_Pedido}', ${order.rowNumber})">
+                                        <i class="fas fa-check"></i> Entregar
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </td>
                     </tr>
                 `;
             }).join('');
@@ -507,52 +597,115 @@
 
         // Actualizar estadísticas
         function updateStats() {
-            const total = orders.length;
-            const pending = orders.filter(order => order.status === 'pending' || !order.status).length;
-            const sent = orders.filter(order => order.status === 'sent').length;
+            const total = filteredOrders.length;
+            const pending = filteredOrders.filter(order => order.Estado === 'Pendiente').length;
+            const delivered = filteredOrders.filter(order => order.Estado === 'Entregado').length;
             
             document.getElementById('totalOrders').textContent = `Total: ${total}`;
             document.getElementById('pendingOrders').textContent = `Pendientes: ${pending}`;
-            document.getElementById('sentOrders').textContent = `Enviados: ${sent}`;
+            document.getElementById('deliveredOrders').textContent = `Entregados: ${delivered}`;
         }
 
-        // Exportar a Excel
-        function exportToExcel() {
-            if (orders.length === 0) {
-                alert('No hay pedidos para exportar');
+        // Filtrar por fecha
+        function filterByDate() {
+            const dateFilter = document.getElementById('dateFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            applyFilters(dateFilter, statusFilter);
+        }
+
+        // Filtrar por estado
+        function filterByStatus() {
+            const dateFilter = document.getElementById('dateFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            applyFilters(dateFilter, statusFilter);
+        }
+
+        // Aplicar filtros
+        function applyFilters(dateFilter, statusFilter) {
+            filteredOrders = allOrders.filter(order => {
+                let matchesDate = true;
+                let matchesStatus = true;
+                
+                if (dateFilter) {
+                    const orderDate = new Date(order.Fecha_Hora).toISOString().split('T')[0];
+                    matchesDate = orderDate === dateFilter;
+                }
+                
+                if (statusFilter) {
+                    matchesStatus = order.Estado === statusFilter;
+                }
+                
+                return matchesDate && matchesStatus;
+            });
+            
+            displayOrders(filteredOrders);
+            updateStats();
+        }
+
+        // Limpiar filtros
+        function clearFilters() {
+            document.getElementById('dateFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            filteredOrders = [...allOrders];
+            displayOrders(filteredOrders);
+            updateStats();
+        }
+
+        // Ver detalles del pedido
+        function viewOrderDetails(orderId) {
+            const order = allOrders.find(o => o.ID_Pedido === orderId);
+            if (!order) return;
+            
+            const details = `
+ID del Pedido: ${order.ID_Pedido}
+Fecha: ${new Date(order.Fecha_Hora).toLocaleString('es-ES')}
+Juego: ${order.Juego}
+Artículo: ${order.Artículo}
+Monto USD: $${order.Monto_USD}
+Precio Total: ${order.Precio_Total} ${order.Moneda}
+Jugador: ${order.Nombre_Jugador}
+ID Jugador: ${order.ID_Jugador}
+Email: ${order.Email_Jugador}
+Vendedor: ${order.Vendedor}
+País: ${order.País}
+Estado: ${order.Estado}
+            `;
+            
+            alert(details);
+        }
+
+        // Marcar como entregado
+        async function markAsDelivered(orderId, rowNumber) {
+            if (!confirm('¿Estás seguro de marcar este pedido como entregado? Esto registrará la venta en el Excel del vendedor.')) {
                 return;
             }
             
-            // Crear CSV
-            const headers = ['Fecha', 'Juego', 'Artículo', 'Cantidad', 'Total', 'Cliente', 'Vendedor', 'Estado'];
-            const csvContent = [headers.join(',')];
-            
-            orders.forEach(order => {
-                const row = [
-                    new Date(order.timestamp).toLocaleString('es-ES'),
-                    order.game || 'N/A',
-                    order.amount || 'N/A',
-                    order.quantity || 1,
-                    order.totalPrice || 'N/A',
-                    order.playerName || order.email || 'N/A',
-                    order.seller || 'N/A',
-                    order.status === 'sent' ? 'Enviado' : order.status === 'cancelled' ? 'Cancelado' : 'Pendiente'
-                ];
-                csvContent.push(row.join(','));
-            });
-            
-            // Descargar archivo
-            const blob = new Blob([csvContent.join('\n')], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', `pedidos_${new Date().toISOString().split('T')[0]}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            showNotification('Pedidos exportados exitosamente');
+            try {
+                const response = await fetch('/api/mark-order-delivered', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        orderId: orderId,
+                        rowNumber: rowNumber
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Error ${response.status}: ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                showNotification('Pedido marcado como entregado y registrado en Excel');
+                loadOrders(); // Recargar la lista
+                
+            } catch (error) {
+                console.error('Error al marcar como entregado:', error);
+                alert(`Error al marcar como entregado: ${error.message}`);
+            }
         }
 
         // Mostrar notificación

@@ -1138,32 +1138,11 @@
                 <div id="paymentMethodsList"></div>
             </div>
 
-            <!-- NUEVA POSICIÓN: Comprobante de pago después de métodos de pago -->
-            <div class="form-group" id="paymentProofSection" style="display: none;">
-                <label for="paymentProof">
-                    📎 SUBIR COMPROBANTE DE PAGO (OBLIGATORIO):
-                </label>
-                <input
-                    type="file"
-                    id="paymentProof"
-                    name="paymentProof"
-                    accept="image/*,.pdf"
-                    required
-                    style="width: 100%; padding: 14px; border: 2px solid #6A0DAD; border-radius: 10px; background-color: rgba(30, 0, 60, 0.9); color: #FFFFFF; font-size: 1.15em; transition: all 0.3s ease;"
-                />
-                <small style="color: #B0B0B0; font-size: 0.9em; display: block; margin-top: 5px;">
-                    📋 Formatos permitidos: JPG, PNG, PDF • Tamaño máximo: 10MB
-                </small>
-                <div id="paymentProofPreview" style="margin-top: 10px; display: none;">
-                    <small style="color: #00FFFF; font-size: 0.9em;">
-                        ✅ Comprobante cargado correctamente
-                    </small>
-                </div>
-            </div>
+
 
             <!-- Mensaje de advertencia actualizado -->
             <div id="transferWarningMessage" class="transfer-warning">
-                ¡Importante! Asegúrate de haber realizado el pago y subido el comprobante antes de enviar el pedido. La entrega puede demorar entre 5 a 15 minutos en reflejarse en el juego.
+                ¡Importante! Asegúrate de haber realizado el pago antes de enviar el pedido. La entrega puede demorar entre 5 a 15 minutos en reflejarse en el juego.
             </div>
 
             <!-- Solo un botón de envío -->
@@ -1186,7 +1165,7 @@
             <h2>¡Importante!</h2>
             <p style="color: #e0f2fe;">
                 Tu pedido será enviado por WhatsApp.
-                <span style="color: #ff00ff;">Recuerda enviar el comprobante de pago por WhatsApp después de confirmar el pedido.</span>
+                <span style="color: #ff00ff;">Recuerda realizar el pago usando los métodos mostrados y enviar el comprobante por WhatsApp.</span>
             </p>
             <div>
                 <button id="cancelWhatsApp" type="button">
@@ -1226,8 +1205,7 @@
         const amountUSDHidden = document.getElementById('amountUSDHidden');
         const totalPriceHidden = document.getElementById('totalPriceHidden');
         const currencySymbolHidden = document.getElementById('currencySymbolHidden');
-        const paymentProofInput = document.getElementById('paymentProof');
-        const paymentProofSection = document.getElementById('paymentProofSection');
+
 
         // Referencias al modal
         const whatsappWarningModal = document.getElementById('whatsappWarningModal');
@@ -1319,7 +1297,7 @@
                 { value: 30.00, label: '💎2999+CUPON', imageUrl: '/image/prize-6.png' },
                 { value: 48.50, label: '💎4999+CUPON', imageUrl: '/image/prize-7.png' },
                 { value: 95.00, label: '💎9999+CUPON', imageUrl: '/image/icon-happy.png' },    
-         {value: 2.30, label: 'PASE SEMANAL', imageUrl: '/image/7day.png' },
+                {value: 2.30, label: 'PASE SEMANAL', imageUrl: '/image/7day.png' },
                 { value: 19.90, label: 'PASE MENSUAL', imageUrl: '/image/30day.png' },
                 { value: 2.30, label: '209💎', imageUrl: '/image/prize-2.png' },
                 { value: 5.20, label: '524💎', imageUrl: '/image/prize-3.png' },
@@ -1629,12 +1607,8 @@
             const countrySelected = selectedCountry !== '';
             const sellerSelected = selectedSeller !== '';
             
-            // Validar comprobante de pago con verificación de tamaño
-            let paymentProofSelected = false;
-            if (paymentProofInput && paymentProofInput.files.length > 0) {
-                const file = paymentProofInput.files[0];
-                paymentProofSelected = file && file.size <= 10 * 1024 * 1024; // Max 10MB
-            }
+            // Validar comprobante de pago - ya no es necesario
+            let paymentProofSelected = true; // Siempre true ya que no requerimos comprobante
             
             // Validar campos específicos del juego
             let userInfoValid = false;
@@ -1664,7 +1638,7 @@
             }
             
             const allValid = gameSelected && amountSelected && countrySelected && 
-                             sellerSelected && userInfoValid && paymentProofSelected && isUserIdNumeric;
+                             sellerSelected && userInfoValid && isUserIdNumeric;
             
             sendWhatsAppOrderBtn.disabled = !allValid;
             
@@ -1678,12 +1652,6 @@
             if (!allValid) {
                 if (!countrySelected) {
                     showMessage('Por favor, selecciona tu país para continuar.', 'info');
-                } else if (!paymentProofSelected) {
-                    if (paymentProofInput && paymentProofInput.files.length > 0) {
-                        showMessage('El archivo es demasiado grande. Máximo 10MB permitido.', 'error');
-                    } else {
-                        showMessage('Por favor, adjunta el comprobante de pago.', 'info');
-                    }
                 } else if (!isUserIdNumeric && (userIdInput && userIdInput.value.trim() || userIdServerInput && userIdServerInput.value.trim() || userIdOnlyInput && userIdOnlyInput.value.trim())) {
                     showMessage('El ID de Usuario (o UID) solo debe contener números.', 'error');
                 } else if (!messageDisplay.textContent || messageDisplay.style.display === 'none') {
@@ -2005,29 +1973,7 @@
             }
         });
 
-        // Agregar listener para el campo de comprobante
-        if (paymentProofInput) {
-            paymentProofInput.addEventListener('change', function() {
-                const file = this.files[0];
-                const preview = document.getElementById('paymentProofPreview');
-                
-                if (file) {
-                    if (file.size > 10 * 1024 * 1024) {
-                        alert('El archivo es demasiado grande. El tamaño máximo permitido es 10MB.');
-                        this.value = '';
-                        preview.style.display = 'none';
-                    } else {
-                        preview.style.display = 'block';
-                    }
-                } else {
-                    preview.style.display = 'none';
-                }
-                
-                messageDisplay.style.display = 'none';
-                transferWarningMessage.style.display = 'block';
-                updateSendOrderButtonState();
-            });
-        }
+
 
         // Manejador de cambio de vendedor (AHORA MANEJADO POR CLICK EN BOTONES)
         // Ya no es necesario sellerSelect.addEventListener('change', ...)
@@ -2083,19 +2029,18 @@
                         p.innerHTML = `<span>${method.name}:</span> ${method.details}`;
                         paymentMethodsListDiv.appendChild(p);
                     });
-                    // Mostrar la sección de comprobante de pago después de los métodos de pago
-                    paymentProofSection.style.display = 'block';
+
                     sendWhatsAppOrderBtn.style.display = 'block';
                 } else {
                     paymentMethodsDisplayDiv.style.display = 'none'; 
-                    paymentProofSection.style.display = 'none';
+
                     sendWhatsAppOrderBtn.style.display = 'none';
                 }
 
             } else {
                 priceSummaryDiv.style.display = 'none'; 
                 paymentMethodsDisplayDiv.style.display = 'none'; 
-                paymentProofSection.style.display = 'none';
+
                 selectedItemsPreview.innerHTML = ''; 
             }
         }
@@ -2204,7 +2149,6 @@
             }
 
             if (!selectedSeller) { showMessage('Por favor, selecciona un vendedor.', 'error'); return; }
-            if (!paymentProofInput.files.length) { showMessage('Por favor, adjunta el comprobante de pago.', 'error'); return; }
             
             showWhatsAppWarningModal();
         });
@@ -2265,44 +2209,45 @@
                 `⚠️ *¡Importante!*: Por favor, envíame el comprobante de pago.`;
 
             // -----------------------------------------------------
-            // Enviar datos de la venta al backend de Vercel
+            // Crear orden pendiente en el backend
             // -----------------------------------------------------
-            const saleData = {
+            const countryInfo = countryData.find(c => c.name === selectedCountry);
+            const orderData = {
                 sellerName: selectedSeller,
                 gameName: selectedGame,
                 itemLabel: selectedAmount ? selectedAmount.label : 'N/A',
                 amountUSD: selectedAmount ? selectedAmount.value : 0,
                 totalPrice: totalPrice,
-                currencySymbol: currencySymbol,
-                playerId: userIdInput.value.trim() || userIdServerInput.value.trim() || userIdOnlyInput.value.trim() || emailInput.value.trim(), // Ajuste para capturar ID/email
-                playerName: userNameInput.value.trim() || userNameMLInput.value.trim() || exactAccountNameInput.value.trim() || '', // Ajuste para capturar nombre
+                currencySymbol: countryInfo ? countryInfo.symbol : currencySymbol,
+                playerId: userIdInput.value.trim() || userIdServerInput.value.trim() || userIdOnlyInput.value.trim() || emailInput.value.trim(),
+                playerName: userNameInput.value.trim() || userNameMLInput.value.trim() || exactAccountNameInput.value.trim() || '',
+                playerEmail: emailInput.value.trim() || '',
                 countryName: selectedCountry
             };
 
             try {
-                // Asegúrate de que tu BASE_API_URL esté configurada correctamente para tu despliegue en Vercel
-                const BASE_API_URL = window.location.origin + '/api'; // Esta línea ya está correcta
-                const response = await fetch(`${BASE_API_URL}/record-sale`, { 
+                const BASE_API_URL = window.location.origin + '/api';
+                const response = await fetch(`${BASE_API_URL}/create-pending-order`, { 
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(saleData)
+                    body: JSON.stringify(orderData)
                 });
 
                 if (!response.ok) {
                     const errorText = await response.text();
-                    console.error('Error al registrar la venta en el backend:', errorText);
-                    showMessage('Error al registrar la venta en el servidor. Por favor, avisa al soporte.', 'error');
+                    console.error('Error al crear la orden pendiente:', errorText);
+                    showMessage('Error al registrar la orden en el servidor. Por favor, avisa al soporte.', 'error');
                 } else {
-                    showMessage('Venta registrada en el servidor y preparando WhatsApp...', 'success');
+                    showMessage('Orden registrada exitosamente y preparando WhatsApp...', 'success');
                 }
             } catch (error) {
-                console.error('Error de red al intentar registrar la venta:', error);
-                showMessage('Error de conexión al servidor al intentar registrar la venta.', 'error');
+                console.error('Error de red al intentar crear la orden:', error);
+                showMessage('Error de conexión al servidor al intentar registrar la orden.', 'error');
             }
             // -----------------------------------------------------
-            // FIN: Envío de datos al backend
+            // FIN: Creación de orden pendiente
             // -----------------------------------------------------
 
             // Abrir WhatsApp en una nueva pestaña/ventana
@@ -2311,7 +2256,7 @@
             // Después de un breve retraso, ocultar la animación de carga y mostrar el mensaje de éxito
             setTimeout(() => {
                 loadingOverlay.style.display = 'none'; 
-                showMessage('¡Pedido Enviado! Abre WhatsApp para confirmar.', 'success'); 
+                showMessage('¡Pedido registrado exitosamente! Será procesado por nuestro equipo y entregado en 5-15 minutos.', 'success'); 
 
                 // Opcional: Limpiar el formulario después de un envío exitoso
                 topupForm.reset();
