@@ -1,30 +1,33 @@
-# Ignorar carpetas y archivos que no son necesarios para el despliegue en Vercel.
-# Esto ayuda a acelerar las construcciones y evita problemas de dependencias innecesarias.
+# Ignorar el bot de WhatsApp (se ejecutará en VPS)
+whatsapp-sheet-bot/
 
-# Ignorar el directorio .git (ya lo ignora por defecto, pero es buena práctica)
+# Ignorar archivos de desarrollo
 .git/
-
-# Ignorar node_modules si tienes dependencias de Node.js que no usas en el build de Vercel
-# o si manejas las dependencias de Node.js de otra forma.
-# node_modules/
-
-# Ignorar archivos de Python que no son parte de las funciones serverless
-# o que son solo para desarrollo local
 __pycache__/
 *.pyc
 venv/
 env/
 .venv/
 
-# Ignorar archivos de configuración de desarrollo local o sensibles
-# package.json
-# package-lock.json
-# yarn.lock
-# npm-debug.log*
+# Ignorar credenciales sensibles
+*.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+service-account-key.json
+credentials.json
 
-# Ignorar credenciales de servicio, ya que se usan variables de entorno
-# your-service-account-key.json 
+# Vercel
+.vercel/
+.next/
+node_modules/
 
+# Archivos de log
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 # Ignorar cualquier archivo que sea solo para pruebas o documentación
 # tests/
 # docs/

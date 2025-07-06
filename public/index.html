@@ -1138,26 +1138,43 @@
                 <div id="paymentMethodsList"></div>
             </div>
 
-            <div id="transferWarningMessage" class="transfer-warning">
-                ¡Advertencia! No oprimas el botón de "CONFIRMAR QUE HAZ PAGADO" si aún no has realizado el pago. Recuerda guardar una imagen del comprobante de pago. La entrega puede demorar entre 5 a 15 minutos en reflejarse en el juego
+            <!-- NUEVA POSICIÓN: Comprobante de pago después de métodos de pago -->
+            <div class="form-group" id="paymentProofSection" style="display: none;">
+                <label for="paymentProof">
+                    📎 SUBIR COMPROBANTE DE PAGO (OBLIGATORIO):
+                </label>
+                <input
+                    type="file"
+                    id="paymentProof"
+                    name="paymentProof"
+                    accept="image/*,.pdf"
+                    required
+                    style="width: 100%; padding: 14px; border: 2px solid #6A0DAD; border-radius: 10px; background-color: rgba(30, 0, 60, 0.9); color: #FFFFFF; font-size: 1.15em; transition: all 0.3s ease;"
+                />
+                <small style="color: #B0B0B0; font-size: 0.9em; display: block; margin-top: 5px;">
+                    📋 Formatos permitidos: JPG, PNG, PDF • Tamaño máximo: 10MB
+                </small>
+                <div id="paymentProofPreview" style="margin-top: 10px; display: none;">
+                    <small style="color: #00FFFF; font-size: 0.9em;">
+                        ✅ Comprobante cargado correctamente
+                    </small>
+                </div>
             </div>
 
-            <button
-                type="button"
-                id="confirmTransferBtn"
-                class="action-button"
-                disabled="true"
-            >
-                ¡CONFIRMAR QUE HAZ PAGADO! 
-            </button>
+            <!-- Mensaje de advertencia actualizado -->
+            <div id="transferWarningMessage" class="transfer-warning">
+                ¡Importante! Asegúrate de haber realizado el pago y subido el comprobante antes de enviar el pedido. La entrega puede demorar entre 5 a 15 minutos en reflejarse en el juego.
+            </div>
 
+            <!-- Solo un botón de envío -->
             <button
                 type="submit"
                 id="sendWhatsAppOrderBtn"
                 class="action-button"
                 style="display: none;"
+                disabled="true"
             >
-                ENVIAR EL PEDIDO
+                ENVIAR PEDIDO
             </button>
 
             <div id="messageDisplay" style="display: none;"></div>
@@ -1209,14 +1226,15 @@
         const amountUSDHidden = document.getElementById('amountUSDHidden');
         const totalPriceHidden = document.getElementById('totalPriceHidden');
         const currencySymbolHidden = document.getElementById('currencySymbolHidden');
+        const paymentProofInput = document.getElementById('paymentProof');
+        const paymentProofSection = document.getElementById('paymentProofSection');
 
         // Referencias al modal
         const whatsappWarningModal = document.getElementById('whatsappWarningModal');
         const confirmWhatsAppBtn = document.getElementById('confirmWhatsApp');
         const cancelWhatsAppBtn = document.getElementById('cancelWhatsApp');
 
-        // Nuevos botones de acción
-        const confirmTransferBtn = document.getElementById('confirmTransferBtn');
+        // Botón de acción
         const sendWhatsAppOrderBtn = document.getElementById('sendWhatsAppOrderBtn');
         const loadingOverlay = document.getElementById('loadingOverlay'); // Referencia al overlay de carga
 
@@ -1604,43 +1622,37 @@
             return parts.join(',');
         }
 
-        // Función para validar todos los campos y habilitar/deshabilitar el botón de Confirmar Transferencia
-        function updateConfirmTransferButtonState() {
-            const currentGame = gameOptions.find(g => g.name === selectedGame);
-            let areAllRequiredFieldsFilled = true;
-
-            // Validación de campos dinámicos
-            if (currentGame) {
-                switch (currentGame.inputRequirement) {
-                    case 'id_name':
-                        areAllRequiredFieldsFilled = userIdInput.value.trim() !== '' && userNameInput.value.trim() !== '';
-                        break;
-                    case 'id_server':
-                        areAllRequiredFieldsFilled = userIdServerInput.value.trim() !== '' && serverInput.value.trim() !== '';
-                        break;
-                    case 'id_server_name': // Mobile Legends
-                        areAllRequiredFieldsFilled = userIdServerInput.value.trim() !== '' && serverInput.value.trim() !== '' && userNameMLInput.value.trim() !== '';
-                        break;
-                    case 'id_only':
-                        areAllRequiredFieldsFilled = userIdOnlyInput.value.trim() !== '';
-                        break;
-                    case 'cod_full':
-                        areAllRequiredFieldsFilled = emailInput.value.trim() !== '' && passwordInput.value.trim() !== '' && linkageInput.value.trim() !== '' && exactAccountNameInput.value.trim() !== '';
-                        break;
-                    default:
-                        areAllRequiredFieldsFilled = false; // Si no hay tipo de input definido para el juego
-                        break;
-                }
-            } else {
-                areAllRequiredFieldsFilled = false; // Si no hay juego seleccionado, no hay campos llenos
+        // Función para validar todos los campos y habilitar/deshabilitar el botón de Enviar Pedido
+        function updateSendOrderButtonState() {
+            const gameSelected = selectedGame !== '';
+            const amountSelected = selectedAmount !== null;
+            const countrySelected = selectedCountry !== '';
+            const sellerSelected = selectedSeller !== '';
+            
+            // Validar comprobante de pago con verificación de tamaño
+            let paymentProofSelected = false;
+            if (paymentProofInput && paymentProofInput.files.length > 0) {
+                const file = paymentProofInput.files[0];
+                paymentProofSelected = file && file.size <= 10 * 1024 * 1024; // Max 10MB
             }
-
-            const isGameSelected = selectedGame !== '';
-            // Ahora verifica si hay UN artículo seleccionado
-            const isAmountSelected = selectedAmount !== null; 
-            const isSellerSelected = selectedSeller !== ''; 
-            const isCountrySelected = selectedCountry !== ''; // El país DEBE ser seleccionado
-
+            
+            // Validar campos específicos del juego
+            let userInfoValid = false;
+            if (idNameInputs.style.display === 'block') {
+                userInfoValid = userIdInput.value.trim() !== '' && userNameInput.value.trim() !== '';
+            } else if (idServerInputs.style.display === 'block') {
+                const mlNameValid = document.getElementById('mlNameInput').style.display === 'block' ? 
+                    userNameMLInput.value.trim() !== '' : true;
+                userInfoValid = userIdServerInput.value.trim() !== '' && serverInput.value.trim() !== '' && mlNameValid;
+            } else if (idOnlyInputs.style.display === 'block') {
+                userInfoValid = userIdOnlyInput.value.trim() !== '';
+            } else if (codInputs.style.display === 'block') {
+                userInfoValid = emailInput.value.trim() !== '' && 
+                               passwordInput.value.trim() !== '' && 
+                               linkageInput.value.trim() !== '' && 
+                               exactAccountNameInput.value.trim() !== '';
+            }
+            
             // Validar si el ID de usuario contiene solo números (aplicar solo a campos de ID)
             let isUserIdNumeric = true;
             if (idNameInputs.style.display === 'block' && userIdInput.value.trim() !== '') {
@@ -1651,21 +1663,34 @@
                 isUserIdNumeric = /^[0-9]*$/.test(userIdOnlyInput.value.trim());
             }
             
-            // Validación final del botón
-            if (isGameSelected && isAmountSelected && isSellerSelected && isCountrySelected && areAllRequiredFieldsFilled && isUserIdNumeric) {
-                confirmTransferBtn.disabled = false;
-                messageDisplay.style.display = 'none'; 
+            const allValid = gameSelected && amountSelected && countrySelected && 
+                             sellerSelected && userInfoValid && paymentProofSelected && isUserIdNumeric;
+            
+            sendWhatsAppOrderBtn.disabled = !allValid;
+            
+            // Solo mostrar el botón si hay métodos de pago visibles
+            if (paymentMethodsDisplayDiv.style.display === 'block') {
+                sendWhatsAppOrderBtn.style.display = 'block';
             } else {
-                confirmTransferBtn.disabled = true;
-                if (!isCountrySelected) { // Mensaje específico para el país no seleccionado
+                sendWhatsAppOrderBtn.style.display = 'none';
+            }
+            
+            if (!allValid) {
+                if (!countrySelected) {
                     showMessage('Por favor, selecciona tu país para continuar.', 'info');
+                } else if (!paymentProofSelected) {
+                    if (paymentProofInput && paymentProofInput.files.length > 0) {
+                        showMessage('El archivo es demasiado grande. Máximo 10MB permitido.', 'error');
+                    } else {
+                        showMessage('Por favor, adjunta el comprobante de pago.', 'info');
+                    }
                 } else if (!isUserIdNumeric && (userIdInput && userIdInput.value.trim() || userIdServerInput && userIdServerInput.value.trim() || userIdOnlyInput && userIdOnlyInput.value.trim())) {
-                    // Solo muestra este mensaje si el campo de ID no está vacío y no es numérico
                     showMessage('El ID de Usuario (o UID) solo debe contener números.', 'error');
                 } else if (!messageDisplay.textContent || messageDisplay.style.display === 'none') {
-                    // Mostrar un mensaje general si no hay un error específico y el mensaje no está ya visible
-                    showMessage('Por favor, completa todos los campos necesarios para confirmar la transferencia.', 'info');
+                    showMessage('Por favor, completa todos los campos necesarios para enviar el pedido.', 'info');
                 }
+            } else {
+                messageDisplay.style.display = 'none';
             }
         }
 
@@ -1706,10 +1731,9 @@
                     updateAmountSelection(); 
                     updatePriceSummary();
                     updateInputFields(); // Actualiza los campos de entrada al seleccionar un juego
-                    sendWhatsAppOrderBtn.style.display = 'none';
                     messageDisplay.style.display = 'none';
                     transferWarningMessage.style.display = 'block';
-                    updateConfirmTransferButtonState();
+                    updateSendOrderButtonState();
 
                     // Desplazamiento suave a la sección de artículos
                     amountSelectionDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1796,10 +1820,9 @@
                             selectedAmount = amount; // Almacenar el objeto del artículo seleccionado
 
                             updatePriceSummary();
-                            sendWhatsAppOrderBtn.style.display = 'none';
                             messageDisplay.style.display = 'none'; 
                             transferWarningMessage.style.display = 'block'; 
-                            updateConfirmTransferButtonState();
+                            updateSendOrderButtonState();
 
                             // Desplazamiento suave a la sección de información del usuario
                             userInfoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1852,10 +1875,9 @@
                     if (selectedGame) { // Si ya hay un juego seleccionado, actualizar los precios de los artículos
                         updateAmountSelection(); 
                     }
-                    sendWhatsAppOrderBtn.style.display = 'none';
                     messageDisplay.style.display = 'none'; 
                     transferWarningMessage.style.display = 'block'; 
-                    updateConfirmTransferButtonState();
+                    updateSendOrderButtonState();
 
                     // Desplazamiento suave a la sección de juegos
                     gameSelectionSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1901,13 +1923,12 @@
                     Array.from(sellerSelectContainer.children).forEach(div => div.classList.remove('selected'));
                     sellerItemDiv.classList.add('selected');
 
-                    sendWhatsAppOrderBtn.style.display = 'none';
                     messageDisplay.style.display = 'none'; 
                     transferWarningMessage.style.display = 'block'; 
-                    updateConfirmTransferButtonState();
+                    updateSendOrderButtonState();
 
-                    // Desplazamiento suave al botón de confirmar
-                    confirmTransferBtn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Desplazamiento suave al botón de enviar
+                    sendWhatsAppOrderBtn.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 });
                 sellerSelectContainer.appendChild(sellerItemDiv);
             });
@@ -1968,7 +1989,7 @@
                 default:
                     break;
             }
-            updateConfirmTransferButtonState(); 
+            updateSendOrderButtonState(); 
         }
 
 
@@ -1977,13 +1998,36 @@
          emailInput, passwordInput, linkageInput, exactAccountNameInput].forEach(input => {
             if (input) { 
                 input.addEventListener('input', () => {
-                    sendWhatsAppOrderBtn.style.display = 'none';
                     messageDisplay.style.display = 'none'; 
                     transferWarningMessage.style.display = 'block'; 
-                    updateConfirmTransferButtonState();
+                    updateSendOrderButtonState();
                 });
             }
         });
+
+        // Agregar listener para el campo de comprobante
+        if (paymentProofInput) {
+            paymentProofInput.addEventListener('change', function() {
+                const file = this.files[0];
+                const preview = document.getElementById('paymentProofPreview');
+                
+                if (file) {
+                    if (file.size > 10 * 1024 * 1024) {
+                        alert('El archivo es demasiado grande. El tamaño máximo permitido es 10MB.');
+                        this.value = '';
+                        preview.style.display = 'none';
+                    } else {
+                        preview.style.display = 'block';
+                    }
+                } else {
+                    preview.style.display = 'none';
+                }
+                
+                messageDisplay.style.display = 'none';
+                transferWarningMessage.style.display = 'block';
+                updateSendOrderButtonState();
+            });
+        }
 
         // Manejador de cambio de vendedor (AHORA MANEJADO POR CLICK EN BOTONES)
         // Ya no es necesario sellerSelect.addEventListener('change', ...)
@@ -2039,13 +2083,19 @@
                         p.innerHTML = `<span>${method.name}:</span> ${method.details}`;
                         paymentMethodsListDiv.appendChild(p);
                     });
+                    // Mostrar la sección de comprobante de pago después de los métodos de pago
+                    paymentProofSection.style.display = 'block';
+                    sendWhatsAppOrderBtn.style.display = 'block';
                 } else {
                     paymentMethodsDisplayDiv.style.display = 'none'; 
+                    paymentProofSection.style.display = 'none';
+                    sendWhatsAppOrderBtn.style.display = 'none';
                 }
 
             } else {
                 priceSummaryDiv.style.display = 'none'; 
                 paymentMethodsDisplayDiv.style.display = 'none'; 
+                paymentProofSection.style.display = 'none';
                 selectedItemsPreview.innerHTML = ''; 
             }
         }
@@ -2076,17 +2126,22 @@
             whatsappWarningModal.style.display = 'none'; 
         }
 
-        // Manejador del botón "Confirmar Transferencia"
-        confirmTransferBtn.addEventListener('click', () => {
-            if (confirmTransferBtn.disabled) {
+
+
+
+        // Manejador del envío del formulario (modificado para WhatsApp) - ahora activado por sendWhatsAppOrderBtn
+        topupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (sendWhatsAppOrderBtn.disabled) {
                 return;
             }
-
+            
             // Realizar validaciones finales antes de mostrar el modal
             if (!selectedCountry) { showMessage('Por favor, selecciona tu país para continuar.', 'error'); return; }
             const currentGame = gameOptions.find(g => g.name === selectedGame);
             if (!currentGame) { showMessage('Por favor, selecciona un juego.', 'error'); return; }
-            if (selectedAmount === null) { showMessage('Por favor, selecciona un artículo/monto.', 'error'); return; } // Verifica un solo artículo
+            if (selectedAmount === null) { showMessage('Por favor, selecciona un artículo/monto.', 'error'); return; }
 
             let isValid = true;
             let errorMessage = '';
@@ -2148,18 +2203,9 @@
                 return;
             }
 
-            if (!selectedSeller) { showMessage('Por favor, selecciona un vendedor.', 'error'); return; } 
+            if (!selectedSeller) { showMessage('Por favor, selecciona un vendedor.', 'error'); return; }
+            if (!paymentProofInput.files.length) { showMessage('Por favor, adjunta el comprobante de pago.', 'error'); return; }
             
-            showMessage('¡Transferencia confirmada! Ahora puedes enviar tu pedido por WhatsApp.', 'success');
-            confirmTransferBtn.style.display = 'none'; 
-            sendWhatsAppOrderBtn.style.display = 'block'; 
-            transferWarningMessage.style.display = 'none'; 
-        });
-
-
-        // Manejador del envío del formulario (modificado para WhatsApp) - ahora activado por sendWhatsAppOrderBtn
-        topupForm.addEventListener('submit', async (e) => {
-            e.preventDefault(); 
             showWhatsAppWarningModal();
         });
 
@@ -2287,10 +2333,8 @@
                 Array.from(amountButtonsDiv.children).forEach(div => div.classList.remove('selected'));
                 updateInputFields(); 
 
-                confirmTransferBtn.style.display = 'block';
-                sendWhatsAppOrderBtn.style.display = 'none';
                 transferWarningMessage.style.display = 'block'; 
-                updateConfirmTransferButtonState(); 
+                updateSendOrderButtonState(); 
             }, 2000); 
         });
 
@@ -2305,7 +2349,7 @@
             loadCountryOptions(); // Carga los botones de país
             loadGameOptions(); 
             loadSellerOptions(); // Carga los botones de vendedor
-            updateConfirmTransferButtonState(); 
+            updateSendOrderButtonState(); 
             updateInputFields(); 
         });
 
