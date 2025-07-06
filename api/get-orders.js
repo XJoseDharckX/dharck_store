@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
         const sellerOrders = rows.map(row => ({
           timestamp: row.get('📦Fecha_hora') || new Date().toISOString(),
           game: row.get('📦Juego') || 'N/A',
-          amount: row.get('📦Artículo') || 'N/A',
+          amount: row.get('📦Articulo') || 'N/A', // Corregido: sin tilde
           quantity: row.get('📦Cantidad') || 1,
           totalPrice: row.get('📦Monto_total') || 'N/A',
           seller: sellerName,

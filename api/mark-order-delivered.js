@@ -109,69 +109,69 @@ const ARTICLE_PROFIT_CONFIG = {
 // Configuración de ganancias personalizadas para XJoseDharckX
 const XJOSEDHARCKX_PROFIT_CONFIG = {
   // LORDS MOBILE - Ganancias personalizadas para XJoseDharckX
-  'PASE SEMANAL': 0.25,
-  'PASE MENSUAL': 0.7,
-  '209💎': 0.25,
-  '524💎': 0.30,
-  '1048💎': 0.40,
-  '2096💎': 0.70,
-  '3144💎': 1.00,
-  '5240💎': 2.00,
-  '6812💎': 3.00,
-  '9956💎': 6.00,
-  '19912💎': 8.00,
-  '30392💎': 10.00,
-  '50304💎': 18.00,
+  'PASE SEMANAL': 0.30,
+  'PASE MENSUAL': 0.90,
+  '209💎': 0.30,
+  '524💎': 0.40,
+  '1048💎': 0.50,
+  '2096💎': 1.00,
+  '3144💎': 2.00,
+  '5240💎': 3.00,
+  '6812💎': 4.00,
+  '9956💎': 8.00,
+  '19912💎': 10.00,
+  '30392💎': 15.00,
+  '50304💎': 23.00,
   
-  // LORDS MOBILE PROMOCION - Ganancias personalizadas
-  '💎499+CUPON': 0.25,
-  '💎999+CUPON': 0.50,
-  '💎1999+CUPON': 0.70,
-  '💎2499+CUPON': 0.70,
-  '💎2999+CUPON': 0.70,
-  '💎4999+CUPON': 0.70,
-  '💎9999+CUPON': 0.70,
+  // LORDS MOBILE PROMOCION (CORREGIDO - usar labels exactos de index.html)
+  '💎499+CUPON': 0.40,
+  '💎999+CUPON': 1.00,
+  '💎1999+CUPON': 1.00,
+  '💎2499+CUPON': 1.00,
+  '💎2999+CUPON': 1.00,
+  '💎4999+CUPON': 1.00,
+  '💎9999+CUPON': 1.00,
   
-  // BLOOD STRIKE - Ganancias personalizadas
-  '100+5': 0.10,
-  '300+20': 0.20,
-  '500+40': 0.50,
-  '1000+100': 1.00,
-  '2000+200': 1.50,
-  '5000+800': 1.50,
-  'PASE ELITE': 0.30,
-  'PASE PREMIUM': 1.00,
-  'PASE DE NIVEL': 0.20,
+  // BLOOD STRIKE
+  '100+5': 0.20,
+  '300+20': 0.50,
+  '500+40': 1.00,
+  '1000+100': 1.80,
+  '2000+200': 4.30,
+  '5000+800': 9.00,
+  'PASE ELITE': 0.50,
+  'PASE PREMIUM': 1.60,
+  'PASE DE NIVEL': 0.50,
   
-  // FREE FIRE - Ganancias personalizadas
+  // FREE FIRE
   '💎100+10': 0.10,
-  '💎200+20': 0.20,
-  '💎310+31': 0.30,
-  '💎520+52': 0.40,
-  '💎1069+106': 0.50,
-  '💎2180+218': 1.50,
-  '💎5600+560': 3.00,
-  '💎SEMANAL': 0.20,
-  '💎MENSUAL': 0.40,
+  '💎200+20': 0.60,
+  '💎310+31': 0.40,
+  '💎520+52': 0.80,
+  '💎1069+106': 1.30,
+  '💎2180+218': 3.00,
+  '💎5600+560': 5.00,
+  '💎SEMANAL': 0.60,
+  '💎MENSUAL': 1.00,
 
-  // GENSHIN IMPACT - Ganancias personalizadas
-  'PASE LUNAR': 0.70,
-  '60': 0.25,
-  '300+30': 0.50,
-  '980+110': 1.20,
-  '1980+260': 2.20,
-  '3280+600': 3.80,
-  '6480+1600': 7.50,
+  // GENSHIN IMPACT
+  'PASE LUNAR': 1.00,
+  '60': 0.15,
+  '300+30': 1.00,
+  '980+110': 2.00,
+  '1980+260': 3.00,
+  '3280+600': 8.80,
+  '6480+1600': 16.80,
   
-  // PUBG MOBILE - Ganancias personalizadas
-  '60': 0.25,
-  '300+25': 0.50,
+  // PUBG MOBILE
+  '60': 0.10,
+  '300+25': 1.00,
   '600+60': 0.85,
   '1500+300': 1.90,
   '3000+850': 3.80,
   '6000+2100': 7.00,
   
-  // DELTA FORCE STEAM - Ganancias personalizadas
+  // DELTA FORCE STEAM
   '60 Coins': 0.25,
   '300+20 Coins': 0.50,
   '420+40 Coins': 0.60,
@@ -183,7 +183,7 @@ const XJOSEDHARCKX_PROFIT_CONFIG = {
   '12960+3240 Coins': 8.00,
   '19440+4860 Coins': 12.00,
   
-  // DELTA FORCE GARENA - Ganancias personalizadas
+  // DELTA FORCE GARENA
   '300+36 Coins': 0.55,
   '420+62 Coins': 0.65,
   '680+105 Coins': 0.75,
@@ -194,14 +194,15 @@ const XJOSEDHARCKX_PROFIT_CONFIG = {
   '12960+3888 Coins': 9.00,
   '19440+5832 Coins': 13.50,
   
-  // CALL OF DUTY MOBILE - Ganancias personalizadas
+  // CALL OF DUTY MOBILE
   '80 CP': 0.20,
-  '420 CP': 0.50,
-  '880 CP': 0.70,
-  '2400 CP': 0.70,
-  '5000 CP': 1.50,
-  '10800 CP': 4.00,
+  '420 CP': 0.80,
+  '880 CP': 0.80,
+  '2400 CP': 0.80,
+  '5000 CP': 4.40,
+  '10800 CP': 9.50,
   
+  // Ganancia por defecto si no se encuentra el artículo específico
   'DEFAULT': 0.50
 };
 
@@ -278,7 +279,7 @@ module.exports = async (req, res) => {
     
     const saleData = {
       '📦Juego': orderData.juego,
-      '📦Artículo': orderData.articulo, // Ahora se registra correctamente el nombre del artículo
+      '📦Articulo': orderData.articulo, // Corregido: sin tilde
       '📦Cantidad': 1,
       '📦Monto_total': orderData.montoUSD,
       '📦Ganancia': ganancia,

@@ -292,7 +292,7 @@ module.exports = async (req, res) => {
     // Preparar datos con formato actualizado
     const rowData = {
         '📦Juego': gameName,
-        '📦Artículo': itemLabel + (isArticleInPromotion(gameName, itemLabel) ? ' 🔥PROMO' : ''), // Nombre correcto del artículo
+        '📦Articulo': itemLabel + (isArticleInPromotion(gameName, itemLabel) ? ' 🔥PROMO' : ''), // Corregido: sin tilde
         '📦Cantidad': 1,
         '📦Monto_total': amountUSD,
         '📦Ganancia': ganancia,

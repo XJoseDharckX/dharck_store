@@ -176,11 +176,58 @@
             color: white;
         }
 
+        /* Agregar estos estilos en la sección <style> */
         .btn-danger {
-            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            background: linear-gradient(135deg, #e53e3e, #c53030);
             color: white;
+            border: none;
         }
-
+        
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #c53030, #9c2626);
+            transform: translateY(-1px);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .notification-error {
+            background: linear-gradient(135deg, #fed7d7, #feb2b2);
+            color: #742a2a;
+            border-left: 4px solid #e53e3e;
+        }
+        
+        .notification-success {
+            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+            color: #22543d;
+            border-left: 4px solid #38a169;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+            max-width: 400px;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
         .btn-warning {
             background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
             color: white;
@@ -586,6 +633,9 @@
                                 ${order.Estado === 'Pendiente' ? `
                                     <button class="btn btn-sm btn-success" onclick="markAsDelivered('${order.ID_Pedido}', ${order.rowNumber})">
                                         <i class="fas fa-check"></i> Entregar
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteOrder('${order.ID_Pedido}', ${order.rowNumber})">
+                                        <i class="fas fa-trash"></i> Eliminar
                                     </button>
                                 ` : ''}
                             </div>
