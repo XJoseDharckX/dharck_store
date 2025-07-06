@@ -17,14 +17,14 @@ const ARTICLE_PROFIT_CONFIG = {
   '30392💎': 10.00,
   '50304💎': 18.00,
   
-  // LORDS MOBILE PROMOCION (NUEVO)
-  '💎499+20%': 0.25,
-  '💎999+20%': 0.50,
-  '💎1999+20%': 0.70,
-  '💎2499+20%': 0.70,
-  '💎2999+20%': 0.70,
-  '💎4999+20%': 0.70,
-  '💎9999+20%': 0.70,
+  // LORDS MOBILE PROMOCION (CORREGIDO - usar labels exactos de index.html)
+  '💎499+CUPON': 0.25,
+  '💎999+CUPON': 0.50,
+  '💎1999+CUPON': 0.70,
+  '💎2499+CUPON': 0.70,
+  '💎2999+CUPON': 0.70,
+  '💎4999+CUPON': 0.70,
+  '💎9999+CUPON': 0.70,
   
   // BLOOD STRIKE
   '100+5': 0.10,
