@@ -180,12 +180,12 @@ module.exports = async (req, res) => {
     
     // Preparar datos con formato actualizado
     const rowData = {
-        '📦Juego': gameName,
-        '📦Artículo': itemLabel + (isArticleInPromotion(gameName, itemLabel) ? ' 🔥PROMO' : ''), // ← CORREGIDO: usar itemLabel directamente
-        '📦Cantidad': 1,
-        '📦Monto_total': amountUSD,
-        '📦Ganancia': ganancia,
-        '📦Fecha_hora': new Date().toLocaleString('es-ES', { 
+        'Juego': gameName,
+        'Artículo': itemLabel + (isArticleInPromotion(gameName, itemLabel) ? ' 🔥PROMO' : ''),
+        'Cantidad': 1,
+        'Monto_total': amountUSD,
+        'Ganancia': ganancia,
+        'Fecha_hora': new Date().toLocaleString('es-ES', { 
             timeZone: 'America/Caracas',
             year: 'numeric',
             month: '2-digit',
