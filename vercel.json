@@ -11,19 +11,3 @@
     }
   ]
 }
-{
-  "functions": {
-    "api/*.js": {
-      "maxDuration": 30
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/index.html"
-    }
-  ],
-  "env": {
-    "WHATSAPP_BOT_URL": "https://tu-vps-domain.com"
-  }
-}
