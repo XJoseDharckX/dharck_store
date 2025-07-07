@@ -501,14 +501,22 @@
         }
 
         @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        /* Estilo para campos copiables */
+        .copyable {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .copyable:hover {
+            background-color: #e3f2fd !important;
+        }
+
+        .copied {
+            background-color: #c8e6c9 !important;
         }
 
         /* Responsive */
@@ -745,12 +753,19 @@
 
         // === FUNCIONES DE PEDIDOS (existentes) ===
         
-        // Cargar pedidos
+        // Función mejorada para cargar pedidos con fecha predeterminada
         async function loadOrders() {
             const loadingMessage = document.getElementById('loadingMessage');
             const errorMessage = document.getElementById('errorMessage');
             const tableBody = document.getElementById('ordersTableBody');
             const emptyState = document.getElementById('emptyState');
+            const dateFilter = document.getElementById('dateFilter');
+            
+            // Establecer fecha actual como predeterminada si no hay fecha seleccionada
+            if (!dateFilter.value) {
+                const today = new Date().toISOString().split('T')[0];
+                dateFilter.value = today;
+            }
             
             loadingMessage.style.display = 'block';
             errorMessage.style.display = 'none';
@@ -764,17 +779,13 @@
                 }
                 
                 allOrders = await response.json();
-                filteredOrders = [...allOrders];
+                
+                // Aplicar filtro de fecha automáticamente
+                const selectedDate = dateFilter.value;
+                const statusFilter = document.getElementById('statusFilter').value;
+                applyFilters(selectedDate, statusFilter);
                 
                 loadingMessage.style.display = 'none';
-                
-                if (allOrders.length === 0) {
-                    emptyState.style.display = 'block';
-                    tableBody.innerHTML = '';
-                } else {
-                    displayOrders(filteredOrders);
-                    updateStats();
-                }
                 
             } catch (error) {
                 console.error('Error al cargar pedidos:', error);
@@ -784,9 +795,17 @@
             }
         }
 
-        // Mostrar pedidos en la tabla
+        // Función mejorada para mostrar pedidos con funcionalidad de copiar
         function displayOrders(ordersData) {
             const tableBody = document.getElementById('ordersTableBody');
+            
+            if (ordersData.length === 0) {
+                document.getElementById('emptyState').style.display = 'block';
+                tableBody.innerHTML = '';
+                return;
+            }
+            
+            document.getElementById('emptyState').style.display = 'none';
             
             tableBody.innerHTML = ordersData.map(order => {
                 const statusClass = order.Estado === 'Entregado' ? 'status-delivered' : 'status-pending';
@@ -794,17 +813,17 @@
                 
                 return `
                     <tr>
-                        <td><strong>${order.ID_Pedido}</strong></td>
-                        <td>${new Date(order.Fecha_Hora).toLocaleString('es-ES')}</td>
-                        <td>${order.Juego}</td>
-                        <td>${order.Artículo}</td>
-                        <td>$${order.Monto_USD}</td>
-                        <td>
+                        <td class="copyable" onclick="copyToClipboard('${order.ID_Pedido}')"><strong>${order.ID_Pedido}</strong></td>
+                        <td class="copyable" onclick="copyToClipboard('${new Date(order.Fecha_Hora).toLocaleString('es-ES')}')"> ${new Date(order.Fecha_Hora).toLocaleString('es-ES')}</td>
+                        <td class="copyable" onclick="copyToClipboard('${order.Juego}')">${order.Juego}</td>
+                        <td class="copyable" onclick="copyToClipboard('${order.Artículo}')">${order.Artículo}</td>
+                        <td class="copyable" onclick="copyToClipboard('$${order.Monto_USD}')">${order.Monto_USD}</td>
+                        <td class="copyable" onclick="copyToClipboard('${order.Nombre_Jugador} - ID: ${order.ID_Jugador}')">
                             <strong>${order.Nombre_Jugador}</strong><br>
                             <small>ID: ${order.ID_Jugador}</small>
                         </td>
-                        <td>${order.Vendedor}</td>
-                        <td>${order.País}</td>
+                        <td class="copyable" onclick="copyToClipboard('${order.Vendedor}')">${order.Vendedor}</td>
+                        <td class="copyable" onclick="copyToClipboard('${order.País}')">${order.País}</td>
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                         <td>
                             <div class="action-buttons">
@@ -824,6 +843,22 @@
                     </tr>
                 `;
             }).join('');
+        }
+
+        // Función para copiar al portapapeles
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification(`Copiado: ${text}`, 'success');
+                
+                // Efecto visual temporal
+                event.target.classList.add('copied');
+                setTimeout(() => {
+                    event.target.classList.remove('copied');
+                }, 1000);
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+                showNotification('Error al copiar al portapapeles', 'error');
+            });
         }
 
         // Actualizar estadísticas
@@ -892,7 +927,7 @@
             `).join('');
         }
 
-        // Actualizar tasa de cambio
+        // Función mejorada para actualizar tasas de cambio
         async function updateRate(countryName, newRate) {
             if (!newRate || parseFloat(newRate) <= 0) {
                 showNotification('La tasa de cambio debe ser mayor a 0', 'error');
@@ -900,26 +935,38 @@
             }
             
             try {
+                showNotification('Actualizando tasa de cambio...', 'success');
+                
                 const response = await fetch('/api/update-exchange-rate', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
                     body: JSON.stringify({ 
                         countryName: countryName, 
                         exchangeRate: parseFloat(newRate) 
                     })
                 });
                 
-                const result = await response.json();
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Error ${response.status}: ${errorText}`);
+                }
                 
-                if (response.ok) {
-                    showNotification(`Tasa de cambio para ${countryName} actualizada correctamente`, 'success');
-                } else {
-                    throw new Error(result.error || 'Error al actualizar');
+                const result = await response.json();
+                showNotification(`Tasa de cambio para ${countryName} actualizada correctamente`, 'success');
+                
+                // Actualizar el valor en currentRates
+                const rateIndex = currentRates.findIndex(r => r.name === countryName);
+                if (rateIndex !== -1) {
+                    currentRates[rateIndex].exchangeRate = parseFloat(newRate);
                 }
                 
             } catch (error) {
                 console.error('Error al actualizar tasa:', error);
                 showNotification(`Error al actualizar tasa: ${error.message}`, 'error');
+                
                 // Revertir el valor en el input
                 const originalRate = currentRates.find(r => r.name === countryName)?.exchangeRate;
                 if (originalRate) {
@@ -986,7 +1033,7 @@
             updateStats();
         }
 
-        // Limpiar filtros
+        // Función mejorada para limpiar filtros
         function clearFilters() {
             document.getElementById('dateFilter').value = '';
             document.getElementById('statusFilter').value = '';
