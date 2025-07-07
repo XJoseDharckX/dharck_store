@@ -1,5 +1,14 @@
 const fs = require('fs').promises;
 const path = require('path');
+const { GoogleSpreadsheet } = require('google-spreadsheet');
+const { JWT } = require('google-auth-library');
+
+// Configuración de autenticación
+const serviceAccountAuth = new JWT({
+  email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+  key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+});
 
 export default async function handler(req, res) {
     // Configurar CORS
@@ -15,28 +24,42 @@ export default async function handler(req, res) {
         try {
             const { countryName, exchangeRate } = req.body;
             
-            if (!countryName || !exchangeRate) {
-                return res.status(400).json({ error: 'País y tasa de cambio son requeridos' });
+            if (!countryName || !exchangeRate || exchangeRate <= 0) {
+                return res.status(400).json({ error: 'País y tasa de cambio válida son requeridos' });
             }
             
-            // Leer el archivo index.html
-            const indexPath = path.join(process.cwd(), 'public', 'index.html');
-            let indexContent = await fs.readFile(indexPath, 'utf8');
+            // Conectar a Google Sheets
+            const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID, serviceAccountAuth);
+            await doc.loadInfo();
             
-            // Buscar y reemplazar la tasa de cambio específica
-            const regex = new RegExp(
-                `(name: '${countryName}',[\\s\\S]*?exchangeRate: )(\\d+\\.?\\d*)`,
-                'g'
-            );
-            
-            const newContent = indexContent.replace(regex, `$1${exchangeRate}`);
-            
-            if (newContent === indexContent) {
-                return res.status(404).json({ error: 'País no encontrado' });
+            // Buscar o crear hoja de tasas de cambio
+            let ratesSheet = doc.sheetsByTitle['TasasCambio'];
+            if (!ratesSheet) {
+                ratesSheet = await doc.addSheet({
+                    title: 'TasasCambio',
+                    headerValues: ['Pais', 'TasaCambio', 'FechaActualizacion']
+                });
             }
             
-            // Guardar el archivo actualizado
-            await fs.writeFile(indexPath, newContent, 'utf8');
+            await ratesSheet.loadCells();
+            
+            // Buscar si el país ya existe
+            const rows = await ratesSheet.getRows();
+            let countryRow = rows.find(row => row.get('Pais') === countryName);
+            
+            if (countryRow) {
+                // Actualizar tasa existente
+                countryRow.set('TasaCambio', exchangeRate);
+                countryRow.set('FechaActualizacion', new Date().toISOString());
+                await countryRow.save();
+            } else {
+                // Agregar nueva tasa
+                await ratesSheet.addRow({
+                    'Pais': countryName,
+                    'TasaCambio': exchangeRate,
+                    'FechaActualizacion': new Date().toISOString()
+                });
+            }
             
             res.status(200).json({ 
                 success: true, 
@@ -45,7 +68,7 @@ export default async function handler(req, res) {
             
         } catch (error) {
             console.error('Error al actualizar tasa de cambio:', error);
-            res.status(500).json({ error: 'Error al actualizar tasa de cambio' });
+            res.status(500).json({ error: 'Error al actualizar tasa de cambio: ' + error.message });
         }
     } else {
         res.status(405).json({ error: 'Método no permitido' });

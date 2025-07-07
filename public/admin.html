@@ -918,8 +918,8 @@
                         <input type="number" 
                                step="0.01" 
                                value="${country.exchangeRate}" 
-                               id="rate-${country.name.replace(/\s+/g, '-')}" 
-                               onchange="updateRate('${country.name}', this.value)"
+ s                               id="rate-${country.name.replace(/\s+/g, '-')}" 
+                               onchange="updateRate('${country.name}')"
                                min="0">
                         <span>${country.symbol}</span>
                     </div>
@@ -928,14 +928,16 @@
         }
 
         // Función mejorada para actualizar tasas de cambio
-        async function updateRate(countryName, newRate) {
+        async function updateRate(countryName) {
+            const newRate = document.getElementById(`rate-${countryName.replace(/\s+/g, '-')}`).value;
+            
             if (!newRate || parseFloat(newRate) <= 0) {
-                showNotification('La tasa de cambio debe ser mayor a 0', 'error');
+                showNotification('Por favor ingresa una tasa de cambio válida mayor a 0', 'error');
                 return;
             }
             
             try {
-                showNotification('Actualizando tasa de cambio...', 'success');
+                showNotification('Actualizando tasa de cambio...', 'info');
                 
                 const response = await fetch('/api/update-exchange-rate', {
                     method: 'POST',
@@ -949,25 +951,23 @@
                     })
                 });
                 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Error ${response.status}: ${errorText}`);
-                }
-                
                 const result = await response.json();
-                showNotification(`Tasa de cambio para ${countryName} actualizada correctamente`, 'success');
                 
-                // Actualizar el valor en currentRates
-                const rateIndex = currentRates.findIndex(r => r.name === countryName);
-                if (rateIndex !== -1) {
-                    currentRates[rateIndex].exchangeRate = parseFloat(newRate);
+                if (response.ok && result.success) {
+                    showNotification(`Tasa de cambio actualizada exitosamente para ${countryName}`, 'success');
+                    // Recargar las tasas para mostrar los cambios
+                    setTimeout(() => {
+                        loadExchangeRates();
+                    }, 1000);
+                } else {
+                    throw new Error(result.error || 'Error desconocido');
                 }
                 
             } catch (error) {
-                console.error('Error al actualizar tasa:', error);
+                console.error('Error:', error);
                 showNotification(`Error al actualizar tasa: ${error.message}`, 'error');
                 
-                // Revertir el valor en el input
+                // Restaurar valor original
                 const originalRate = currentRates.find(r => r.name === countryName)?.exchangeRate;
                 if (originalRate) {
                     document.getElementById(`rate-${countryName.replace(/\s+/g, '-')}`).value = originalRate;

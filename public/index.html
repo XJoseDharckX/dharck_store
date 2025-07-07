@@ -1394,14 +1394,15 @@
             // Puedes añadir más juegos aquí
         ];
 
-        // Datos de países y tasas de cambio (RUTAS DE IMAGEN ACTUALIZADAS)
+        // Datos de países y tasas de cambio - AHORA SE CARGAN DINÁMICAMENTE
         let countryData = [
+            // Datos por defecto que se actualizarán desde la API
             {
                 name: 'VENEZUELA',
                 code: 'VES',
-                exchangeRate: 144.5, // Tasa de cambio directa
+                exchangeRate: 144.5,
                 symbol: 'Bs.',
-                imageUrl: '/image/paises/ve.png', // Ruta actualizada
+                imageUrl: '/image/paises/ve.png',
                 paymentMethods: [
                     { name: 'Pago Móvil', details: 'C.I.: V-32147818, Teléfono: 04126027407, Banco: 0105 (Banco Mercantil)' },
                     { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
@@ -1412,7 +1413,7 @@
                 code: 'COP',
                 exchangeRate: 4150,
                 symbol: 'COP',
-                imageUrl: '/image/paises/co.png', // Ruta actualizada
+                imageUrl: '/image/paises/co.png',
                 paymentMethods: [
                     { name: 'Nequi', details: 'Número: 3012660676 Nombre:Ali.' },
                     { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
@@ -1423,7 +1424,7 @@
                 code: 'PEN',
                 exchangeRate: 3.85,
                 symbol: 'S/.',
-                imageUrl: '/image/paises/pe.png', // Ruta actualizada
+                imageUrl: '/image/paises/pe.png',
                 paymentMethods: [
                     { name: 'BCP', details: 'Cuenta: 38097062947042, Titular: Yoshimara' },
                     { name: 'Yape', details: 'Número: 974610375' },
@@ -1435,7 +1436,7 @@
                 code: 'MXN',
                 exchangeRate: 20,
                 symbol: 'MXN',
-                imageUrl: '/image/paises/mx.png', // Ruta actualizada
+                imageUrl: '/image/paises/mx.png',
                 paymentMethods: [
                     { name: 'SPIN BY OXXO', details: 'TARJETA: 4217 4701 8364 0099' },
                     { name: 'BANCO AZTECA', details: 'INTERBANCARIA: 1277 9700 1467 5859 00' },
@@ -1446,9 +1447,9 @@
             {
                 name: 'ESTADOS UNIDOS',
                 code: 'USD',
-                exchangeRate: 1.05, 
+                exchangeRate: 1.05,
                 symbol: '$',
-                imageUrl: '/image/paises/us.png', // Ruta actualizada
+                imageUrl: '/image/paises/us.png',
                 paymentMethods: [
                     { name: 'Zelle', details: '+1 (661) 736 - 0564, Nombre: Jannett Martinez Lopez' },
                     { name: 'Titular', details: 'Jannett Martinez Lopez' },
@@ -1460,7 +1461,7 @@
                 code: 'ARS',
                 exchangeRate: 1320,
                 symbol: '$',
-                imageUrl: '/image/paises/ar.png', // Ruta actualizada
+                imageUrl: '/image/paises/ar.png',
                 paymentMethods: [
                     { name: 'Mercado pago', details: '0000003100069089540216' },
                     { name: 'UALA', details: '3840200500000000199867' },
@@ -1473,7 +1474,7 @@
                 code: 'USD',
                 exchangeRate: 1.06,
                 symbol: '$',
-                imageUrl: '/image/paises/ec.png', // Ruta actualizada
+                imageUrl: '/image/paises/ec.png',
                 paymentMethods: [
                     { name: 'Banco Pichincha', details: 'Cta. ahorros 2204277346' },
                     { name: 'Banco de Guayaquil', details: 'Cta. ahorros 0039924590' },
@@ -1486,12 +1487,12 @@
                 code: 'CLP',
                 exchangeRate: 1010,
                 symbol: '$',
-                imageUrl: '/image/paises/cl.png', // Ruta actualizada
+                imageUrl: '/image/paises/cl.png',
                 paymentMethods: [
                     { name: 'BANCO FALABELLA', details: 'RUT: 17244216-1 / gi553ll30@gmail.com / Cta Corriente: 1-983-036407-8' },
-                    { name: 'BANCO ESTADO', "details": 'RUT: 17244216-1 / Cta Corriente: 37100135052 / 300 PESOS EXTRAS AL VALOR TOTAL'},
-                    { name: 'Titular', "details": 'GISSELLE GONZALEZ'},
-                    { name: '¡IMPORTANTE!', "details": '¡No colocar conceptos EN LOS PAGOS!'},
+                    { name: 'BANCO ESTADO', details: 'RUT: 17244216-1 / Cta Corriente: 37100135052 / 300 PESOS EXTRAS AL VALOR TOTAL'},
+                    { name: 'Titular', details: 'GISSELLE GONZALEZ'},
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!'},
                 ]
             },
             {
@@ -1499,7 +1500,7 @@
                 code: 'EUR',
                 exchangeRate: 1.04,
                 symbol: '€',
-                imageUrl: '/image/paises/es.png', // Ruta actualizada
+                imageUrl: '/image/paises/es.png',
                 paymentMethods: [
                     { name: 'BIZUM', details: '612237372 / 614153840 / CUALQUIERA DE LOS DOS' },
                     { name: 'BANCO SANTANDER', details: 'Cuenta bancaria : ES0800495939582916425258' },
@@ -1512,7 +1513,7 @@
                 code: 'CRC',
                 exchangeRate: 600,
                 symbol: '₡',
-                imageUrl: '/image/paises/cr.png', // Ruta actualizada
+                imageUrl: '/image/paises/cr.png',
                 paymentMethods: [
                     { name: 'SIMPE', details: '63223852' },
                     { name: 'Titular', details: 'Solange Granja Duarte' },
@@ -1523,8 +1524,8 @@
                 name: 'BOLIVIA',
                 code: 'BOB',
                 exchangeRate: 15.5,
-                symbol: 'Bs.', 
-                imageUrl: '/image/paises/bo.png', // Ruta actualizada
+                symbol: 'Bs.',
+                imageUrl: '/image/paises/bo.png',
                 paymentMethods: [
                     { name: 'Banco ganadero', details: '1311307078' }, 
                     { name: 'Tigo Money', details: '69172559' }, 
@@ -1536,8 +1537,8 @@
                 name: 'NICARAGUA',
                 code: 'NIO',
                 exchangeRate: 43.5,
-                symbol: 'C$', 
-                imageUrl: '/image/paises/ni.png', // Ruta actualizada
+                symbol: 'C$',
+                imageUrl: '/image/paises/ni.png',
                 paymentMethods: [
                     { name: 'BAC CÓRDOBAS', details: 'Email: Nomiflores72@gmail.com' }, 
                     { name: 'Cta. ahorros:', details: '363278672' }, 
@@ -1546,6 +1547,53 @@
                 ]
             },
         ];
+
+        // Función para cargar tasas de cambio actualizadas desde la API
+        async function loadExchangeRates() {
+            try {
+                const response = await fetch('/api/get-exchange-rates');
+                if (response.ok) {
+                    const updatedRates = await response.json();
+                    
+                    // Actualizar las tasas de cambio manteniendo los demás datos
+                    countryData = countryData.map(country => {
+                        const updatedCountry = updatedRates.find(rate => rate.name === country.name);
+                        if (updatedCountry) {
+                            return {
+                                ...country,
+                                exchangeRate: updatedCountry.exchangeRate
+                            };
+                        }
+                        return country;
+                    });
+                    
+                    console.log('Tasas de cambio actualizadas exitosamente');
+                    
+                    // Actualizar la interfaz si hay un país seleccionado
+                    if (selectedCountry) {
+                        updatePriceDisplay();
+                    }
+                } else {
+                    console.log('No se pudieron cargar las tasas actualizadas, usando valores por defecto');
+                }
+            } catch (error) {
+                console.log('Error al cargar tasas de cambio:', error);
+                console.log('Usando tasas de cambio por defecto');
+            }
+        }
+
+        // Función para actualizar la visualización de precios
+        function updatePriceDisplay() {
+            if (selectedAmount && selectedCountry) {
+                const countryInfo = countryData.find(c => c.name === selectedCountry) || defaultCountryInfo;
+                totalPrice = selectedAmount.value * countryInfo.exchangeRate;
+                currencySymbol = countryInfo.symbol;
+                
+                totalPriceDisplay.textContent = formatNumber(totalPrice);
+                currencySymbolDisplay.textContent = currencySymbol;
+                baseAmountDisplay.textContent = selectedAmount.value.toFixed(2);
+            }
+        }
 
         // Datos de vendedores (RUTAS DE IMAGEN Y RECOMENDACIÓN DE TAMAÑO ACTUALIZADAS)
         // RECOMENDACIÓN DE TAMAÑO DE IMAGEN PARA VENDEDORES: Se recomienda usar imágenes cuadradas (ej. 60x60px o 80x80px)
@@ -2290,12 +2338,18 @@
         });
 
        // Inicializar la página cuando se carga el DOM
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Cargar tasas de cambio actualizadas al inicio
+            await loadExchangeRates();
+            
             loadCountryOptions(); // Carga los botones de país
             loadGameOptions(); 
             loadSellerOptions(); // Carga los botones de vendedor
             updateSendOrderButtonState(); 
-            updateInputFields(); 
+            updateInputFields();
+            
+            // Actualizar tasas cada 5 minutos para mantener precios actualizados
+            setInterval(loadExchangeRates, 5 * 60 * 1000); // 5 minutos
         });
 
     </script>
