@@ -103,7 +103,7 @@
 
         .rates-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
         }
 
@@ -111,8 +111,9 @@
             background: #f8f9fa;
             border: 2px solid #e9ecef;
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px;
             transition: all 0.3s ease;
+            min-width: 0;
         }
 
         .rate-card:hover {
@@ -145,21 +146,25 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .rate-input-group label {
             font-weight: 500;
             color: #555;
-            min-width: 120px;
+            min-width: 100px;
+            flex-shrink: 0;
         }
 
         .rate-input-group input {
-            flex: 1;
+            width: 120px;
+            max-width: 120px;
             padding: 8px 12px;
             border: 2px solid #dee2e6;
             border-radius: 6px;
             font-size: 1rem;
             transition: border-color 0.3s ease;
+            box-sizing: border-box;
         }
 
         .rate-input-group input:focus {
@@ -171,6 +176,7 @@
             font-weight: bold;
             color: #667eea;
             min-width: 40px;
+            flex-shrink: 0;
         }
 
         .admin-panel {
@@ -549,6 +555,21 @@
 
             .rates-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .rate-input-group {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            
+            .rate-input-group label {
+                min-width: auto;
+            }
+            
+            .rate-input-group input {
+                width: 100%;
+                max-width: none;
             }
         }
     </style>
