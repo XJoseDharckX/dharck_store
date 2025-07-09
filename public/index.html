@@ -1311,7 +1311,7 @@
                 { value: 270.00, label: '30392💎', imageUrl: '/image/prize-7.png' },
                 { value: 440.00, label: '50304💎', imageUrl: '/image/icon-happy.png' },
             ] },
-            { name: 'BLOOD STRIKE', logoUrl: '/image/bs.png', inputRequirement: 'id_only', amounts: [
+            { name: 'BLOOD STRIKE', logoUrl: '/image/bs.png', inputRequirement: 'id_name', amounts: [
                 { value: 0.89, label: '100+5', imageUrl: '/image/100.png' },
                 { value: 2.50, label: '300+20', imageUrl: '/image/300.png' },
                 { value: 4.30, label: '500+40', imageUrl: '/image/500.png' },
@@ -2260,6 +2260,37 @@
             // Crear orden pendiente en el backend
             // -----------------------------------------------------
             const countryInfo = countryData.find(c => c.name === selectedCountry);
+            
+            // Mapear correctamente los datos según el tipo de juego
+            let playerId = '';
+            let playerName = '';
+            let playerEmail = '';
+            let additionalInfo = '';
+
+            switch (currentGame.inputRequirement) {
+                case 'id_name':
+                    playerId = userIdInput.value.trim();
+                    playerName = userNameInput.value.trim();
+                    break;
+                case 'id_server':
+                    playerId = userIdServerInput.value.trim();
+                    additionalInfo = serverInput.value.trim();
+                    break;
+                case 'id_server_name':
+                    playerId = userIdServerInput.value.trim();
+                    playerName = userNameMLInput.value.trim();
+                    additionalInfo = serverInput.value.trim();
+                    break;
+                case 'id_only':
+                    playerId = userIdOnlyInput.value.trim();
+                    break;
+                case 'cod_full':
+                    playerEmail = emailInput.value.trim();
+                    playerName = exactAccountNameInput.value.trim();
+                    additionalInfo = `Contraseña: ${passwordInput.value.trim()}, Vinculación: ${linkageInput.value.trim()}`;
+                    break;
+            }
+
             const orderData = {
                 sellerName: selectedSeller,
                 gameName: selectedGame,
@@ -2267,9 +2298,10 @@
                 amountUSD: selectedAmount ? selectedAmount.value : 0,
                 totalPrice: totalPrice,
                 currencySymbol: countryInfo ? countryInfo.symbol : currencySymbol,
-                playerId: userIdInput.value.trim() || userIdServerInput.value.trim() || userIdOnlyInput.value.trim() || emailInput.value.trim(),
-                playerName: userNameInput.value.trim() || userNameMLInput.value.trim() || exactAccountNameInput.value.trim() || '',
-                playerEmail: emailInput.value.trim() || '',
+                playerId: playerId,
+                playerName: playerName,
+                playerEmail: playerEmail,
+                additionalInfo: additionalInfo,
                 countryName: selectedCountry
             };
 
