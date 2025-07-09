@@ -1262,9 +1262,9 @@
             filteredOrders = allOrders.filter(order => {
                 let matchesDate = true;
                 if (dateFilter) {
-                    // Convertir la fecha del filtro (aaaa-mm-dd) a mm/dd/aaaa para comparar
+                    // Convertir la fecha del filtro (aaaa-mm-dd) a dd/mm/aaaa para comparar
                     const filterDate = new Date(dateFilter);
-                    const filterFormatted = `${String(filterDate.getMonth() + 1).padStart(2, '0')}/${String(filterDate.getDate()).padStart(2, '0')}/${filterDate.getFullYear()}`;
+                    const filterFormatted = `${String(filterDate.getDate()).padStart(2, '0')}/${String(filterDate.getMonth() + 1).padStart(2, '0')}/${filterDate.getFullYear()}`;
                     
                     // Extraer solo la fecha de la orden (sin hora)
                     const orderDateOnly = order.Fecha_Hora.split(' ')[0];

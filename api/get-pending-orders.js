@@ -71,10 +71,14 @@ module.exports = async (req, res) => {
     let filteredOrders = orders;
     
     if (fecha) {
-      const targetDate = new Date(fecha).toLocaleDateString('es-ES');
+      // Convertir fecha del filtro (aaaa-mm-dd) a dd/mm/aaaa
+      const filterDate = new Date(fecha);
+      const targetDate = `${String(filterDate.getDate()).padStart(2, '0')}/${String(filterDate.getMonth() + 1).padStart(2, '0')}/${filterDate.getFullYear()}`;
+      
       filteredOrders = orders.filter(order => {
-        const orderDate = new Date(order.Fecha_Hora).toLocaleDateString('es-ES');
-        return orderDate === targetDate;
+        // Extraer solo la fecha de la orden (sin hora)
+        const orderDateOnly = order.Fecha_Hora.split(' ')[0];
+        return orderDateOnly === targetDate;
       });
     }
 

@@ -80,7 +80,7 @@ module.exports = async (req, res) => {
     const now = new Date();
     const caracasTime = new Date(now.toLocaleString("en-US", {timeZone: "America/Caracas"}));
     
-    // Formatear fecha manualmente para asegurar formato mm/dd/aaaa
+    // Formatear fecha manualmente para asegurar formato dd/mm/aaaa
     const day = String(caracasTime.getDate()).padStart(2, '0');
     const month = String(caracasTime.getMonth() + 1).padStart(2, '0');
     const year = caracasTime.getFullYear();
@@ -88,7 +88,7 @@ module.exports = async (req, res) => {
     const minutes = String(caracasTime.getMinutes()).padStart(2, '0');
     const seconds = String(caracasTime.getSeconds()).padStart(2, '0');
     
-    const formattedDateTime = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`;
+    const formattedDateTime = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
     
     const orderData = {
         'ID_Pedido': orderId,
