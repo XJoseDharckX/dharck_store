@@ -836,11 +836,17 @@
         let autoRefreshEnabled = true; // Nueva variable para controlar actualización automática
         let autoRefreshInterval; // Variable para el intervalo
 
-        // Función para obtener la fecha actual en horario de Caracas
+        // Función corregida para obtener fecha de Caracas
         function getCaracasDate() {
             const now = new Date();
             const caracasTime = new Date(now.toLocaleString("en-US", {timeZone: "America/Caracas"}));
-            return caracasTime.toISOString().split('T')[0];
+            
+            // Formatear manualmente para evitar problemas de zona horaria
+            const year = caracasTime.getFullYear();
+            const month = String(caracasTime.getMonth() + 1).padStart(2, '0');
+            const day = String(caracasTime.getDate()).padStart(2, '0');
+            
+            return `${year}-${month}-${day}`; // Formato para input type="date"
         }
 
         // Función para formatear fecha a dd/mm/aaaa
@@ -930,7 +936,7 @@
 
         // === FUNCIONES DE PEDIDOS (existentes) ===
         
-        // Función mejorada para cargar pedidos con mejor manejo de errores
+        // Función mejorada para cargar pedidos
         async function loadOrders() {
             const loadingMessage = document.getElementById('loadingMessage');
             const errorMessage = document.getElementById('errorMessage');
@@ -942,6 +948,7 @@
             if (!dateFilter.value) {
                 const caracasToday = getCaracasDate();
                 dateFilter.value = caracasToday;
+                console.log('Fecha establecida por defecto:', caracasToday);
             }
             
             loadingMessage.style.display = 'block';
@@ -968,6 +975,7 @@
                 // Aplicar filtro de fecha automáticamente
                 const selectedDate = dateFilter.value;
                 const statusFilter = document.getElementById('statusFilter').value;
+                console.log('Aplicando filtros - Fecha:', selectedDate, 'Estado:', statusFilter);
                 applyFilters(selectedDate, statusFilter);
                 
                 loadingMessage.style.display = 'none';
@@ -1257,18 +1265,24 @@
             applyFilters(dateFilter, statusFilter);
         }
 
-        // Aplicar filtros
+        // Función corregida para aplicar filtros
         function applyFilters(dateFilter, statusFilter) {
             filteredOrders = allOrders.filter(order => {
                 let matchesDate = true;
                 if (dateFilter) {
                     // Convertir la fecha del filtro (aaaa-mm-dd) a dd/mm/aaaa para comparar
-                    const filterDate = new Date(dateFilter);
-                    const filterFormatted = `${String(filterDate.getDate()).padStart(2, '0')}/${String(filterDate.getMonth() + 1).padStart(2, '0')}/${filterDate.getFullYear()}`;
+                    const filterDate = new Date(dateFilter + 'T00:00:00'); // Agregar tiempo para evitar problemas de zona horaria
+                    const day = String(filterDate.getDate()).padStart(2, '0');
+                    const month = String(filterDate.getMonth() + 1).padStart(2, '0');
+                    const year = filterDate.getFullYear();
+                    const filterFormatted = `${day}/${month}/${year}`;
                     
                     // Extraer solo la fecha de la orden (sin hora)
                     const orderDateOnly = order.Fecha_Hora.split(' ')[0];
                     matchesDate = orderDateOnly === filterFormatted;
+                    
+                    // Debug para verificar las fechas
+                    console.log('Fecha filtro:', filterFormatted, 'Fecha pedido:', orderDateOnly, 'Coincide:', matchesDate);
                 }
                 const matchesStatus = !statusFilter || order.Estado === statusFilter;
                 
