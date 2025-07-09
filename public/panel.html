@@ -852,6 +852,15 @@
             return `${day}/${month}/${year}`;
         }
 
+        // Función para formatear fecha a mm/dd/aaaa
+        function formatDateToMMDDYYYY(dateString) {
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${month}/${day}/${year}`;
+        }
+
         // Función de login
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1251,8 +1260,16 @@
         // Aplicar filtros
         function applyFilters(dateFilter, statusFilter) {
             filteredOrders = allOrders.filter(order => {
-                const orderDate = new Date(order.Fecha_Hora).toISOString().split('T')[0];
-                const matchesDate = !dateFilter || orderDate === dateFilter;
+                let matchesDate = true;
+                if (dateFilter) {
+                    // Convertir la fecha del filtro (aaaa-mm-dd) a mm/dd/aaaa para comparar
+                    const filterDate = new Date(dateFilter);
+                    const filterFormatted = `${String(filterDate.getMonth() + 1).padStart(2, '0')}/${String(filterDate.getDate()).padStart(2, '0')}/${filterDate.getFullYear()}`;
+                    
+                    // Extraer solo la fecha de la orden (sin hora)
+                    const orderDateOnly = order.Fecha_Hora.split(' ')[0];
+                    matchesDate = orderDateOnly === filterFormatted;
+                }
                 const matchesStatus = !statusFilter || order.Estado === statusFilter;
                 
                 return matchesDate && matchesStatus;
@@ -1262,20 +1279,31 @@
             updateStats();
         }
 
-        // Función mejorada para limpiar filtros con fecha actual de Caracas
+        // Función mejorada para limpiar filtros completamente
         function clearFilters() {
-            const caracasToday = getCaracasDate();
-            document.getElementById('dateFilter').value = caracasToday;
+            document.getElementById('dateFilter').value = '';
             document.getElementById('statusFilter').value = '';
             
-            // Aplicar filtros con la nueva fecha
-            applyFilters(caracasToday, '');
+            // Mostrar todos los pedidos sin filtros
+            filteredOrders = allOrders;
+            displayOrders(filteredOrders);
+            updateStats();
+            
+            showNotification('Filtros limpiados correctamente', 'success');
         }
 
         // Ver detalles del pedido
         function viewOrderDetails(orderId) {
             const order = allOrders.find(o => o.ID_Pedido === orderId);
             if (order) {
+                const orderDate = new Date(order.Fecha_Hora);
+                const formattedDate = formatDateToDDMMYYYY(order.Fecha_Hora);
+                const formattedTime = orderDate.toLocaleTimeString('es-ES', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+                const fullDateTime = `${formattedDate} ${formattedTime}`;
+                
                 alert(`Detalles del Pedido ${orderId}:\n\n` +
                       `Juego: ${order.Juego}\n` +
                       `Artículo: ${order.Artículo}\n` +
@@ -1285,7 +1313,7 @@
                       `Vendedor: ${order.Vendedor}\n` +
                       `País: ${order.País}\n` +
                       `Estado: ${order.Estado}\n` +
-                      `Fecha: ${new Date(order.Fecha_Hora).toLocaleString('es-ES')}`);
+                      `Fecha: ${fullDateTime}`);
             }
         }
 
