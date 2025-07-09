@@ -718,6 +718,14 @@
                         <button class="btn btn-warning" onclick="clearFilters()">
                             <i class="fas fa-times"></i> Limpiar Filtros
                         </button>
+                        
+                        <button id="autoRefreshBtn" class="btn btn-warning" onclick="toggleAutoRefresh()">
+                            <i class="fas fa-pause"></i> Pausar Auto-actualización
+                        </button>
+                        
+                        <button class="btn btn-primary" onclick="loadOrders()">
+                            <i class="fas fa-sync-alt"></i> Actualizar Ahora
+                        </button>
                     </div>
                     
                     <div class="stats">
@@ -825,6 +833,24 @@
         let allOrders = [];
         let filteredOrders = [];
         let currentRates = [];
+        let autoRefreshEnabled = true; // Nueva variable para controlar actualización automática
+        let autoRefreshInterval; // Variable para el intervalo
+
+        // Función para obtener la fecha actual en horario de Caracas
+        function getCaracasDate() {
+            const now = new Date();
+            const caracasTime = new Date(now.toLocaleString("en-US", {timeZone: "America/Caracas"}));
+            return caracasTime.toISOString().split('T')[0];
+        }
+
+        // Función para formatear fecha a dd/mm/aaaa
+        function formatDateToDDMMYYYY(dateString) {
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
 
         // Función de login
         document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -860,9 +886,15 @@
             // Actualizar botones activos
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.nav-btn')[0].classList.add('active');
+            
+            // Iniciar auto-refresh si está habilitado
+            if (autoRefreshEnabled) {
+                startAutoRefresh();
+            }
         }
 
         function showRatesSection() {
+            stopAutoRefresh();
             document.getElementById('ordersSection').style.display = 'none';
             document.getElementById('ratesSection').style.display = 'block';
             document.getElementById('earningsSection').style.display = 'none';
@@ -875,6 +907,7 @@
         }
 
         function showEarningsSection() {
+            stopAutoRefresh();
             document.getElementById('ordersSection').style.display = 'none';
             document.getElementById('ratesSection').style.display = 'none';
             document.getElementById('earningsSection').style.display = 'block';
@@ -888,7 +921,7 @@
 
         // === FUNCIONES DE PEDIDOS (existentes) ===
         
-        // Función mejorada para cargar pedidos con fecha predeterminada
+        // Función mejorada para cargar pedidos con fecha predeterminada de Caracas
         async function loadOrders() {
             const loadingMessage = document.getElementById('loadingMessage');
             const errorMessage = document.getElementById('errorMessage');
@@ -896,10 +929,10 @@
             const emptyState = document.getElementById('emptyState');
             const dateFilter = document.getElementById('dateFilter');
             
-            // Establecer fecha actual como predeterminada si no hay fecha seleccionada
+            // Establecer fecha actual de Caracas como predeterminada si no hay fecha seleccionada
             if (!dateFilter.value) {
-                const today = new Date().toISOString().split('T')[0];
-                dateFilter.value = today;
+                const caracasToday = getCaracasDate();
+                dateFilter.value = caracasToday;
             }
             
             loadingMessage.style.display = 'block';
@@ -930,7 +963,7 @@
             }
         }
 
-        // Función mejorada para mostrar pedidos con funcionalidad de copiar
+        // Función mejorada para mostrar pedidos con formato de fecha dd/mm/aaaa
         function displayOrders(ordersData) {
             const tableBody = document.getElementById('ordersTableBody');
             
@@ -946,10 +979,19 @@
                 const statusClass = order.Estado === 'Entregado' ? 'status-delivered' : 'status-pending';
                 const statusText = order.Estado === 'Entregado' ? 'Entregado' : 'Pendiente';
                 
+                // Formatear fecha a dd/mm/aaaa y hora
+                const orderDate = new Date(order.Fecha_Hora);
+                const formattedDate = formatDateToDDMMYYYY(order.Fecha_Hora);
+                const formattedTime = orderDate.toLocaleTimeString('es-ES', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+                const fullDateTime = `${formattedDate} ${formattedTime}`;
+                
                 return `
                     <tr>
                         <td class="copyable" onclick="copyToClipboard('${order.ID_Pedido}')"><strong>${order.ID_Pedido}</strong></td>
-                        <td class="copyable" onclick="copyToClipboard('${new Date(order.Fecha_Hora).toLocaleString('es-ES')}')"> ${new Date(order.Fecha_Hora).toLocaleString('es-ES')}</td>
+                        <td class="copyable" onclick="copyToClipboard('${fullDateTime}')">${fullDateTime}</td>
                         <td class="copyable" onclick="copyToClipboard('${order.Juego}')">${order.Juego}</td>
                         <td class="copyable" onclick="copyToClipboard('${order.Artículo}')">${order.Artículo}</td>
                         <td class="copyable" onclick="copyToClipboard('$${order.Monto_USD}')">${order.Monto_USD}</td>
@@ -978,6 +1020,47 @@
                     </tr>
                 `;
             }).join('');
+        }
+
+        // Función para alternar actualización automática
+        function toggleAutoRefresh() {
+            const button = document.getElementById('autoRefreshBtn');
+            const icon = button.querySelector('i');
+            
+            autoRefreshEnabled = !autoRefreshEnabled;
+            
+            if (autoRefreshEnabled) {
+                button.innerHTML = '<i class="fas fa-pause"></i> Pausar Auto-actualización';
+                button.className = 'btn btn-warning';
+                startAutoRefresh();
+                showNotification('Actualización automática activada', 'success');
+            } else {
+                button.innerHTML = '<i class="fas fa-play"></i> Activar Auto-actualización';
+                button.className = 'btn btn-success';
+                stopAutoRefresh();
+                showNotification('Actualización automática pausada', 'success');
+            }
+        }
+
+        // Función para iniciar actualización automática
+        function startAutoRefresh() {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+            }
+            
+            autoRefreshInterval = setInterval(() => {
+                if (autoRefreshEnabled && document.getElementById('ordersSection').style.display !== 'none') {
+                    loadOrders();
+                }
+            }, 30000); // 30 segundos
+        }
+
+        // Función para detener actualización automática
+        function stopAutoRefresh() {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+            }
         }
 
         // Función para copiar al portapapeles
@@ -1168,13 +1251,14 @@
             updateStats();
         }
 
-        // Función mejorada para limpiar filtros
+        // Función mejorada para limpiar filtros con fecha actual de Caracas
         function clearFilters() {
-            document.getElementById('dateFilter').value = '';
+            const caracasToday = getCaracasDate();
+            document.getElementById('dateFilter').value = caracasToday;
             document.getElementById('statusFilter').value = '';
-            filteredOrders = [...allOrders];
-            displayOrders(filteredOrders);
-            updateStats();
+            
+            // Aplicar filtros con la nueva fecha
+            applyFilters(caracasToday, '');
         }
 
         // Ver detalles del pedido
@@ -1323,12 +1407,12 @@
             }
         }
 
-        // Recargar pedidos automáticamente cada 30 segundos
-        setInterval(() => {
-            if (document.getElementById('ordersSection').style.display !== 'none') {
-                loadOrders();
+        // Inicializar auto-refresh al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            if (autoRefreshEnabled) {
+                startAutoRefresh();
             }
-        }, 30000);
+        });
     </script>
 </body>
 </html>
