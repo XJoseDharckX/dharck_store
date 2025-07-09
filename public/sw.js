@@ -1,3 +1,12 @@
+const CACHE_NAME = 'dharck-store-v1';
+const urlsToCache = [
+  '/',
+  '/index.html',
+  '/panel.html',
+  '/image/logo1.png',
+  '/manifest.json'
+];
+
 self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open('admin-panel-v1').then(function(cache) {
