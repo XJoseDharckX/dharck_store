@@ -19,26 +19,15 @@ module.exports = async (req, res) => {
     try {
         const { orderId, rowNumber } = req.body;
         
-        if (!orderId || !rowNumber) {
-            res.status(400).json({ error: 'Datos incompletos: se requiere orderId y rowNumber' });
+        if (!orderId) {
+            res.status(400).json({ error: 'Datos incompletos: se requiere orderId' });
             return;
         }
         
-        console.log(`Intentando eliminar pedido: ${orderId}, fila: ${rowNumber}`);
+        console.log(`Intentando eliminar pedido: ${orderId}`);
         
-        // Buscar el pedido en todas las hojas para obtener el vendedor
-        const allOrders = await sheetsService.getAllOrders();
-        const orderToDelete = allOrders.find(order => 
-            order.ID_Pedido === orderId && order.rowNumber === rowNumber
-        );
-        
-        if (!orderToDelete) {
-            res.status(404).json({ error: 'Pedido no encontrado' });
-            return;
-        }
-        
-        // Usar la función existente con el vendedor encontrado
-        const result = await sheetsService.deleteOrder(rowNumber, orderToDelete.Vendedor);
+        // Usar la nueva función para eliminar de Pedidos_Pendientes
+        const result = await sheetsService.deletePendingOrder(orderId, rowNumber);
         
         if (result.success) {
             res.status(200).json({ 

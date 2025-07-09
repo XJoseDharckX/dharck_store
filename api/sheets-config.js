@@ -133,10 +133,88 @@ async function deleteOrder(rowNumber, sellerName) {
   }
 }
 
+// Función para obtener todos los pedidos de la hoja Pedidos_Pendientes
+async function getAllOrders() {
+  try {
+    const doc = await getGoogleSheet();
+    const pendingOrdersSheet = doc.sheetsByTitle['Pedidos_Pendientes'];
+    
+    if (!pendingOrdersSheet) {
+      return [];
+    }
+
+    const rows = await pendingOrdersSheet.getRows();
+    
+    return rows.map((row, index) => ({
+      rowNumber: index + 2, // +2 porque las filas empiezan en 2 (1 es header)
+      ID_Pedido: row.get('ID_Pedido') || '',
+      Fecha_Hora: row.get('Fecha_Hora') || '',
+      Vendedor: row.get('Vendedor') || '',
+      Juego: row.get('Juego') || '',
+      Artículo: row.get('Artículo') || '',
+      Monto_USD: row.get('Monto_USD') || '',
+      Precio_Total: row.get('Precio_Total') || '',
+      Moneda: row.get('Moneda') || '',
+      ID_Jugador: row.get('ID_Jugador') || '',
+      Nombre_Jugador: row.get('Nombre_Jugador') || '',
+      Email_Jugador: row.get('Email_Jugador') || '',
+      País: row.get('País') || '',
+      Estado: row.get('Estado') || 'Pendiente'
+    }));
+  } catch (error) {
+    console.error('Error obteniendo todos los pedidos:', error);
+    throw error;
+  }
+}
+
+// Función mejorada para eliminar pedidos de Pedidos_Pendientes
+async function deletePendingOrder(orderId, rowNumber) {
+  try {
+    const doc = await getGoogleSheet();
+    const pendingOrdersSheet = doc.sheetsByTitle['Pedidos_Pendientes'];
+    
+    if (!pendingOrdersSheet) {
+      return {
+        success: false,
+        message: 'Hoja de pedidos pendientes no encontrada'
+      };
+    }
+
+    await pendingOrdersSheet.loadCells();
+    
+    // Buscar la fila con el ID correspondiente
+    for (let i = 1; i < pendingOrdersSheet.rowCount; i++) {
+      const idCell = pendingOrdersSheet.getCell(i, 0); // Columna A (ID_Pedido)
+      if (idCell.value === orderId) {
+        // Eliminar la fila
+        await pendingOrdersSheet.deleteRows(i + 1, 1); // +1 porque las filas empiezan en 1
+        
+        return {
+          success: true,
+          message: 'Pedido eliminado exitosamente'
+        };
+      }
+    }
+    
+    return {
+      success: false,
+      message: 'Pedido no encontrado'
+    };
+  } catch (error) {
+    console.error('Error eliminando pedido pendiente:', error);
+    return {
+      success: false,
+      message: 'Error interno del servidor'
+    };
+  }
+}
+
 module.exports = {
   getGoogleSheet,
   getSellerSheet,
   updateOrderStatus,
   deleteOrder,
+  getAllOrders,
+  deletePendingOrder,
   SELLER_SHEET_MAPPING
 };
