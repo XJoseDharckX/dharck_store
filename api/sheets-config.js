@@ -180,14 +180,15 @@ async function deletePendingOrder(orderId, rowNumber) {
       };
     }
 
-    await pendingOrdersSheet.loadCells();
+    // Obtener todas las filas
+    const rows = await pendingOrdersSheet.getRows();
     
     // Buscar la fila con el ID correspondiente
-    for (let i = 1; i < pendingOrdersSheet.rowCount; i++) {
-      const idCell = pendingOrdersSheet.getCell(i, 0); // Columna A (ID_Pedido)
-      if (idCell.value === orderId) {
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      if (row.get('ID_Pedido') === orderId) {
         // Eliminar la fila
-        await pendingOrdersSheet.deleteRows(i + 1, 1); // +1 porque las filas empiezan en 1
+        await row.delete();
         
         return {
           success: true,
@@ -204,7 +205,7 @@ async function deletePendingOrder(orderId, rowNumber) {
     console.error('Error eliminando pedido pendiente:', error);
     return {
       success: false,
-      message: 'Error interno del servidor'
+      message: `Error interno del servidor: ${error.message}`
     };
   }
 }
