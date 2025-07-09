@@ -921,7 +921,7 @@
 
         // === FUNCIONES DE PEDIDOS (existentes) ===
         
-        // Función mejorada para cargar pedidos con fecha predeterminada de Caracas
+        // Función mejorada para cargar pedidos con mejor manejo de errores
         async function loadOrders() {
             const loadingMessage = document.getElementById('loadingMessage');
             const errorMessage = document.getElementById('errorMessage');
@@ -946,7 +946,15 @@
                     throw new Error(`Error ${response.status}: ${response.statusText}`);
                 }
                 
-                allOrders = await response.json();
+                const data = await response.json();
+                
+                // Validar que data sea un array
+                if (!Array.isArray(data)) {
+                    throw new Error('Formato de datos inválido recibido del servidor');
+                }
+                
+                allOrders = data;
+                console.log(`Cargados ${allOrders.length} pedidos desde el servidor`);
                 
                 // Aplicar filtro de fecha automáticamente
                 const selectedDate = dateFilter.value;
@@ -960,6 +968,9 @@
                 loadingMessage.style.display = 'none';
                 errorMessage.style.display = 'block';
                 errorMessage.textContent = `Error al cargar pedidos: ${error.message}`;
+                
+                // Mostrar notificación de error
+                showNotification(`Error al cargar pedidos: ${error.message}`, 'error');
             }
         }
 

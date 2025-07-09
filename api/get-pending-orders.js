@@ -41,23 +41,30 @@ module.exports = async (req, res) => {
     // Cargar todas las filas
     const rows = await pendingOrdersSheet.getRows();
     
-    // Mapear los datos
-    const orders = rows.map((row, index) => ({
-      rowNumber: index + 2, // +2 porque las filas empiezan en 2 (1 es header)
-      ID_Pedido: row.get('ID_Pedido') || '',
-      Fecha_Hora: row.get('Fecha_Hora') || '',
-      Vendedor: row.get('Vendedor') || '',
-      Juego: row.get('Juego') || '',
-      Artículo: row.get('Artículo') || '',
-      Monto_USD: row.get('Monto_USD') || '',
-      Precio_Total: row.get('Precio_Total') || '',
-      Moneda: row.get('Moneda') || '',
-      ID_Jugador: row.get('ID_Jugador') || '',
-      Nombre_Jugador: row.get('Nombre_Jugador') || '',
-      Email_Jugador: row.get('Email_Jugador') || '',
-      País: row.get('País') || '',
-      Estado: row.get('Estado') || 'Pendiente'
-    }));
+    // Mapear los datos con mejor manejo de errores
+    const orders = rows.map((row, index) => {
+        try {
+            return {
+                rowNumber: index + 2, // +2 porque las filas empiezan en 2 (1 es header)
+                ID_Pedido: row.get('ID_Pedido') || '',
+                Fecha_Hora: row.get('Fecha_Hora') || '',
+                Vendedor: row.get('Vendedor') || '',
+                Juego: row.get('Juego') || '',
+                Artículo: row.get('Artículo') || '',
+                Monto_USD: row.get('Monto_USD') || '',
+                Precio_Total: row.get('Precio_Total') || '',
+                Moneda: row.get('Moneda') || '',
+                ID_Jugador: row.get('ID_Jugador') || '',
+                Nombre_Jugador: row.get('Nombre_Jugador') || '',
+                Email_Jugador: row.get('Email_Jugador') || '',
+                País: row.get('País') || '',
+                Estado: row.get('Estado') || 'Pendiente'
+            };
+        } catch (error) {
+            console.error(`Error procesando fila ${index + 2}:`, error);
+            return null;
+        }
+    }).filter(order => order !== null); // Filtrar órdenes nulas
 
     // Filtrar por fecha si se proporciona
     const { fecha } = req.query;

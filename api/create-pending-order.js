@@ -76,29 +76,31 @@ module.exports = async (req, res) => {
     // Generar ID único para el pedido
     const orderId = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 5).toUpperCase()}`;
     
-    // Preparar datos del pedido
+    // Preparar datos del pedido con mejor formato de fecha
+    const now = new Date();
+    const caracasTime = new Date(now.toLocaleString("en-US", {timeZone: "America/Caracas"}));
+    
     const orderData = {
-      'ID_Pedido': orderId,
-      'Fecha_Hora': new Date().toLocaleString('es-ES', { 
-        timeZone: 'America/Caracas',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      }),
-      'Vendedor': sellerName,
-      'Juego': gameName,
-      'Artículo': itemLabel,
-      'Monto_USD': amountUSD,
-      'Precio_Total': totalPrice,
-      'Moneda': currencySymbol,
-      'ID_Jugador': playerId || 'N/A',
-      'Nombre_Jugador': playerName,
-      'Email_Jugador': playerEmail || 'N/A',
-      'País': countryName,
-      'Estado': 'Pendiente'
+        'ID_Pedido': orderId,
+        'Fecha_Hora': caracasTime.toLocaleString('es-ES', { 
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        }),
+        'Vendedor': sellerName,
+        'Juego': gameName,
+        'Artículo': itemLabel,
+        'Monto_USD': parseFloat(amountUSD).toFixed(2), // Asegurar formato numérico
+        'Precio_Total': totalPrice,
+        'Moneda': currencySymbol,
+        'ID_Jugador': playerId || 'N/A',
+        'Nombre_Jugador': playerName,
+        'Email_Jugador': playerEmail || 'N/A',
+        'País': countryName,
+        'Estado': 'Pendiente'
     };
 
     // Agregar la fila a la hoja
