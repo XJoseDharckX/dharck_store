@@ -28,7 +28,8 @@ const SELLER_SHEET_MAPPING = {
   'Candy Candy': 'Candy',
   'Satoru': 'Satoru',
   'Ernesto': 'Ernesto',
-  'OSCAR': 'Oscar'
+  'OSCAR': 'Oscar',
+  'SpartanoWolf98': 'SpartanoWolf98'  // Nuevo vendedor agregado
 };
 
 // Función para obtener la hoja específica del vendedor
