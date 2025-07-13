@@ -1018,17 +1018,17 @@
                 
                 return `
                     <tr>
-                        <td class="copyable" onclick="copyToClipboard('${order.ID_Pedido}')"><strong>${order.ID_Pedido}</strong></td>
-                        <td class="copyable" onclick="copyToClipboard('${fullDateTime}')">${fullDateTime}</td>
-                        <td class="copyable" onclick="copyToClipboard('${order.Juego}')">${order.Juego}</td>
-                        <td class="copyable" onclick="copyToClipboard('${order.Artículo}')">${order.Artículo}</td>
-                        <td class="copyable" onclick="copyToClipboard('$${order.Monto_USD}')">${order.Monto_USD}</td>
-                        <td class="copyable" onclick="copyToClipboard('${order.Nombre_Jugador} - ID: ${order.ID_Jugador}')">
+                        <td class="copyable" onclick="copyToClipboard('${order.ID_Pedido}', this)"><strong>${order.ID_Pedido}</strong></td>
+                        <td class="copyable" onclick="copyToClipboard('${fullDateTime}', this)">${fullDateTime}</td>
+                        <td class="copyable" onclick="copyToClipboard('${order.Juego}', this)">${order.Juego}</td>
+                        <td class="copyable" onclick="copyToClipboard('${order.Artículo}', this)">${order.Artículo}</td>
+                        <td class="copyable" onclick="copyToClipboard('$${order.Monto_USD}', this)">${order.Monto_USD}</td>
+                        <td class="copyable" onclick="copyToClipboard('${order.Nombre_Jugador} - ID: ${order.ID_Jugador}', this)">
                             <strong>${order.Nombre_Jugador}</strong><br>
                             <small>ID: ${order.ID_Jugador}</small>
                         </td>
-                        <td class="copyable" onclick="copyToClipboard('${order.Vendedor}')">${order.Vendedor}</td>
-                        <td class="copyable" onclick="copyToClipboard('${order.País}')">${order.País}</td>
+                        <td class="copyable" onclick="copyToClipboard('${order.Vendedor}', this)">${order.Vendedor}</td>
+                        <td class="copyable" onclick="copyToClipboard('${order.País}', this)">${order.País}</td>
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                         <td>
                             <div class="action-buttons">
@@ -1092,18 +1092,40 @@
         }
 
         // Función para copiar al portapapeles
-        function copyToClipboard(text) {
+        function copyToClipboard(text, targetElement) {
             navigator.clipboard.writeText(text).then(() => {
                 showNotification(`Copiado: ${text}`, 'success');
                 
                 // Efecto visual temporal
-                event.target.classList.add('copied');
-                setTimeout(() => {
-                    event.target.classList.remove('copied');
-                }, 1000);
+                if (targetElement) {
+                    targetElement.classList.add('copied');
+                    setTimeout(() => {
+                        targetElement.classList.remove('copied');
+                    }, 1000);
+                }
             }).catch(err => {
                 console.error('Error al copiar:', err);
-                showNotification('Error al copiar al portapapeles', 'error');
+                // Fallback para navegadores que no soportan clipboard API
+                try {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showNotification(`Copiado: ${text}`, 'success');
+                    
+                    // Efecto visual para fallback
+                    if (targetElement) {
+                        targetElement.classList.add('copied');
+                        setTimeout(() => {
+                            targetElement.classList.remove('copied');
+                        }, 1000);
+                    }
+                } catch (fallbackErr) {
+                    console.error('Error en fallback:', fallbackErr);
+                    showNotification('Error al copiar al portapapeles', 'error');
+                }
             });
         }
 

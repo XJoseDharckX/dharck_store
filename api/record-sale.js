@@ -95,6 +95,19 @@ const ARTICLE_PROFIT_CONFIG = {
   '2400 CP': 0.70,
   '5000 CP': 1.50,
   '10800 CP': 4.00,
+    // MOBILE LEGENDS (NUEVO)
+  'PASE SEMANAL': 0.20,
+  'CREPUSCULAR': 0.70,
+  '50+5💎': 0.15,
+  '150+15💎': 0.30,
+  '250+25💎': 0.40,
+  '500+65💎': 0.65,
+  '625+81💎': 0.80,
+  '940+144💎': 1.40,
+  '1860+335💎': 2.20,
+  '3099+589💎': 3.50,
+  '4649+883💎': 5.20,
+  '7740+1548💎': 8.80,
   
   // Ganancia por defecto si no se encuentra el artículo específico
   'DEFAULT': 0.50
@@ -195,6 +208,20 @@ const XJOSEDHARCKX_PROFIT_CONFIG = {
   '2400 CP': 0.80,
   '5000 CP': 4.40,
   '10800 CP': 9.50,
+   
+  // MOBILE LEGENDS (NUEVO)
+  'PASE SEMANAL': 0.30,
+  'CREPUSCULAR': 1.50,
+  '50+5💎': 0.15,
+  '150+15💎': 0.45,
+  '250+25💎': 0.70,
+  '500+65💎': 1.30,
+  '625+81💎': 1.60,
+  '940+144💎': 2.90,
+  '1860+335💎': 4.40,
+  '3099+589💎': 7.10,
+  '4649+883💎': 10.50,
+  '7740+1548💎': 17.60,
   
   // Ganancia por defecto si no se encuentra el artículo específico
   'DEFAULT': 0.50
@@ -233,6 +260,10 @@ function isArticleInPromotion(gameName, articleLabel) {
         'BLOOD STRIKE': {
             active: ACTIVE_PROMOTIONS.BLOOD_STRIKE_BONUS,
             articles: ['1000+100', '2000+200', '5000+800']
+        },
+        'MOBILE LEGENDS': {
+            active: false, // Cambiar a true cuando quieras activar promociones
+            articles: ['250+25💎', '500+65💎', '940+144💎']
         }
     };
     

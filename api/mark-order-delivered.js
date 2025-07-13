@@ -103,7 +103,23 @@ const ARTICLE_PROFIT_CONFIG = {
   '5000 CP': 1.50,
   '10800 CP': 4.00,
   
-  'DEFAULT': 0.50
+
+  'MOBILE LEGENDS': {
+      // Agregar después de CALL OF DUTY MOBILE en XJOSEDHARCKX_PROFIT_CONFIG:
+      // MOBILE LEGENDS - Ganancias personalizadas para XJoseDharckX
+      'PASE SEMANAL ML': 0.30,
+      'CREPUSCULAR': 1.50,
+      '50+5💎': 0.20,
+      '150+15💎': 0.45,
+      '250+25💎': 0.60,
+      '500+65💎': 1.00,
+      '625+81💎': 1.20,
+      '940+144💎': 2.20,
+      '1860+335💎': 3.50,
+      '3099+589💎': 5.50,
+      '4649+883💎': 8.00,
+      '7740+1548💎': 13.50,
+  }
 };
 
 // Configuración de ganancias personalizadas para XJoseDharckX
@@ -196,11 +212,11 @@ const XJOSEDHARCKX_PROFIT_CONFIG = {
   
   // CALL OF DUTY MOBILE
   '80 CP': 0.20,
-  '420 CP': 0.80,
-  '880 CP': 0.80,
-  '2400 CP': 0.80,
-  '5000 CP': 4.40,
-  '10800 CP': 9.50,
+  '420 CP': 0.50,  // era 0.80
+  '880 CP': 0.70,  // era 0.80
+  '2400 CP': 0.70, // era 0.80
+  '5000 CP': 1.50, // era 4.40
+  '10800 CP': 4.00, // era 9.50
   
   // Ganancia por defecto si no se encuentra el artículo específico
   'DEFAULT': 0.50

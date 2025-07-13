@@ -309,15 +309,15 @@
             position: absolute;
             top: -8px;
             right: -8px;
-            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
             color: white;
-            padding: 2px 6px;
-            border-radius: 10px;
+            padding: 4px 8px;
+            border-radius: 12px;
             font-size: 10px;
             font-weight: bold;
-            z-index: 10;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            animation: promo-badge-glow 2s infinite alternate;
+            z-index: 2;
+            pointer-events: none; /* Evitar interferencia con clicks */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         @keyframes promo-badge-glow {
@@ -1383,14 +1383,22 @@
                 { value: 110.00, label: '10800 CP', imageUrl: '/image/cm4.png' },
             ] },
             
-//            { name: 'MOBILE LEGENDS', logoUrl: '/image/ml.png', inputRequirement: 'id_server_name', amounts: [
-//                { value: 0.89, label: '50💎', imageUrl: '/image/ml_50.png' },
-//                { value: 2.50, label: '100💎', imageUrl: '/image/ml_100.png' },
-//                { value: 4.30, label: '150💎', imageUrl: '/image/ml_150.png' },
-//                { value: 8.50, label: '200💎', imageUrl: '/image/ml_200.png' },
-//                { value: 17.60, label: '250💎', imageUrl: '/image/ml_250.png' },
-//                { value: 42.00, label: '300💎', imageUrl: '/image/ml_300.png' },
-//            ] },
+            { name: 'MOBILE LEGENDS', logoUrl: '/image/ml.png', inputRequirement: 'id_server_name', amounts: [
+                { value: 1.60, label: 'PASE SEMANAL ML', imageUrl: '/image/ml_300.png' },
+                { value: 9.50, label: 'CREPUSCULAR', imageUrl: '/image/ml_300.png' },
+                { value: 0.90, label: '50+5💎', imageUrl: '/image/ml_50.png' },
+                { value: 2.80, label: '150+15💎', imageUrl: '/image/ml_100.png' },
+                { value: 4.40, label: '250+25💎', imageUrl: '/image/ml_150.png' },
+                { value: 8.30, label: '500+65💎', imageUrl: '/image/ml_200.png' },
+                { value: 10.00, label: '625+81💎', imageUrl: '/image/ml_250.png' },
+                { value: 18.00, label: '940+144💎', imageUrl: '/image/ml_300.png' },
+                { value: 27.50, label: '1860+335💎', imageUrl: '/image/ml_300.png' },
+                { value: 44.20, label: '3099+589💎', imageUrl: '/image/ml_300.png' },
+                { value: 65.40, label: '4649+883💎', imageUrl: '/image/ml_300.png' },
+                { value: 110.00, label: '7740+1548💎', imageUrl: '/image/ml_300.png' },
+                
+                
+            ] },
             // Puedes añadir más juegos aquí
         ];
 
@@ -1608,6 +1616,7 @@
             { name: 'Ernesto', phoneNumber: '573025129990', imageUrl: '/image/vendedores/ernesto.png' }, // Ruta actualizada
             { name: 'OSCAR', phoneNumber: '573002030533', imageUrl: '/image/vendedores/logo1.png' }, // Ruta actualizada
             { name: 'SpartanoWolf98', phoneNumber: '584262276868', imageUrl: '/image/vendedores/SpartanoWolf98.png' }, // Nuevo vendedor agregado
+            { name: 'Jhack', phoneNumber: '584247582765', imageUrl: '/image/vendedores/Jhack.png' }, // Nuevo vendedor
             // Puedes añadir más vendedores aquí si es necesario
         ];
 
@@ -1828,7 +1837,10 @@
                         itemDiv.appendChild(imgElement);
                         itemDiv.appendChild(itemTextContainer); 
 
-                        itemDiv.addEventListener('click', () => {
+                        itemDiv.addEventListener('click', (e) => {
+                            // Prevenir que el click en el badge de promoción interfiera
+                            e.stopPropagation();
+                            
                             // Deseleccionar todos los demás artículos
                             Array.from(amountButtonsDiv.children).forEach(div => div.classList.remove('selected'));
                             
