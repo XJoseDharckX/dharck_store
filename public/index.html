@@ -2382,8 +2382,34 @@
             showMessage('Envío de pedido cancelado.', 'info');
         });
 
-       // Inicializar la página cuando se carga el DOM
+       // Función para cargar configuración de artículos desde localStorage
+        function loadArticlesConfig() {
+            const savedConfig = localStorage.getItem('gameArticlesConfig');
+            if (savedConfig) {
+                const config = JSON.parse(savedConfig);
+                
+                // Actualizar gameOptions con la configuración guardada
+                gameOptions.forEach(game => {
+                    if (config[game.name]) {
+                        // Filtrar solo artículos activos
+                        game.amounts = config[game.name].articles
+                            .filter(article => article.active)
+                            .map(article => ({
+                                value: article.value,
+                                label: article.label,
+                                imageUrl: article.imageUrl,
+                                promotion: article.promotion
+                            }));
+                    }
+                });
+            }
+        }
+
+        // Inicializar la página cuando se carga el DOM
         document.addEventListener('DOMContentLoaded', async () => {
+            // Cargar configuración de artículos desde localStorage
+            loadArticlesConfig();
+            
             // Cargar tasas de cambio actualizadas al inicio
             await loadExchangeRates();
             
