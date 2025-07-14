@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dharck-store-v2.1'; // Incrementa la versión
+const CACHE_NAME = 'dharck-store-v2.2'; // Versión actualizada
 const urlsToCache = [
   '/',
   '/index.html',
@@ -7,39 +7,54 @@ const urlsToCache = [
   '/manifest.json'
 ];
 
-// Instalar nuevo service worker
+// Instalar service worker
 self.addEventListener('install', function(event) {
+  console.log('Service Worker: Instalando...');
   event.waitUntil(
-    caches.open(CACHE_NAME).then(function(cache) {
-      return cache.addAll(urlsToCache);
-    }).then(() => {
-      // Forzar activación inmediata
-      return self.skipWaiting();
-    })
+    caches.open(CACHE_NAME)
+      .then(function(cache) {
+        console.log('Service Worker: Cacheando archivos');
+        return cache.addAll(urlsToCache);
+      })
+      .then(() => {
+        console.log('Service Worker: Instalación completa');
+        return self.skipWaiting();
+      })
+      .catch(error => {
+        console.error('Service Worker: Error en instalación:', error);
+      })
   );
 });
 
 // Activar y limpiar cachés antiguos
 self.addEventListener('activate', function(event) {
+  console.log('Service Worker: Activando...');
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
         cacheNames.map(function(cacheName) {
           if (cacheName !== CACHE_NAME) {
-            console.log('Eliminando caché antiguo:', cacheName);
+            console.log('Service Worker: Eliminando caché antiguo:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
     }).then(() => {
-      // Tomar control inmediato de todas las páginas
+      console.log('Service Worker: Activación completa');
       return self.clients.claim();
     })
   );
 });
 
-// Estrategia de caché: Network First para APIs, Cache First para assets
+// Estrategia de caché mejorada
 self.addEventListener('fetch', function(event) {
+  // Ignorar requests de extensiones del navegador
+  if (event.request.url.startsWith('chrome-extension://') || 
+      event.request.url.startsWith('moz-extension://') ||
+      event.request.url.startsWith('safari-extension://')) {
+    return;
+  }
+
   const url = new URL(event.request.url);
   
   // Para APIs, siempre ir a la red primero
@@ -47,32 +62,41 @@ self.addEventListener('fetch', function(event) {
     event.respondWith(
       fetch(event.request)
         .then(response => {
-          // No cachear respuestas de API
           return response;
         })
-        .catch(() => {
-          // Si falla la red, no hay fallback para APIs
-          return new Response('Network error', { status: 503 });
+        .catch(error => {
+          console.error('Service Worker: Error en API:', error);
+          return new Response(JSON.stringify({error: 'Network error'}), {
+            status: 503,
+            headers: {'Content-Type': 'application/json'}
+          });
         })
     );
     return;
   }
   
-  // Para archivos estáticos, usar caché pero verificar actualizaciones
+  // Para archivos estáticos, usar caché con network fallback
   event.respondWith(
     caches.open(CACHE_NAME).then(cache => {
       return fetch(event.request)
         .then(response => {
-          // Actualizar caché con nueva versión
           if (response.status === 200) {
             cache.put(event.request, response.clone());
           }
           return response;
         })
         .catch(() => {
-          // Si falla la red, usar caché
           return cache.match(event.request);
         });
     })
   );
+});
+
+// Manejar errores globales
+self.addEventListener('error', function(event) {
+  console.error('Service Worker: Error global:', event.error);
+});
+
+self.addEventListener('unhandledrejection', function(event) {
+  console.error('Service Worker: Promise rechazada:', event.reason);
 });
