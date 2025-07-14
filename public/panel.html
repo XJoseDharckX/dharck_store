@@ -1268,7 +1268,17 @@
 
         // Función para formatear fecha a dd/mm/aaaa
         function formatDateToDDMMYYYY(dateString) {
+            // Si la fecha ya viene en formato dd/mm/yyyy, extraer solo la parte de fecha
+            if (dateString.includes('/') && dateString.includes(' ')) {
+                return dateString.split(' ')[0]; // Retorna solo "dd/mm/yyyy"
+            }
+            
+            // Si viene en otro formato, convertir
             const date = new Date(dateString);
+            if (isNaN(date.getTime())) {
+                return dateString; // Si no se puede convertir, devolver el original
+            }
+            
             const day = String(date.getDate()).padStart(2, '0');
             const month = String(date.getMonth() + 1).padStart(2, '0');
             const year = date.getFullYear();
