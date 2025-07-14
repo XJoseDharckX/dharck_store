@@ -1242,45 +1242,24 @@
         const exactAccountNameInput = document.getElementById('exactAccountNameInput');
 
 
-        // Sistema de promociones dinámicas (fácil activar/desactivar)
-        const ACTIVE_PROMOTIONS = {
-            // Activar/desactivar promociones cambiando true/false
-            'LORDS_MOBILE_PROMO': true,  // Promoción +20% Lords Mobile
-            'FREE_FIRE_WEEKEND': false,  // Promoción fin de semana Free Fire
-            'DELTA_FORCE_SPECIAL': false, // Promoción especial Delta Force
-            'BLOOD_STRIKE_BONUS': false   // Promoción bonus Blood Strike
-        };
-
-        // Configuración de promociones por juego
-        const PROMOTION_CONFIG = {
-            'LORDS MOBILE': {
-                active: ACTIVE_PROMOTIONS.LORDS_MOBILE_PROMO,
-                type: '+25%',
-                badge: '🔥Cupon +25%',
-                animation: 'promo-pulse',
-                articles: [
-                 '💎499+CUPON',
-                 '💎999+CUPON',
-                 '💎1999+CUPON',
-                 '💎2499+CUPON',
-                 '💎2999+CUPON',
-                 '💎4999+CUPON',
-                 '💎9999+CUPON',
-              ] // Artículos en promoción
-            },
-
-        };
-
         // Función para verificar si un artículo está en promoción
         function isArticleInPromotion(gameName, articleLabel) {
-            const gamePromo = PROMOTION_CONFIG[gameName];
-            return gamePromo && gamePromo.active && gamePromo.articles.includes(articleLabel);
+            // Buscar en gameOptions cargados desde el servidor
+            const game = gameOptions.find(g => g.name === gameName);
+            if (!game) return false;
+            
+            const article = game.amounts.find(a => a.label === articleLabel);
+            return article ? article.promotion : false;
         }
 
         // Función para obtener información de promoción
         function getPromotionInfo(gameName, articleLabel) {
             if (isArticleInPromotion(gameName, articleLabel)) {
-                return PROMOTION_CONFIG[gameName];
+                return {
+                    type: 'PROMO',
+                    badge: '🔥PROMO',
+                    animation: 'promo-pulse'
+                };
             }
             return null;
         }
@@ -2446,25 +2425,31 @@
                         // Convertir configuración del servidor a formato gameOptions
                         gameOptions = Object.keys(serverConfig).map(gameName => {
                             const gameConfig = serverConfig[gameName];
+                            const activeArticles = gameConfig.articles.filter(article => article.active);
+                            
                             return {
                                 name: gameName,
                                 logoUrl: gameConfig.logoUrl,
                                 inputRequirement: gameConfig.inputRequirement,
-                                amounts: gameConfig.articles
-                                    .filter(article => article.active) // Solo artículos activos
-                                    .map(article => ({
-                                        value: article.value,
-                                        label: article.label,
-                                        imageUrl: article.imageUrl,
-                                        promotion: article.promotion
-                                    }))
+                                amounts: activeArticles.map(article => ({
+                                    value: article.value,
+                                    label: article.label,
+                                    imageUrl: article.imageUrl || '/image/prize-2.png',
+                                    promotion: article.promotion
+                                }))
                             };
                         }).filter(game => game.amounts.length > 0); // Solo juegos con artículos activos
                         
                         // Actualizar localStorage con la nueva configuración
                         localStorage.setItem('gameArticlesConfig', JSON.stringify(serverConfig));
-                        console.log('Configuración cargada desde servidor y sincronizada');
-                        return;
+                        console.log('Configuración cargada desde servidor:', gameOptions.length, 'juegos activos');
+                        
+                        // IMPORTANTE: Re-renderizar la interfaz después de cargar
+                        if (typeof loadGameOptions === 'function') {
+                            loadGameOptions();
+                        }
+                        
+                        return true;
                     }
                 }
             } catch (error) {
@@ -2479,43 +2464,104 @@
                     
                     gameOptions = Object.keys(config).map(gameName => {
                         const gameConfig = config[gameName];
+                        const activeArticles = gameConfig.articles.filter(article => article.active);
+                        
                         return {
                             name: gameName,
                             logoUrl: gameConfig.logoUrl,
                             inputRequirement: gameConfig.inputRequirement,
-                            amounts: gameConfig.articles
-                                .filter(article => article.active)
-                                .map(article => ({
-                                    value: article.value,
-                                    label: article.label,
-                                    imageUrl: article.imageUrl,
-                                    promotion: article.promotion
-                                }))
+                            amounts: activeArticles.map(article => ({
+                                value: article.value,
+                                label: article.label,
+                                imageUrl: article.imageUrl || '/image/prize-2.png',
+                                promotion: article.promotion
+                            }))
                         };
                     }).filter(game => game.amounts.length > 0);
                     
-                    console.log('Configuración cargada desde localStorage');
+                    console.log('Configuración cargada desde localStorage:', gameOptions.length, 'juegos activos');
+                    
+                    // Re-renderizar la interfaz
+                    if (typeof loadGameOptions === 'function') {
+                        loadGameOptions();
+                    }
+                    
+                    return true;
                 } catch (parseError) {
                     console.error('Error parseando localStorage:', parseError);
                     gameOptions = [];
                 }
             }
+            
+            return false;
         }
+
+        // Función para refrescar configuración (llamar desde consola para debug)
+        window.refreshArticlesConfig = async function() {
+            console.log('Refrescando configuración de artículos...');
+            await loadArticlesConfig();
+            console.log('Configuración actualizada. Juegos disponibles:', gameOptions.length);
+        };
+
+        // Función de debug para verificar configuración
+        window.debugArticles = function() {
+            console.log('=== DEBUG CONFIGURACIÓN DE ARTÍCULOS ===');
+            console.log('gameOptions:', gameOptions);
+            console.log('localStorage gameArticlesConfig:', localStorage.getItem('gameArticlesConfig'));
+            
+            // Verificar cada juego
+            gameOptions.forEach(game => {
+                console.log(`${game.name}: ${game.amounts.length} artículos activos`);
+                game.amounts.forEach(article => {
+                    console.log(`  - ${article.label}: $${article.value}`);
+                });
+            });
+        };
+
+        // Función para limpiar caché y recargar
+        window.clearCacheAndReload = function() {
+            localStorage.removeItem('gameArticlesConfig');
+            if ('caches' in window) {
+                caches.keys().then(names => {
+                    names.forEach(name => {
+                        caches.delete(name);
+                    });
+                });
+            }
+            window.location.reload(true);
+        };
+
+        console.log('Funciones de debug disponibles:');
+        console.log('- window.debugArticles() - Ver configuración actual');
+        console.log('- window.refreshArticlesConfig() - Refrescar desde servidor');
+        console.log('- window.clearCacheAndReload() - Limpiar caché y recargar');
+
+        // Auto-refresh cada 2 minutos para mantener sincronizado
+        setInterval(async () => {
+            console.log('Auto-refresh de configuración de artículos...');
+            await loadArticlesConfig();
+        }, 120000); // 2 minutos
 
         // Inicializar la página cuando se carga el DOM
         document.addEventListener('DOMContentLoaded', async () => {
+            console.log('Inicializando aplicación...');
+            
             // Cargar configuración de artículos PRIMERO
-            await loadArticlesConfig();
+            const configLoaded = await loadArticlesConfig();
+            console.log('Configuración de artículos cargada:', configLoaded);
             
             // Luego cargar el resto
             await loadExchangeRates();
             loadCountryOptions();
-            loadGameOptions(); // Ahora cargará los juegos dinámicos
+            loadGameOptions(); // Ahora cargará los juegos dinámicos actualizados
             loadSellerOptions();
             updateSendOrderButtonState();
             updateInputFields();
             
+            // Intervalo para tasas de cambio
             setInterval(loadExchangeRates, 5 * 60 * 1000);
+            
+            console.log('Aplicación inicializada completamente');
         });
 
     </script>

@@ -237,38 +237,10 @@ function getProfitConfig(vendedor) {
 
 // Función para verificar si un artículo está en promoción
 function isArticleInPromotion(gameName, articleLabel) {
-    const ACTIVE_PROMOTIONS = {
-        'LORDS_MOBILE_PROMO': false,
-        'FREE_FIRE_WEEKEND': false,
-        'DELTA_FORCE_SPECIAL': false,
-        'BLOOD_STRIKE_BONUS': false
-    };
-    
-    const PROMOTION_CONFIG = {
-        'LORDS MOBILE': {
-            active: ACTIVE_PROMOTIONS.LORDS_MOBILE_PROMO,
-            articles: ['209💎', '524💎', '1048💎', '2096💎', '3144💎']
-        },
-        'FREE FIRE': {
-            active: ACTIVE_PROMOTIONS.FREE_FIRE_WEEKEND,
-            articles: ['520💎', '1080💎', '2200💎']
-        },
-        'DELTA FORCE STEAM': {
-            active: ACTIVE_PROMOTIONS.DELTA_FORCE_SPECIAL,
-            articles: ['680+70 Coins', '1280+200 Coins', '1680+300 Coins']
-        },
-        'BLOOD STRIKE': {
-            active: ACTIVE_PROMOTIONS.BLOOD_STRIKE_BONUS,
-            articles: ['1000+100', '2000+200', '5000+800']
-        },
-        'MOBILE LEGENDS': {
-            active: false, // Cambiar a true cuando quieras activar promociones
-            articles: ['250+25💎', '500+65💎', '940+144💎']
-        }
-    };
-    
-    const gamePromo = PROMOTION_CONFIG[gameName];
-    return gamePromo && gamePromo.active && gamePromo.articles.includes(articleLabel);
+    // Esta función ahora debe consultar la configuración dinámica
+    // En lugar de usar configuraciones hardcodeadas
+    // Por ahora retornamos false hasta implementar la consulta al API
+    return false;
 }
 
 // FUNCIÓN ELIMINADA: formatArticleName ya no es necesaria

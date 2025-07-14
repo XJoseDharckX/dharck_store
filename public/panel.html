@@ -806,6 +806,57 @@
             font-weight: bold;
         }
 
+        /* Estilos para controles de promociones globales */
+        .promotion-controls {
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #ff6b35;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%);
+        }
+
+        .promotion-controls h4 {
+            margin: 0 0 15px 0;
+            color: #d63031;
+            font-size: 1.2rem;
+        }
+
+        .global-promo-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .btn-promo-on, .btn-promo-off, .btn-promo-specific {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-promo-on {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-promo-off {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-promo-specific {
+            background: #ff6b35;
+            color: white;
+        }
+
+        .btn-promo-on:hover, .btn-promo-off:hover, .btn-promo-specific:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
         .availability-toggle {
             display: flex;
             align-items: center;
@@ -1168,6 +1219,16 @@
                 <div id="articlesPanel" class="articles-panel" style="display: none;">
                     <div class="panel-header">
                         <h3 id="selectedGameTitle">Artículos de [Juego]</h3>
+                    </div>
+                    
+                    <!-- Agregar sección de promociones globales -->
+                    <div class="promotion-controls" style="margin: 20px 0; padding: 15px; border: 2px solid #ff6b35; border-radius: 8px; background: #fff5f0;">
+                        <h4>🔥 Control de Promociones Globales</h4>
+                        <div class="global-promo-buttons">
+                            <button onclick="toggleGamePromotion(selectedGameForArticles, true)" class="btn-promo-on">Activar Todas las Promociones</button>
+                            <button onclick="toggleGamePromotion(selectedGameForArticles, false)" class="btn-promo-off">Desactivar Todas las Promociones</button>
+                            <button onclick="toggleSpecificArticlesPromo(selectedGameForArticles)" class="btn-promo-specific">Promoción Artículos Específicos</button>
+                        </div>
                     </div>
                     
                     <div class="articles-grid" id="articlesGrid">
@@ -2229,6 +2290,82 @@
                 console.error('Error al guardar configuración:', error);
                 showNotification('Error al guardar la configuración: ' + error.message, 'error');
             }
+        }
+        
+        // Función para activar/desactivar promociones globales por juego
+        function toggleGamePromotion(gameName, activate) {
+            const gameConfig = gameArticlesConfig[gameName];
+            let changedCount = 0;
+            
+            gameConfig.articles.forEach(article => {
+                if (article.promotion !== activate) {
+                    article.promotion = activate;
+                    changedCount++;
+                }
+            });
+            
+            if (changedCount > 0) {
+                const status = activate ? 'activadas' : 'desactivadas';
+                showNotification(`${changedCount} promociones ${status} en ${gameName}`, 'success');
+                
+                // Actualizar vista
+                renderArticlesGrid(gameName);
+                
+                // Auto-guardar
+                saveArticleSettings();
+            } else {
+                showNotification('No hay cambios que realizar', 'info');
+            }
+        }
+        
+        // Función para promociones específicas predefinidas
+        function toggleSpecificArticlesPromo(gameName) {
+            const specificPromoArticles = {
+                'LORDS MOBILE': ['💎499+CUPON', '💎999+CUPON', '💎1999+CUPON', '💎2499+CUPON', '💎2999+CUPON'],
+                'FREE FIRE': ['💎520+52', '💎1069+106', '💎2180+218'],
+                'DELTA FORCE STEAM': ['300+20 Coins', '680+70 Coins', '1280+200 Coins'],
+                'DELTA FORCE GARENA': ['300+36 Coins', '680+105 Coins', '1280+264 Coins'],
+                'BLOOD STRIKE': ['500+40', '1000+100', '2000+200'],
+                'GENSHIN IMPACT': ['300+30', '980+110', '1980+260'],
+                'PUBG MOBILE': ['600+60', '1500+300', '3000+850'],
+                'CALL OF DUTY MOBILE': ['880 CP', '2400 CP', '5000 CP'],
+                'MOBILE LEGENDS': ['250+25💎', '500+65💎', '940+144💎', '1860+335💎']
+            };
+            
+            const gameConfig = gameArticlesConfig[gameName];
+            const promoList = specificPromoArticles[gameName] || [];
+            let changedCount = 0;
+            
+            gameConfig.articles.forEach(article => {
+                const shouldBePromo = promoList.includes(article.label);
+                if (article.promotion !== shouldBePromo) {
+                    article.promotion = shouldBePromo;
+                    changedCount++;
+                }
+            });
+            
+            if (changedCount > 0) {
+                showNotification(`Promociones específicas aplicadas: ${changedCount} cambios en ${gameName}`, 'success');
+                renderArticlesGrid(gameName);
+                saveArticleSettings();
+            } else {
+                showNotification('Las promociones específicas ya están configuradas', 'info');
+            }
+        }
+        
+        // Función para estadísticas de promociones
+        function getPromotionStats(gameName) {
+            const gameConfig = gameArticlesConfig[gameName];
+            const total = gameConfig.articles.length;
+            const promoCount = gameConfig.articles.filter(a => a.promotion).length;
+            const activePromoCount = gameConfig.articles.filter(a => a.active && a.promotion).length;
+            
+            return {
+                total,
+                promoCount,
+                activePromoCount,
+                percentage: total > 0 ? Math.round((promoCount / total) * 100) : 0
+            };
         }
         
         // Inicializar auto-refresh al cargar la página
