@@ -691,7 +691,8 @@
         // Función para cargar tasas de cambio actualizadas desde la API
         async function loadExchangeRates() {
             try {
-                const response = await fetch('/api/get-exchange-rates');
+                const BASE_API_URL = window.location.origin;
+                const response = await fetch(`${BASE_API_URL}/api/get-exchange-rates`);
                 if (response.ok) {
                     const updatedRates = await response.json();
                     
@@ -1451,6 +1452,7 @@
             };
 
             try {
+                const BASE_API_URL = window.location.origin + '/api';
                 const response = await fetch(`${BASE_API_URL}/pending-orders`, { 
                     method: 'POST',
                     headers: {
@@ -1518,7 +1520,8 @@
             try {
                 // Agregar timestamp para evitar caché del navegador
                 const timestamp = new Date().getTime();
-                const response = await fetch(`/api/articles-config?t=${timestamp}`, {
+                const BASE_API_URL = window.location.origin;
+                const response = await fetch(`${BASE_API_URL}/api/articles-config?t=${timestamp}`, {
                     method: 'GET',
                     headers: {
                         'Cache-Control': 'no-cache, no-store, must-revalidate',
