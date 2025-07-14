@@ -23,64 +23,122 @@ module.exports = async (req, res) => {
         await doc.loadInfo();
         
         if (req.method === 'GET') {
-            // Obtener configuración guardada desde Google Sheets
-            let configSheet;
+            // Leer desde la hoja 'Juegos'
+            let gamesSheet;
             try {
-                configSheet = doc.sheetsByTitle['ArticulosConfig'];
+                gamesSheet = doc.sheetsByTitle['Juegos'];
             } catch {
                 // Crear hoja si no existe
-                configSheet = await doc.addSheet({
-                    title: 'ArticulosConfig',
-                    headerValues: ['juego', 'configuracion']
+                gamesSheet = await doc.addSheet({
+                    title: 'Juegos',
+                    headerValues: ['Juego', 'articulo', 'precio', 'on/off', 'promocion_on/off']
                 });
             }
             
-            const rows = await configSheet.getRows();
-            const config = {};
+            const rows = await gamesSheet.getRows();
+            const gameOptions = {};
             
             rows.forEach(row => {
-                try {
-                    config[row.juego] = JSON.parse(row.configuracion);
-                } catch (e) {
-                    console.error('Error parsing config for game:', row.juego);
+                const gameName = row.Juego;
+                const isActive = row['on/off'] && row['on/off'].toLowerCase() === 'on';
+                const hasPromotion = row['promocion_on/off'] && row['promocion_on/off'].toLowerCase() === 'on';
+                
+                // Solo incluir artículos activos
+                if (isActive && gameName && row.articulo && row.precio) {
+                    if (!gameOptions[gameName]) {
+                        gameOptions[gameName] = {
+                            name: gameName,
+                            logoUrl: getGameLogo(gameName),
+                            inputRequirement: getInputRequirement(gameName),
+                            amounts: [],
+                            active: true
+                        };
+                    }
+                    
+                    gameOptions[gameName].amounts.push({
+                        name: row.articulo,
+                        price: parseFloat(row.precio) || 0,
+                        promotion: hasPromotion
+                    });
                 }
             });
             
-            res.status(200).json(config);
+            res.status(200).json(gameOptions);
             
         } else if (req.method === 'POST') {
-            // Guardar nueva configuración en Google Sheets
-            const gameArticlesConfig = req.body; // Cambiar esta línea
-            
-            let configSheet;
-            try {
-                configSheet = doc.sheetsByTitle['ArticulosConfig'];
-            } catch {
-                configSheet = await doc.addSheet({
-                    title: 'ArticulosConfig',
-                    headerValues: ['juego', 'configuracion']
-                });
-            }
-            
-            // Limpiar hoja existente
-            await configSheet.clear();
-            await configSheet.setHeaderRow(['juego', 'configuracion']);
-            
-            // Guardar cada juego
-            const rows = [];
-            Object.keys(gameArticlesConfig).forEach(gameName => {
-                rows.push({
-                    juego: gameName,
-                    configuracion: JSON.stringify(gameArticlesConfig[gameName])
-                });
-            });
-            
-            await configSheet.addRows(rows);
-            
-            res.status(200).json({ success: true, message: 'Configuración guardada exitosamente' });
+            // Para futuras actualizaciones desde el panel
+            res.status(200).json({ success: true, message: 'Use la hoja Juegos para modificar artículos' });
         }
     } catch (error) {
         console.error('Error en articles-config:', error);
         res.status(500).json({ error: 'Error interno del servidor', details: error.message });
     }
+};
+
+// Función para obtener el logo del juego
+function getGameLogo(gameName) {
+    const logos = {
+        'DELTA FORCE GARENA': '/image/dfsg.png',
+        'CALL OF DUTY MOBILE': '/image/codm.png',
+        'MOBILE LEGENDS': '/image/ml.png',
+        'FREE FIRE': '/image/ffm.png',
+        'PUBG MOBILE': '/image/pm.png',
+        'GENSHIN IMPACT': '/image/gi.png',
+        'LORDS MOBILE': '/image/lm1.png',
+        'BLOOD STRIKE': '/image/bs.png',
+        'DELTA FORCE STEAM': '/image/dfss.png'
+    };
+    return logos[gameName.toUpperCase()] || '/image/logo.png';
+}
+
+// Función para obtener el requerimiento de input
+function getInputRequirement(gameName) {
+    const requirements = {
+        'DELTA FORCE GARENA': 'ID de jugador',
+        'CALL OF DUTY MOBILE': 'ID de jugador',
+        'MOBILE LEGENDS': 'ID de jugador + Zona',
+        'FREE FIRE': 'ID de jugador',
+        'PUBG MOBILE': 'ID de jugador',
+        'GENSHIN IMPACT': 'UID + Servidor',
+        'LORDS MOBILE': 'ID de jugador',
+        'BLOOD STRIKE': 'ID de jugador',
+        'DELTA FORCE STEAM': 'ID de Steam'
+    };
+    return requirements[gameName.toUpperCase()] || 'ID de jugador';
+}
+
+// Guardar nueva configuración en Google Sheets
+const gameArticlesConfig = req.body; // Cambiar esta línea
+
+let configSheet;
+try {
+    configSheet = doc.sheetsByTitle['ArticulosConfig'];
+} catch {
+    configSheet = await doc.addSheet({
+        title: 'ArticulosConfig',
+        headerValues: ['juego', 'configuracion']
+    });
+}
+
+// Limpiar hoja existente
+await configSheet.clear();
+await configSheet.setHeaderRow(['juego', 'configuracion']);
+
+// Guardar cada juego
+const rows = [];
+Object.keys(gameArticlesConfig).forEach(gameName => {
+    rows.push({
+        juego: gameName,
+        configuracion: JSON.stringify(gameArticlesConfig[gameName])
+    });
+});
+
+await configSheet.addRows(rows);
+
+res.status(200).json({ success: true, message: 'Configuración guardada exitosamente' });
+}
+} catch (error) {
+    console.error('Error en articles-config:', error);
+    res.status(500).json({ error: 'Error interno del servidor', details: error.message });
+}
 };
