@@ -1390,7 +1390,7 @@
             emptyState.style.display = 'none';
             
             try {
-                const response = await fetch('/api/orders');
+                const response = await fetch('/api/pending-orders');
                 
                 if (!response.ok) {
                     throw new Error(`Error ${response.status}: ${response.statusText}`);
