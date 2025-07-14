@@ -1,0 +1,2428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RECARGAS DHARCK STORE</title>
+    <!-- La ruta /image/logo1.png asume que 'logo1.png' está en la carpeta 'public/image/' en tu proyecto de Vercel. -->
+    <link rel="icon" href="/image/logo1.png" type="image/png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0RB1V3F1WL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0RB1V3F1WL');
+</script>
+
+</head>
+<body>
+
+    <style>
+        /* Fuentes */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #4A00E0, #8E2DE2, #FF00FF, #00FFFF, #00FF00); /* Degradado más claro y vibrante */
+            background-size: 400% 400%;
+            animation: gradient-animation 20s ease infinite; /* Animación más lenta y suave */
+
+            display: flex;
+            flex-direction: column; /* Cambiado a columna para apilar el header y el form-container */
+            align-items: center;
+            justify-content: flex-start; /* Alinear arriba para el header fijo */
+            min-height: 100vh;
+            margin: 0;
+            position: relative;
+            overflow-x: hidden;
+            padding: 0; /* Remover padding aquí, se gestionará en el header y form-container */
+            box-sizing: border-box;
+        }
+      
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* LOGO DE FONDO ELIMINADO */
+
+        /* NUEVO ESTILO: Header de título */
+        .app-header {
+            width: 100%;
+            background: linear-gradient(to right, #1A004B, #6A0DAD, #1A004B); /* Degradado oscuro y vibrante para el header */
+            padding: 15px 0; /* Padding vertical */
+            box-shadow: 0 5px 25px rgba(138, 43, 226, 0.8), 0 0 40px rgba(0, 255, 255, 0.5); /* Sombra intensa */
+            z-index: 100; /* Asegurar que esté por encima de todo */
+            position: sticky; /* Se queda en la parte superior al hacer scroll */
+            top: 0;
+            display: flex;
+            justify-content: center; /* Centrar el contenido horizontalmente */
+            align-items: center; /* Centrar el contenido verticalmente */
+            margin-bottom: 30px; /* Espacio entre el header y el formulario */
+            border-bottom: 2px solid #00FFFF; /* Borde inferior de neón */
+            position: relative; /* Necesario para posicionar el botón de soporte */
+        }
+
+        .dharck-store-title-container {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Centrar dentro del header */
+            width: 100%; /* Ocupar todo el ancho disponible del header */
+            max-width: 900px; /* Limitar ancho del contenido del título */
+            padding: 0 20px; /* Padding horizontal para el contenido del título */
+            box-sizing: border-box;
+        }
+        .dharck-store-title {
+            /* Colores más definidos para el texto del título */
+            color: #00FFFF; /* Cian brillante, más legible */
+            text-shadow: 0 0 10px rgba(0, 255, 255, 1), 0 0 20px rgba(0, 255, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.6); /* Resplandor cian */
+            animation: none; /* Eliminar animación del título para mayor claridad */
+            font-weight: bold;
+            font-size: 3.5em; /* Título aún más grande */
+            line-height: 1;
+            margin: 0;
+            margin-right: 25px; /* Más espacio entre texto y logo */
+            background: none; /* Eliminar background-clip ya que ahora es color sólido */
+            -webkit-background-clip: unset;
+            background-clip: unset;
+        }
+        /* Animación para el título (si se quiere mantener algo) */
+        @keyframes header-neon-glow {
+            0% { text-shadow: 0 0 8px #00FFFF, 0 0 15px #00FFFF, 0 0 25px #00FFFF; }
+            50% { text-shadow: 0 0 12px #00FFFF, 0 0 20px #00FFFF, 0 0 35px #00FFFF; }
+            100% { text-shadow: 0 0 8px #00FFFF, 0 0 15px #00FFFF, 0 0 25px #00FFFF; }
+        }
+        .dharck-store-title {
+            animation: header-neon-glow 1.5s infinite alternate; /* Aplicar una animación de brillo */
+        }
+
+        .title-logo {
+            height: 80px; /* Logo más grande en el header */
+            width: auto;
+            border-radius: 50%;
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.8), 0 0 35px rgba(255, 0, 255, 0.8); /* Doble resplandor neón */
+            transition: transform 0.3s ease;
+        }
+        .title-logo:hover {
+            transform: scale(1.05) rotate(5deg); /* Efecto de hover sutil */
+        }
+
+        /* ESTILOS PARA EL BOTÓN DE SOPORTE TÉCNICO */
+        .support-button {
+            position: absolute;
+            right: 20px; /* Posicionarlo a la derecha del header */
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(to right, #FF00FF, #8E2DE2); /* Degradado magenta-morado */
+            color: #FFFFFF;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.7); /* Resplandor magenta */
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Espacio entre icono y texto */
+        }
+        .support-button:hover {
+            background: linear-gradient(to right, #8E2DE2, #FF00FF); /* Invertir degradado al hover */
+            box-shadow: 0 0 25px rgba(255, 0, 255, 1); /* Resplandor más fuerte */
+            transform: translateY(-50%) scale(1.05); /* Ligeramente más grande */
+        }
+        .support-icon {
+            width: 20px;
+            height: 20px;
+            fill: #FFFFFF; /* Color del icono */
+        }
+        /* FIN DE ESTILOS PARA EL BOTÓN DE SOPORTE TÉCNICO */
+
+
+        /* Colores de los cuadros más claros y llamativos */
+        .form-container, .section-container {
+            background-color: #1A004B; /* Un color índigo más claro que el anterior, pero aún oscuro */
+            border: 2px solid #6A0DAD; /* Borde morado brillante */
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 25px rgba(106, 13, 173, 0.6), /* Sombra morada */
+                        0 0 35px rgba(0, 255, 255, 0.5), /* Sombra cian */
+                        inset 0 0 12px rgba(106, 13, 173, 0.3); /* Resplandor interno */
+            max-width: 900px;
+            width: 100%;
+            color: #E0F7FA;
+            box-sizing: border-box;
+            z-index: 1;
+            position: relative;
+            margin-top: 20px;
+        }
+        
+        .section-container {
+            margin-top: 30px;
+        }
+
+        /* Estilo para cada grupo de formulario (label + input/select) */
+        .form-group {
+            margin-bottom: 25px; /* Más espacio entre grupos */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px; /* Más espacio debajo de la etiqueta */
+            font-weight: bold;
+            color: #00FFFF; /* Cian neón */
+            text-shadow: 0 0 6px rgba(0, 255, 255, 0.6);
+            font-size: 1.2em; /* Etiquetas más grandes */
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="email"],
+        input[type="password"] { /* Eliminamos 'select' de aquí ya que ahora son botones para país y vendedor */
+            width: 100%;
+            padding: 14px; /* Más padding */
+            border: 2px solid #6A0DAD; /* Borde más pronunciado */
+            border-radius: 10px; /* Más redondeado */
+            background-color: rgba(30, 0, 60, 0.9); /* Fondo oscuro con ligera transparencia */
+            color: #FFFFFF; /* Texto blanco */
+            font-size: 1.15em; /* Texto un poco más grande */
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 8px rgba(106, 13, 173, 0.3); /* Sombra interna sutil */
+            height: 50px; /* Altura fija para celdas de selección, asegurando el mismo tamaño */
+            box-sizing: border-box; /* Incluir padding y borde en la altura */
+            -webkit-appearance: none; /* Eliminar estilo por defecto en Safari/Chrome */
+            -moz-appearance: none; /* Eliminar estilo por defecto en Firefox */
+            appearance: none;
+        }
+
+        input[type="text"]::placeholder,
+        input[type="tel"]::placeholder,
+        input[type="email"]::placeholder,
+        input[type="password"]::placeholder {
+            color: #B0B0B0; /* Placeholder más claro */
+        }
+
+        input[type="text"]:focus,
+        input[type="tel"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus { /* Eliminamos 'select' de aquí */
+            outline: none;
+            border-color: #00FF00; /* Borde verde neón al enfocar */
+            box-shadow: 0 0 0 4px rgba(0, 255, 0, 0.6), inset 0 0 10px rgba(0, 255, 0, 0.4); /* Resplandor más fuerte */
+        }
+
+        /* ESTILOS PARA LOS BOTONES DE JUEGO Y ARTÍCULOS */
+        #gameButtonsContainer, #amountButtons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Base para escritorio */
+            gap: 20px; /* Espacio entre botones */
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        /* Estilos base para los elementos de juego y artículos */
+        .game-item, .amount-item { /* Aplicamos estilos base a ambos */
+            background-color: rgba(30, 0, 60, 0.7); /* Fondo oscuro con transparencia */
+            border: 2px solid #8A2BE2; /* Borde morado */
+            border-radius: 15px; /* Más redondeado */
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.6); /* Sombra pronunciada */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 200px; /* Altura mínima uniforme, se ajustará individualmente si es necesario */
+            text-align: center;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-item::before, .amount-item::before { /* Efecto de brillo al pasar el ratón para ambos */
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.15) 0%, transparent 80%);
+            transform: rotate(45deg);
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+            opacity: 0;
+            z-index: 0; /* Asegurar que el brillo esté detrás del contenido */
+        }
+        .game-item:hover::before, .amount-item:hover::before {
+            transform: rotate(45deg) translate(20%, 20%);
+            opacity: 1;
+        }
+        .game-item:hover:not(.selected), .amount-item:hover:not(.selected) { /* Hover solo si no está seleccionado */
+            background-color: rgba(138, 43, 226, 0.8); /* Morado más brillante */
+            box-shadow: 0 8px 25px rgba(138, 43, 226, 1), 0 0 30px rgba(0, 255, 255, 0.5); /* Doble resplandor */
+            transform: translateY(-8px); /* Efecto de elevación más notable */
+        }
+
+        /* Estilos para el estado seleccionado (aplicados a ambos) */
+        .game-item.selected, .amount-item.selected {
+            background: linear-gradient(to right, #00E676, #00FFFF); /* Degradado verde-cian intenso */
+            border-color: #00FFFF;
+            color: #1A052E; /* Texto oscuro */
+            box-shadow: 0 0 30px rgba(0, 255, 255, 1), 0 0 40px rgba(0, 230, 118, 1); /* Resplandor muy brillante */
+            transform: scale(1.08); /* Efecto de escala más pronunciado */
+        }
+
+        .game-logo {
+            width: 120px; /* Tamaño del logo del juego */
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* Resplandor en el logo */
+            z-index: 1; /* Asegurar que el logo esté encima del brillo */
+        }
+
+        .game-name-label {
+            color: #FFFFFF; /* Texto blanco predeterminado */
+            font-weight: bold;
+            font-size: 1.3em; /* Texto del nombre del juego más grande */
+            line-height: 1.3;
+            z-index: 1; /* Asegurar que el texto esté encima del brillo */
+        }
+
+        .game-item.selected .game-name-label {
+            color: #1A052E; /* Texto oscuro cuando está seleccionado */
+        }
+        /* FIN DE ESTILOS PARA LOS BOTONES DE JUEGO */
+
+        /* ESTILOS PARA EL SISTEMA DE PROMOCIONES */
+        .promo-item {
+            position: relative;
+            overflow: visible !important;
+            border: 2px solid #ff6b35 !important;
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.5) !important;
+        }
+
+        .promo-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+            z-index: 2;
+            pointer-events: none; /* Evitar interferencia con clicks */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        @keyframes promo-badge-glow {
+            0% { box-shadow: 0 0 15px rgba(255, 107, 53, 0.8); }
+            100% { box-shadow: 0 0 25px rgba(255, 107, 53, 1), 0 0 35px rgba(247, 147, 30, 0.8); }
+        }
+
+        /* Animaciones de promoción */
+        @keyframes promo-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes promo-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 107, 53, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(255, 107, 53, 0.8); }
+        }
+
+        @keyframes promo-shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+
+        @keyframes promo-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .promo-pulse {
+            animation: promo-pulse 2s ease-in-out infinite;
+        }
+
+        .promo-glow {
+            animation: promo-glow 1.5s ease-in-out infinite;
+        }
+
+        .promo-shake {
+            animation: promo-shake 0.5s ease-in-out infinite;
+        }
+
+        .promo-bounce {
+            animation: promo-bounce 1s ease-in-out infinite;
+        }
+
+        /* Efecto hover mejorado para items en promoción */
+        .promo-item:hover {
+            transform: scale(1.08) !important;
+            box-shadow: 0 0 25px rgba(255, 107, 53, 0.8) !important;
+        }
+
+        /* Estilo especial para el badge cuando el item está seleccionado */
+        .promo-item.selected .promo-badge {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            animation: promo-pulse 1s ease-in-out infinite;
+        }
+
+        /* Efecto especial para artículos en promoción */
+        .promo-item::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #FF6B35, #F7931E, #FF6B35);
+            background-size: 200% 200%;
+            border-radius: 17px;
+            z-index: -1;
+            animation: promo-border-flow 3s linear infinite;
+        }
+
+        @keyframes promo-border-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        /* FIN DE ESTILOS PARA EL SISTEMA DE PROMOCIONES */
+
+
+        /* Estilos específicos para el selector de artículos */
+        .amount-item {
+            min-height: 180px; /* Altura mínima uniforme, ligeramente menor que game-item */
+            padding: 15px; /* Ajuste de padding */
+        }
+        .item-image {
+            width: 100px; /* Imágenes más grandes */
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 5px; /* Ajuste para separar de los labels */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.4); /* Pequeño resplandor en la imagen */
+            z-index: 1; /* Asegurar que la imagen esté encima del brillo */
+        }
+        /* Contenedor para el label y el precio, para que queden apilados */
+        .item-text-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%; /* Asegurar que ocupe el ancho disponible */
+            z-index: 1; /* Asegurar que el texto esté encima del brillo */
+        }
+        .item-label {
+            color: #FFFFFF; /* Texto blanco predeterminado */
+            font-weight: bold;
+            font-size: 1.2em; /* Texto más grande */
+            line-height: 1.3;
+            display: block; /* Asegura que el label esté en su propia fila */
+            margin-bottom: 5px; /* Espacio entre label y precios */
+            word-break: break-word; /* Romper palabras largas */
+            overflow-wrap: break-word; /* Compatible con navegadores antiguos */
+        }
+        .amount-item.selected .item-label {
+            color: #1A052E; /* Texto oscuro cuando está seleccionado */
+        }
+        .item-price-usd { /* NUEVO ESTILO: Precio en USD */
+            color: #A9A9A9; /* Gris claro para el precio USD */
+            font-size: 0.85em; /* Tamaño un poco más pequeño */
+            font-weight: normal; /* No negrita */
+            margin-bottom: 2px; /* Espacio entre USD y precio local */
+        }
+        .item-price-local { /* Estilo para el precio local */
+            color: #00FF00; /* Verde neón */
+            font-size: 0.95em; /* Un poco más grande que el USD */
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+            display: block; /* Asegura que el precio esté en su propia fila */
+        }
+
+        /* Estilo para los artículos seleccionados en el resumen */
+        #selectedItemsPreview {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 255, 255, 0.3); /* Separador sutil */
+        }
+        .selected-item-thumbnail {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 8px;
+            border: 2px solid #00FFFF;
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+        }
+
+
+        #priceSummary, #messageDisplay, #paymentMethodsDisplay {
+            padding: 25px; /* Más padding */
+            border-radius: 15px; /* Más redondeado */
+            margin-top: 30px; /* Más margen superior */
+            text-align: center;
+            background-color: rgba(30, 0, 60, 0.9); /* Fondo oscuro translúcido, consistente */
+            border: 2px solid #8A2BE2; /* Borde morado neón */
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5); /* Sombra más fuerte */
+        }
+        #priceSummary p, #paymentMethodsList p {
+            color: #E0F7FA; /* Texto claro para legibilidad */
+        }
+
+        #totalPriceDisplay {
+            font-weight: bold;
+            color: #00FFFF; /* Cian neón */
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8); /* Resplandor al total */
+            font-size: 1.8em; /* Total más grande */
+        }
+        #currencySymbolDisplay {
+            color: #00FF00; /* Verde neón para el símbolo de moneda */
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+        }
+        #baseAmountDisplay {
+            color: #A9A9A9; /* Gris más claro para el monto base */
+            font-size: 1em;
+        }
+        #paymentMethodsList p span {
+            color: #00E676; /* Verde neón para los nombres de los métodos */
+            font-weight: bold;
+        }
+
+        /* Visualización de mensajes */
+        #messageDisplay {
+            font-weight: bold;
+            padding: 20px;
+            border-radius: 10px;
+            text-shadow: 0 0 5px rgba(0,0,0,0.2);
+            color: white;
+            font-size: 1.1em;
+        }
+        .message-error {
+            background-color: #A30000; /* Rojo oscuro vibrante */
+            border: 2px solid #FF5555;
+            color: #FFDDDD; /* Texto rojo muy claro */
+        }
+        .message-success {
+            background-color: #007A00; /* Verde oscuro vibrante */
+            border: 2px solid #00FF00;
+            color: #DDFFDD; /* Texto verde muy claro */
+        }
+        .message-info {
+            background-color: #0000A3; /* Azul oscuro vibrante */
+            border: 2px solid #5555FF;
+            color: #DDEEFF; /* Texto azul muy claro */
+        }
+        /* Advertencia de transferencia */
+        .transfer-warning {
+            background-color: #E25822; /* Naranja más oscuro */
+            border: 3px solid #FFD700; /* Borde amarillo brillante más grueso */
+            color: #2A0000; /* Texto oscuro para alto contraste */
+            font-weight: bold;
+            padding: 22px; /* Más padding */
+            border-radius: 15px; /* Más redondeado */
+            margin-top: 30px; /* Más margen superior */
+            text-align: center;
+            box-shadow: 0 0 25px rgba(255, 100, 50, 0.9), 0 0 40px rgba(255, 215, 0, 0.9); /* Doble resplandor neón */
+            animation: pulse-warning 1.8s infinite alternate; /* Animación de pulsación más lenta */
+        }
+
+        /* Estilos de botones de acción */
+        .action-button { 
+            background: linear-gradient(to right, #00e676, #00c853); /* Degradado verde neón */
+            color: #0d001a; /* Texto muy oscuro en el botón neón */
+            padding: 15px 20px; /* Más padding para mayor tamaño */
+            border: none;
+            border-radius: 10px; /* Más redondeado */
+            cursor: pointer;
+            font-size: 1.2em; /* Texto más grande */
+            font-weight: bold;
+            display: block; /* Asegura que ocupe su propia línea y se pueda centrar */
+            max-width: 450px; /* Ancho máximo para el botón */
+            margin: 20px auto 0 auto; /* Centrar horizontalmente y añadir margen superior */
+            box-shadow: 0 5px 20px rgba(0, 230, 118, 0.7); /* Sombra con resplandor verde neón */
+            transition: all 0.3s ease;
+        }
+
+        .action-button:hover:not(:disabled) { /* Hover solo si no está deshabilitado */
+            background: linear-gradient(to right, #00c853, #00ffff); /* Verde a cian neón al pasar el ratón */
+            box-shadow: 0 8px 25px rgba(0, 255, 255, 0.8); /* Resplandor cian al pasar el ratón */
+            transform: translateY(-3px) scale(1.01); /* Efecto 3D sutil */
+        }
+
+        .action-button:disabled { /* Estilo para botones deshabilitados */
+            background: linear-gradient(to right, #505050, #707070); /* Degradado gris sutil */
+            color: #A0A0A0; /* Texto gris claro */
+            cursor: not-allowed;
+            opacity: 0.8; /* Menos opacidad para indicar inactividad */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4); /* Sombra sutil para profundidad */
+            transform: none; /* Eliminar transform en disabled */
+        }
+
+        /* Estilo específico para el botón de confirmar transferencia */
+        #confirmTransferBtn {
+            background: linear-gradient(to right, #FF00FF, #8a2be2); /* Degradado magenta-morado neón */
+            box-shadow: 0 5px 20px rgba(255, 0, 255, 0.7); /* Sombra con resplandor magenta neón */
+        }
+        #confirmTransferBtn:hover:not(:disabled) {
+            background: linear-gradient(to right, #8a2be2, #FF00FF); /* Degradado invertido */
+            box-shadow: 0 8px 25px rgba(255, 0, 255, 0.8); /* Resplandor más fuerte */
+        }
+
+
+        /* Estilos del modal (advertencia WhatsApp) */
+        #whatsappWarningModal > div {
+            background-color: rgba(20, 0, 50, 0.98); /* Fondo oscuro casi opaco */
+            border: 3px solid #00FFFF; /* Borde cian neón más grueso */
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.8); /* Sombra con resplandor cian más fuerte */
+            color: #E0F7FA; /* Texto principal claro */
+            padding: 30px;
+            border-radius: 15px;
+        }
+        #whatsappWarningModal h2 {
+            color: #00FFFF; /* Cian neón */
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            font-size: 1.8em;
+        }
+        #whatsappWarningModal p {
+            color: #E0F7FA;
+            font-size: 1.1em;
+        }
+        #whatsappWarningModal p span {
+            color: #FF00FF; /* Magenta neón */
+            text-shadow: 0 0 8px rgba(255, 0, 255, 0.7);
+        }
+        #whatsappWarningModal #cancelWhatsApp,
+        #whatsappWarningModal #confirmWhatsApp {
+            padding: 12px 25px; /* Botones más grandes */
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 10px;
+        }
+        #whatsappWarningModal #cancelWhatsApp {
+            background-color: #555555;
+            color: #E0F7FA;
+            border: 1px solid #777777;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+        }
+        #whatsappWarningModal #cancelWhatsApp:hover {
+            background-color: #777777;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.6);
+        }
+        #whatsappWarningModal #confirmWhatsApp {
+            background: linear-gradient(to right, #00E676, #00FFFF);
+            color: #1A052E;
+            box-shadow: 0 5px 18px rgba(0, 255, 255, 0.8);
+        }
+        #whatsappWarningModal #confirmWhatsApp:hover {
+            background: linear-gradient(to right, #00FFFF, #00E676);
+            box-shadow: 0 8px 25px rgba(0, 255, 255, 1);
+        }
+
+        /* Estilos para la animación de carga */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-text {
+            animation: pulse-text 1.5s infinite alternate; /* Animación de pulsación para el texto de carga */
+        }
+        @keyframes pulse-text {
+            0% { opacity: 0.7; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* ESTILO PARA EL VENDEDOR DESTACADO */
+        .highlighted-seller {
+            color: #FFD700 !important; /* Color amarillo dorado vibrante */
+            font-weight: bold !important;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.8); /* Resplandor amarillo */
+        }
+
+        /* ESTILOS NUEVOS PARA PAÍSES Y VENDEDORES (BOTONES CON IMAGEN) */
+        #countryButtonsContainer, #sellerButtonsContainer {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* 4 columnas para pantallas más grandes, ajusta minmax */
+            gap: 15px; /* Espacio entre botones */
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .country-item, .seller-item {
+            background-color: rgba(30, 0, 60, 0.7);
+            border: 2px solid #6A0DAD;
+            border-radius: 15px; /* Ligeramente redondeado */
+            box-shadow: 0 3px 10px rgba(106, 13, 173, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px; /* Reducir padding */
+            cursor: pointer;
+            transition: all 0.2s ease;
+            height: 100px; /* Altura fija para mantener el mismo tamaño */
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none; /* Asegurar que no haya subrayado si se usan anclas */
+            color: inherit; /* Heredar color de texto */
+        }
+
+        .country-item:hover:not(.selected), .seller-item:hover:not(.selected) {
+            background-color: rgba(106, 13, 173, 0.8);
+            box-shadow: 0 5px 15px rgba(106, 13, 173, 0.7), 0 0 20px rgba(0, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .country-item.selected, .seller-item.selected {
+            background: linear-gradient(to right, #00FFFF, #00E676); /* Degradado cian-verde */
+            border-color: #00FFFF;
+            color: #1A052E;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.8), 0 0 30px rgba(0, 230, 118, 0.7);
+            transform: scale(1.05);
+        }
+
+        .country-image, .seller-image {
+            width: 60px; /* Tamaño de imagen para país y vendedor */
+            height: 60px;
+            object-fit: cover; /* Recortar si es necesario */
+            border-radius: 50%; /* COMPLETAMENTE REDONDO */
+            margin-bottom: 5px;
+            border: 2px solid rgba(0, 255, 255, 0.6); /* Borde cian sutil */
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+            transition: transform 0.2s ease;
+        }
+
+        .country-image.selected, .seller-image.selected {
+            border-color: #1A052E; /* Borde oscuro cuando está seleccionado */
+        }
+
+        .seller-name-label {
+            font-size: 0.9em; /* Tamaño de fuente más pequeño para el nombre del vendedor */
+            font-weight: bold;
+            color: #E0F7FA; /* Color claro por defecto */
+            text-align: center;
+            line-height: 1.2;
+            word-break: break-word; /* Asegura que nombres largos se ajusten */
+        }
+
+        .seller-item.selected .seller-name-label {
+            color: #1A052E; /* Texto oscuro cuando el vendedor está seleccionado */
+        }
+
+        /* Media Queries para Responsive Design */
+        @media (max-width: 992px) { /* Tablets y pantallas medianas */
+            #gameButtonsContainer, #amountButtons {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Intentará 3+ columnas */
+                gap: 18px;
+            }
+            #countryButtonsContainer, #sellerButtonsContainer {
+                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); /* Ajuste para tablets */
+                gap: 12px;
+            }
+            .support-button {
+                right: 15px; /* Ajustar posición en tablets */
+                padding: 8px 12px;
+                font-size: 0.85em;
+            }
+        }
+
+        @media (max-width: 768px) { /* Tabletas pequeñas y móviles grandes */
+            .app-header {
+                padding: 10px 0;
+                flex-wrap: wrap; /* Permite que los elementos se envuelvan */
+                justify-content: center; /* Centrar el contenido cuando se envuelve */
+                height: auto; /* Altura auto para que se ajuste al contenido envuelto */
+            }
+            .dharck-store-title-container {
+                width: 100%; /* Ocupar todo el ancho para centrar */
+                justify-content: center; /* Centrar título y logo */
+                margin-bottom: 10px; /* Espacio debajo del título en móviles */
+            }
+            .dharck-store-title {
+                font-size: 2.2em; /* Reducir tamaño del título en móvil */
+                margin-right: 15px;
+            }
+            .title-logo {
+                height: 50px; /* Reducir tamaño del logo en móvil */
+            }
+            .support-button {
+                position: static; /* Cambiar a estático para que fluya con el contenido */
+                margin-top: 10px; /* Margen superior para separarlo del título */
+                transform: none; /* Eliminar transformación */
+                width: auto; /* Ancho automático */
+                max-width: 250px; /* Limitar ancho del botón */
+                margin-left: auto; /* Centrar horizontalmente si está en su propia línea */
+                margin-right: auto;
+            }
+            .form-container, .section-container { /* Aplicar a ambos contenedores */
+                padding: 20px;
+                border-radius: 15px;
+                margin-top: 20px; /* Ajustar margen */
+            }
+            /* Ajuste para los botones de juego y artículos en móvil */
+            #gameButtonsContainer, #amountButtons {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Intentará 3-4 columnas */
+                gap: 15px;
+            }
+            #countryButtonsContainer, #sellerButtonsContainer {
+                grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); /* Ajuste para móviles */
+                gap: 10px;
+            }
+            .country-image, .seller-image {
+                width: 50px;
+                height: 50px;
+            }
+            .country-item, .seller-item {
+                height: 90px; /* Altura ajustada para móvil */
+            }
+            .seller-name-label {
+                font-size: 0.8em; /* Más pequeño en móvil */
+            }
+            .game-item {
+                min-height: 160px;
+                padding: 15px;
+            }
+            .game-logo {
+                width: 90px;
+                height: 90px;
+            }
+            .game-name-label {
+                font-size: 1.1em;
+            }
+            .amount-item {
+                min-height: 140px; /* Altura ajustada para artículos en móvil */
+                padding: 15px;
+            }
+            .item-image {
+                width: 70px;
+                height: 70px;
+            }
+            .item-label {
+                font-size: 1em;
+            }
+            label {
+                font-size: 1.1em;
+            }
+            input[type="text"], input[type="tel"], input[type="email"], input[type="password"] {
+                padding: 10px;
+                font-size: 1em;
+                height: 45px; /* Ajustar altura para móvil */
+            }
+            .action-button {
+                padding: 12px 15px;
+                font-size: 1.1em;
+                max-width: 90%; /* Ajustar ancho máximo para móvil */
+            }
+            #whatsappWarningModal > div {
+                max-width: 90%;
+            }
+        }
+
+        @media (max-width: 576px) { /* Móviles pequeños a medianos */
+            #gameButtonsContainer, #amountButtons {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Intentará 3 columnas, pero puede caer a 2 si el espacio es muy reducido */
+                gap: 10px;
+            }
+            #countryButtonsContainer, #sellerButtonsContainer {
+                grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); /* Para móviles pequeños */
+                gap: 8px;
+            }
+            .country-image, .seller-image {
+                width: 45px;
+                height: 45px;
+            }
+            .country-item, .seller-item {
+                height: 80px;
+                padding: 8px;
+            }
+            .seller-name-label {
+                font-size: 0.7em;
+            }
+            .game-item {
+                min-height: 140px;
+            }
+            .amount-item {
+                min-height: 120px;
+            }
+            .support-button {
+                font-size: 0.8em;
+                padding: 8px 10px;
+            }
+        }
+
+        @media (max-width: 400px) { /* Móviles muy pequeños */
+            .app-header {
+                padding: 8px 0;
+            }
+            .dharck-store-title {
+                font-size: 1.8em;
+                margin-right: 10px;
+            }
+            .title-logo {
+                height: 40px;
+            }
+            #gameButtonsContainer, #amountButtons {
+                grid-template-columns: repeat(2, 1fr); /* Garantiza 2 columnas */
+                gap: 8px;
+            }
+            #countryButtonsContainer, #sellerButtonsContainer {
+                grid-template-columns: repeat(2, 1fr); /* 2 columnas para el mínimo de móviles */
+            }
+            .country-image, .seller-image {
+                width: 40px;
+                height: 40px;
+            }
+            .country-item, .seller-item {
+                height: 70px;
+                padding: 6px;
+            }
+            .seller-name-label {
+                font-size: 0.65em;
+            }
+            .game-item {
+                min-height: 120px;
+            }
+            .game-logo {
+                width: 80px;
+                height: 80px;
+            }
+            .amount-item {
+                min-height: 110px;
+            }
+            .form-container, .section-container { /* Aplicar a ambos contenedores */
+                padding: 15px;
+                margin-top: 15px; /* Ajustar margen */
+            }
+            .support-button {
+                font-size: 0.75em;
+                padding: 6px 8px;
+            }
+        }
+
+    </style>
+
+    <!-- Header para el título de la aplicación -->
+    <header class="app-header">
+        <div class="dharck-store-title-container">
+            <h1 class="dharck-store-title">
+                DHARCK STORE
+            </h1>
+            <!-- La ruta /logo.png asume que 'logo.png' está directamente en la carpeta 'public/' en tu proyecto de Vercel. -->
+            <img src="/image/logo.png" alt="Logotipo de la TIENDA DHARCK" class="title-logo">    
+        </div>
+        <!-- BOTÓN DE SOPORTE TÉCNICO AÑADIDO AQUÍ -->
+        <button class="support-button" onclick="window.open('https://wa.me/584126027407?text=Hola,%20necesito%20soporte%20t%C3%A9cnico%20de%20Dharck%20Store.', '_blank')">
+            <svg class="support-icon" viewBox="0 0 24 24">
+                <path d="M12 2C6.477 2 2 6.477 2 12c0 3.313 1.606 6.279 4.093 8.163L4.5 22.5l2.25-1.5c1.844.975 3.966 1.547 6.25 1.547C17.523 22.5 22 18.023 22 12S17.523 2 12 2zm2.25 10.5H9.75v-1.5h4.5v1.5z"/>
+            </svg>
+            Soporte Técnico
+        </button>
+    </header>
+
+    <!-- Nuevo contenedor para la selección de país - MOVIDO ARRIBA -->
+    <div class="section-container" id="countrySelectionSection">
+        <div class="form-group">
+            <label for="country">
+                SELECCIONA TU PAIS:
+            </label>
+            <div id="countryButtonsContainer">
+                <!-- Los botones de país se generarán aquí con JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Nuevo contenedor para la selección de juegos -->
+    <div class="section-container" id="gameSelectionSection">
+        <div class="form-group">
+            <label>
+                SELECCIONA EL JUEGO:
+            </label>
+            <div id="gameButtonsContainer">
+                <!-- Los botones de juego se generarán aquí con JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor principal del formulario, ahora contiene los artículos, campos de usuario, vendedor y resumen de pedido -->
+    <div class="form-container">
+        <form id="topupForm">
+            <div id="amountSelection" class="form-group" style="display: none;">
+                <label>
+                    SELECCIONA EL ARTICULO(S):
+                </label>
+                <div id="amountButtons">
+                    <!-- Los divs de los artículos se generarán aquí con JS -->
+                </div>
+            </div>
+
+            <!-- Sección de información del jugador, contendrá los campos dinámicos -->
+            <div id="userInfoSection">
+                <!-- ID y Nombre (Para Lords Mobile, Free Fire, Mobile Legends) -->
+                <div id="idNameInputs" style="display: none;">
+                    <div class="form-group">
+                        <label for="userId">
+                            ID DEL JUGADOR:
+                        </label>
+                        <input
+                            type="tel"
+                            id="userId"
+                            name="userId"
+                            placeholder="Ej: 1234567890"
+                            pattern="[0-9]*"
+                            title="Por favor, ingresa solo números."
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="userName">
+                            NOMBRE DEL JUGADOR:
+                        </label>
+                        <input
+                            type="text"
+                            id="userName"
+                            name="userName"
+                            placeholder="Ej: ElCojeViejas300"
+                        />
+                    </div>
+                </div>
+
+                <!-- ID y Servidor (Para Genshin Impact, Mobile Legends) -->
+                <div id="idServerInputs" style="display: none;">
+                    <div class="form-group">
+                        <label for="userIdServer">
+                            ID DEL JUGADOR (UID):
+                        </label>
+                        <input
+                            type="tel"
+                            id="userIdServer"
+                            name="userIdServer"
+                            placeholder="Ej: 123456789 (UID)"
+                            pattern="[0-9]*"
+                            title="Por favor, ingresa solo números para el UID."
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="serverInput">
+                            SERVIDOR:
+                        </label>
+                        <input
+                            type="text"
+                            id="serverInput"
+                            name="serverInput"
+                            placeholder="Ej: América, Asia, Europa"
+                        />
+                    </div>
+                    <!-- Nombre del jugador para Mobile Legends, si aplica en este grupo -->
+                    <div class="form-group" id="mlNameInput" style="display: none;">
+                        <label for="userNameML">
+                            NOMBRE DEL JUGADOR:
+                        </label>
+                        <input
+                            type="text"
+                            id="userNameML"
+                            name="userNameML"
+                            placeholder="Ej: MiNombreDeML"
+                        />
+                    </div>
+                </div>
+
+                <!-- ID Solamente (Para Blood Strike, PUBG Mobile, Delta Force) -->
+                <div id="idOnlyInputs" style="display: none;">
+                    <div class="form-group">
+                        <label for="userIdOnly">
+                            ID DEL JUGADOR:
+                        </label>
+                        <input
+                            type="tel"
+                            id="userIdOnly"
+                            name="userIdOnly"
+                            placeholder="Ej: 1234567890"
+                            pattern="[0-9]*"
+                            title="Por favor, ingresa solo números."
+                        />
+                    </div>
+                </div>
+
+                <!-- Campos completos para Call of Duty Mobile -->
+                <div id="codInputs" style="display: none;">
+                    <div class="form-group">
+                        <label for="emailInput">
+                            CORREO ELECTRÓNICO:
+                        </label>
+                        <input
+                            type="email"
+                            id="emailInput"
+                            name="emailInput"
+                            placeholder="Ej: tu_correo@example.com"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordInput">
+                            CONTRASEÑA:
+                        </label>
+                        <input
+                            type="password"
+                            id="passwordInput"
+                            name="passwordInput"
+                            placeholder="Ingresa tu contraseña"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="linkageInput">
+                            VINCULACIÓN (Gmail, Facebook, Activision):
+                        </label>
+                        <input
+                            type="text"
+                            id="linkageInput"
+                            name="linkageInput"
+                            placeholder="Ej: Gmail"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="exactAccountNameInput">
+                            NOMBRE EXACTO DE LA CUENTA:
+                        </label>
+                        <input
+                            type="text"
+                            id="exactAccountNameInput"
+                            name="exactAccountNameInput"
+                            placeholder="Ej: TuNombreExactoEnCOD"
+                        />
+                    </div>
+                </div>
+            </div> <!-- Fin de userInfoSection -->
+
+            <div class="form-group">
+                <label for="seller">
+                    SELECCIONA EL VENDEDOR:
+                </label>
+                <div id="sellerButtonsContainer">
+                    <!-- Los botones de vendedor se generarán aquí con JS -->
+                </div>
+            </div>
+
+            <!-- La selección de país se movió a la parte superior -->
+            <input type="hidden" id="gameHidden" name="game">
+            <input type="hidden" id="amountUSDHidden" name="amountUSD">
+            <input type="hidden" id="totalPriceHidden" name="totalPrice">
+            <input type="hidden" id="currencySymbolHidden" name="currencySymbol">
+
+
+            <div id="priceSummary" style="display: none;">
+                <p>RESUMEN DE PEDIDO:</p>
+                <div id="selectedItemsPreview">
+                    <!-- Las miniaturas de los artículos seleccionados se mostrarán aquí -->
+                </div>
+                <p>
+                    TOTAL A PAGAR: <span id="totalPriceDisplay"></span> <span id="currencySymbolDisplay"></span>
+                </p>
+                <p>
+                    (BASADO EN <span id="baseAmountDisplay"></span> USD + COMISION!)
+                </p>
+            </div>
+
+            <div id="paymentMethodsDisplay" style="display: none;">
+                <p>METODOS DE PAGOS:</p>
+                <div id="paymentMethodsList"></div>
+            </div>
+
+
+
+            <!-- Mensaje de advertencia actualizado -->
+            <div id="transferWarningMessage" class="transfer-warning">
+                ¡Importante! Asegúrate de haber realizado el pago antes de enviar el pedido. La entrega puede demorar entre 5 a 15 minutos en reflejarse en el juego.
+            </div>
+
+            <!-- Solo un botón de envío -->
+            <button
+                type="submit"
+                id="sendWhatsAppOrderBtn"
+                class="action-button"
+                style="display: none;"
+                disabled="true"
+            >
+                ENVIAR PEDIDO
+            </button>
+
+            <div id="messageDisplay" style="display: none;"></div>
+        </form>
+    </div>
+
+    <div id="whatsappWarningModal" style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); z-index: 1000; display: none;">
+        <div style="background-color: rgba(10, 0, 30, 0.95); padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 400px; width: 100%; text-align: center;">
+            <h2>¡Importante!</h2>
+            <p style="color: #e0f2fe;">
+                Tu pedido será enviado por WhatsApp.
+                <span style="color: #ff00ff;">Recuerda realizar el pago usando los métodos mostrados y enviar el comprobante por WhatsApp.</span>
+            </p>
+            <div>
+                <button id="cancelWhatsApp" type="button">
+                    Cancelar
+                </button>
+                <button id="confirmWhatsApp" type="button">
+                    Confirmar y Enviar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay (NUEVO) -->
+    <div id="loadingOverlay" style="position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); z-index: 1001; color: white; display: none;">
+        <div class="spinner" style="border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid #00ffff; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite;"></div>
+        <p style="margin-top: 15px; font-size: 1.2em; color: #00ffff; text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);" class="loading-text">Cargando...</p>
+    </div>
+
+    <script type="module">
+
+        // Número de WhatsApp Business predeterminado (fallback si no se encuentra el vendedor)
+        const DEFAULT_WHATSAPP_NUMBER = '584126027407'; 
+
+        // Configuración de ganancias por artículo (SOLO PARA ADMINISTRADORES - NO VISIBLE AL PÚBLICO)
+        const SELLER_PROFIT_CONFIG = {
+            'FREE FIRE': 0.40,
+            'DELTA FORCE STEAM': 0.60, 
+            'DELTA FORCE GARENA': 0.60,
+            'CALL OF DUTY MOBILE': 0.70,
+            'PUBG MOBILE': 0.50,
+            'MOBILE LEGENDS': 0.45,
+            'DEFAULT': 0.50
+        };
+
+        // Elementos ocultos (ahora solo para datos del formulario)
+        const gameHidden = document.getElementById('gameHidden');
+        const amountUSDHidden = document.getElementById('amountUSDHidden');
+        const totalPriceHidden = document.getElementById('totalPriceHidden');
+        const currencySymbolHidden = document.getElementById('currencySymbolHidden');
+
+
+        // Referencias al modal
+        const whatsappWarningModal = document.getElementById('whatsappWarningModal');
+        const confirmWhatsAppBtn = document.getElementById('confirmWhatsApp');
+        const cancelWhatsAppBtn = document.getElementById('cancelWhatsApp');
+
+        // Botón de acción
+        const sendWhatsAppOrderBtn = document.getElementById('sendWhatsAppOrderBtn');
+        const loadingOverlay = document.getElementById('loadingOverlay'); // Referencia al overlay de carga
+
+        // Elementos del DOM para campos dinámicos
+        const countrySelectionSection = document.getElementById('countrySelectionSection'); // Nueva sección para país
+        const gameSelectionSection = document.getElementById('gameSelectionSection');
+        const amountSelectionDiv = document.getElementById('amountSelection');
+        const userInfoSection = document.getElementById('userInfoSection'); // Nuevo contenedor para todos los campos de usuario
+        const idNameInputs = document.getElementById('idNameInputs');
+        const userIdInput = document.getElementById('userId'); 
+        const userNameInput = document.getElementById('userName'); 
+
+        const idServerInputs = document.getElementById('idServerInputs');
+        const userIdServerInput = document.getElementById('userIdServer');
+        const serverInput = document.getElementById('serverInput');
+        const userNameMLInput = document.getElementById('userNameML'); 
+
+        const idOnlyInputs = document.getElementById('idOnlyInputs');
+        const userIdOnlyInput = document.getElementById('userIdOnly');
+
+        const codInputs = document.getElementById('codInputs');
+        const emailInput = document.getElementById('emailInput');
+        const passwordInput = document.getElementById('passwordInput');
+        const linkageInput = document.getElementById('linkageInput');
+        const exactAccountNameInput = document.getElementById('exactAccountNameInput');
+
+
+        // Sistema de promociones dinámicas (fácil activar/desactivar)
+        const ACTIVE_PROMOTIONS = {
+            // Activar/desactivar promociones cambiando true/false
+            'LORDS_MOBILE_PROMO': true,  // Promoción +20% Lords Mobile
+            'FREE_FIRE_WEEKEND': false,  // Promoción fin de semana Free Fire
+            'DELTA_FORCE_SPECIAL': false, // Promoción especial Delta Force
+            'BLOOD_STRIKE_BONUS': false   // Promoción bonus Blood Strike
+        };
+
+        // Configuración de promociones por juego
+        const PROMOTION_CONFIG = {
+            'LORDS MOBILE': {
+                active: ACTIVE_PROMOTIONS.LORDS_MOBILE_PROMO,
+                type: '+25%',
+                badge: '🔥Cupon +25%',
+                animation: 'promo-pulse',
+                articles: [
+               //  '💎499+CUPON',
+                // '💎999+CUPON',
+                 '💎1999+CUPON',
+               //  '💎2499+CUPON',
+               //  '💎2999+CUPON',
+                 '💎4999+CUPON',
+              //   '💎9999+CUPON',
+              ] // Artículos en promoción
+            },
+
+        };
+
+        // Función para verificar si un artículo está en promoción
+        function isArticleInPromotion(gameName, articleLabel) {
+            const gamePromo = PROMOTION_CONFIG[gameName];
+            return gamePromo && gamePromo.active && gamePromo.articles.includes(articleLabel);
+        }
+
+        // Función para obtener información de promoción
+        function getPromotionInfo(gameName, articleLabel) {
+            if (isArticleInPromotion(gameName, articleLabel)) {
+                return PROMOTION_CONFIG[gameName];
+            }
+            return null;
+        }
+
+        // Datos de juegos y sus precios base en USD
+        // Se añade 'logoUrl' para cada juego para los botones.
+        // NOTA: Asegúrate de que todas las imágenes referenciadas aquí (logoUrl y imageUrl)
+        // existan en tu carpeta 'public/image/' en Vercel y que estén optimizadas (comprimidas)
+        // para una carga rápida de la página.
+        const gameOptions = [
+            { name: 'LORDS MOBILE', logoUrl: '/image/lm1.png', inputRequirement: 'id_name', amounts: [
+//                { value: 5.20, label: '💎499+CUPON', imageUrl: '/image/prize-2.png' },
+//                { value: 12.00, label: '💎999+CUPON', imageUrl: '/image/prize-3.png' },
+//                { value: 20.00, label: '💎1999+CUPON', imageUrl: '/image/prize-4.png' },
+//                { value: 25.50, label: '💎2499+CUPON', imageUrl: '/image/prize-5.png' },
+//                { value: 30.00, label: '💎2999+CUPON', imageUrl: '/image/prize-6.png' },
+//                { value: 48.50, label: '💎4999+CUPON', imageUrl: '/image/prize-7.png' },
+//                { value: 95.00, label: '💎9999+CUPON', imageUrl: '/image/icon-happy.png' },    
+                { value: 2.30, label: 'PASE SEMANAL', imageUrl: '/image/7day.png' },
+                { value: 19.90, label: 'PASE MENSUAL', imageUrl: '/image/30day.png' },
+                { value: 2.30, label: '209💎', imageUrl: '/image/prize-2.png' },
+                { value: 5.20, label: '524💎', imageUrl: '/image/prize-3.png' },
+                { value: 10.00, label: '1048💎', imageUrl: '/image/prize-4.png' },
+                { value: 19.50, label: '2096💎', imageUrl: '/image/prize-5.png' },
+                { value: 29.00, label: '3144💎', imageUrl: '/image/prize-6.png' },
+                { value: 48.00, label: '5240💎', imageUrl: '/image/prize-6.png' },
+                { value: 62.00, label: '6812💎', imageUrl: '/image/prize-6.png' },
+                { value: 92.00, label: '9956💎', imageUrl: '/image/prize-7.png' },
+                { value: 178.00, label: '19912💎', imageUrl: '/image/prize-7.png' },
+                { value: 270.00, label: '30392💎', imageUrl: '/image/prize-7.png' },
+                { value: 440.00, label: '50304💎', imageUrl: '/image/icon-happy.png' },
+            ] },
+            { name: 'BLOOD STRIKE', logoUrl: '/image/bs.png', inputRequirement: 'id_name', amounts: [
+                { value: 0.89, label: '100+5', imageUrl: '/image/100.png' },
+                { value: 2.50, label: '300+20', imageUrl: '/image/300.png' },
+                { value: 4.30, label: '500+40', imageUrl: '/image/500.png' },
+                { value: 8.50, label: '1000+100', imageUrl: '/image/1000.png' },
+                { value: 17.60, label: '2000+200', imageUrl: '/image/2000.png' },
+                { value: 42.00, label: '5000+800', imageUrl: '/image/5000.png' },
+                { value: 3.50, label: 'PASE ELITE', imageUrl: '/image/elite.png' },
+                { value: 8.51, label: 'PASE PREMIUM', imageUrl: '/image/premium.png' },
+                { value: 2.00, label: 'PASE DE NIVEL', imageUrl: '/image/mejora.png' },
+            ] },
+            { name: 'FREE FIRE', logoUrl: '/image/ff1.png', inputRequirement: 'id_name', amounts: [
+                { value: 1.80, label: '💎SEMANAL', imageUrl: '/image/ffs.png' },
+                { value: 9.50, label: '💎MENSUAL', imageUrl: '/image/ffm.png' },
+                { value: 0.99, label: '💎100+10', imageUrl: '/image/prize-2.png' },
+                { value: 1.90, label: '💎200+20', imageUrl: '/image/prize-3.png' },
+                { value: 2.80, label: '💎310+31', imageUrl: '/image/prize-4.png' },
+                { value: 4.60, label: '💎520+52', imageUrl: '/image/prize-5.png' },
+                { value: 9.50, label: '💎1069+106', imageUrl: '/image/prize-6.png' },
+                { value: 18.00, label: '💎2180+218', imageUrl: '/image/prize-7.png' },
+                { value: 40.00, label: '💎5600+560', imageUrl: '/image/prize-7.png' },
+            ] },
+            { name: 'GENSHIN IMPACT', logoUrl: '/image/gi.png', inputRequirement: 'id_server', amounts: [
+                { value: 4.8, label: 'PASE LUNAR', imageUrl: '/image/bl.png' },
+                { value: 0.90, label: '60', imageUrl: '/image/cg1.png' },
+                { value: 4.70, label: '300+30', imageUrl: '/image/cg2.png' },
+                { value: 13.00, label: '980+110', imageUrl: '/image/cg3.png' },
+                { value: 27.00, label: '1980+260', imageUrl: '/image/cg4.png' },
+                { value: 45.50, label: '3280+600', imageUrl: '/image/cg5.png' },
+                { value: 90.00, label: '6480+1600', imageUrl: '/image/cg6.png' },
+            ] },
+            { name: 'PUBG MOBILE', logoUrl: '/image/pm1.png', inputRequirement: 'id_only', amounts: [
+                { value: 0.99, label: '60', imageUrl: '/image/pm.png' },
+                { value: 4.85, label: '300+25', imageUrl: '/image/pm.png' },
+                { value: 9.00, label: '600+60', imageUrl: '/image/pm.png' },
+                { value: 23.00, label: '1500+300', imageUrl: '/image/pm.png' },
+                { value: 45.00, label: '3000+850', imageUrl: '/image/pm.png' },
+                { value: 92.00, label: '6000+2100', imageUrl: '/image/pm.png' },
+            ] },
+            { name: 'DELTA FORCE STEAM', logoUrl: '/image/dfss.png', inputRequirement: 'id_only', amounts: [
+                { value: 0.99, label: '60 Coins', imageUrl: '/image/dfs1.png' },
+                { value: 4.70, label: '300+20 Coins', imageUrl: '/image/dfs1.png' },
+                { value: 6.80, label: '420+40 Coins', imageUrl: '/image/dfs2.png' },
+                { value: 9.00, label: '680+70 Coins', imageUrl: '/image/dfs2.png' },
+                { value: 17.00, label: '1280+200 Coins', imageUrl: '/image/dfs3.png' },
+                { value: 21.00, label: '1680+300 Coins', imageUrl: '/image/dfs3.png' },
+                { value: 40.00, label: '3280+670 Coins', imageUrl: '/image/dfs4.png' },
+                { value: 80.00, label: '6480+1620 Coins', imageUrl: '/image/dfs4.png' },
+                { value: 174.00, label: '12960+3240 Coins', imageUrl: '/image/dfs5.png' },
+                { value: 260.00, label: '19440+4860 Coins', imageUrl: '/image/dfs5.png' },
+            ] },
+            { name: 'DELTA FORCE GARENA', logoUrl: '/image/dfsg.png', inputRequirement: 'id_only', amounts: [
+                { value: 0.99, label: '60 Coins', imageUrl: '/image/dfs1.png' },
+                { value: 4.80, label: '300+36 Coins', imageUrl: '/image/dfs1.png' },
+                { value: 7.00, label: '420+62 Coins', imageUrl: '/image/dfs2.png' },
+                { value: 9.60, label: '680+105 Coins', imageUrl: '/image/dfs2.png' },
+                { value: 19.00, label: '1280+264 Coins', imageUrl: '/image/dfs3.png' },
+                { value: 23.50, label: '1680+385 Coins', imageUrl: '/image/dfs3.png' },
+                { value: 45.00, label: '3280+834 Coins', imageUrl: '/image/dfs4.png' },
+                { value: 88.00, label: '6480+1944 Coins', imageUrl: '/image/dfs4.png' },
+                { value: 180.00, label: '12960+3888 Coins', imageUrl: '/image/dfs5.png' },
+                { value: 270.00, label: '19440+5832 Coins', imageUrl: '/image/dfs5.png' },
+            ] },
+            { name: 'CALL OF DUTY MOBILE', logoUrl: '/image/codm.png', inputRequirement: 'cod_full', amounts: [
+                { value: 1.50, label: '80 CP', imageUrl: '/image/cm1.png' },
+                { value: 5.50, label: '420 CP', imageUrl: '/image/cm1.png' },
+                { value: 11.00, label: '880 CP', imageUrl: '/image/cm2.png' },
+                { value: 26.00, label: '2400 CP', imageUrl: '/image/cm2.png' },
+                { value: 55.00, label: '5000 CP', imageUrl: '/image/cm4.png' },
+                { value: 110.00, label: '10800 CP', imageUrl: '/image/cm4.png' },
+            ] },
+            
+            { name: 'MOBILE LEGENDS', logoUrl: '/image/ml.png', inputRequirement: 'id_server_name', amounts: [
+                { value: 1.60, label: 'PASE SEMANAL ML', imageUrl: '/image/ml_pase.png' },
+                { value: 9.50, label: 'CREPUSCULAR', imageUrl: '/image/ml_pase.png' },
+                { value: 0.90, label: '50+5💎', imageUrl: '/image/ml1.png' },
+                { value: 2.80, label: '150+15💎', imageUrl: '/image/ml1.png' },
+                { value: 4.40, label: '250+25💎', imageUrl: '/image/ml2.png' },
+                { value: 8.30, label: '500+65💎', imageUrl: '/image/ml2.png' },
+                { value: 10.00, label: '625+81💎', imageUrl: '/image/ml3.png' },
+                { value: 18.00, label: '940+144💎', imageUrl: '/image/ml3.png' },
+                { value: 27.50, label: '1860+335💎', imageUrl: '/image/ml4.png' },
+                { value: 44.20, label: '3099+589💎', imageUrl: '/image/ml4.png' },
+                { value: 65.40, label: '4649+883💎', imageUrl: '/image/ml5.png' },
+                { value: 110.00, label: '7740+1548💎', imageUrl: '/image/ml6.png' },
+                
+                
+            ] },
+            // Puedes añadir más juegos aquí
+        ];
+
+        // Datos de países y tasas de cambio - AHORA SE CARGAN DINÁMICAMENTE
+        let countryData = [
+            // Datos por defecto que se actualizarán desde la API
+            {
+                name: 'VENEZUELA',
+                code: 'VES',
+                exchangeRate: 144.5,
+                symbol: 'Bs.',
+                imageUrl: '/image/paises/ve.png',
+                paymentMethods: [
+                    { name: 'Pago Móvil', details: 'C.I.: V-32147818, Teléfono: 04126027407, Banco: 0105 (Banco Mercantil)' },
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                ]
+            },
+            {
+                name: 'COLOMBIA',
+                code: 'COP',
+                exchangeRate: 4150,
+                symbol: 'COP',
+                imageUrl: '/image/paises/co.png',
+                paymentMethods: [
+                    { name: 'Nequi', details: 'Número: 3012660676 Nombre:Ali.' },
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                ]
+            },
+            {
+                name: 'PERU',
+                code: 'PEN',
+                exchangeRate: 3.85,
+                symbol: 'S/.',
+                imageUrl: '/image/paises/pe.png',
+                paymentMethods: [
+                    { name: 'BCP', details: 'Cuenta: 38097062947042, Titular: Yoshimara' },
+                    { name: 'Yape', details: 'Número: 974610375' },
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                ]
+            },
+            {
+                name: 'MEXICO',
+                code: 'MXN',
+                exchangeRate: 20,
+                symbol: 'MXN',
+                imageUrl: '/image/paises/mx.png',
+                paymentMethods: [
+                    { name: 'SPIN BY OXXO', details: 'TARJETA: 4217 4701 8364 0099' },
+                    { name: 'BANCO AZTECA', details: 'INTERBANCARIA: 1277 9700 1467 5859 00' },
+                    { name: 'Titular', details: 'Jesus Carrillo' },
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                ]
+            },
+            {
+                name: 'ESTADOS UNIDOS',
+                code: 'USD',
+                exchangeRate: 1.05,
+                symbol: '$',
+                imageUrl: '/image/paises/us.png',
+                paymentMethods: [
+                    { name: 'Zelle', details: '+1 (661) 736 - 0564, Nombre: Jannett Martinez Lopez' },
+                    { name: 'Titular', details: 'Jannett Martinez Lopez' },
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                ]
+            },
+            {
+                name: 'ARGENTINA',
+                code: 'ARS',
+                exchangeRate: 1320,
+                symbol: '$',
+                imageUrl: '/image/paises/ar.png',
+                paymentMethods: [
+                    { name: 'Mercado pago', details: '0000003100069089540216' },
+                    { name: 'UALA', details: '3840200500000000199867' },
+                    { name: 'Titular', details: 'Pamela Schneider' },
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                ]
+            },
+            {
+                name: 'ECUADOR',
+                code: 'USD',
+                exchangeRate: 1.06,
+                symbol: '$',
+                imageUrl: '/image/paises/ec.png',
+                paymentMethods: [
+                    { name: 'Banco Pichincha', details: 'Cta. ahorros 2204277346' },
+                    { name: 'Banco de Guayaquil', details: 'Cta. ahorros 0039924590' },
+                    { name: 'Titular', details: 'María de los Ángeles Ronquillo León. CI: 0941414203' },
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                ]
+            },
+            {
+                name: 'CHILE',
+                code: 'CLP',
+                exchangeRate: 1010,
+                symbol: '$',
+                imageUrl: '/image/paises/cl.png',
+                paymentMethods: [
+                    { name: 'BANCO FALABELLA', details: 'RUT: 17244216-1 / gi553ll30@gmail.com / Cta Corriente: 1-983-036407-8' },
+                    { name: 'BANCO ESTADO', details: 'RUT: 17244216-1 / Cta Corriente: 37100135052 / 300 PESOS EXTRAS AL VALOR TOTAL'},
+                    { name: 'Titular', details: 'GISSELLE GONZALEZ'},
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!'},
+                ]
+            },
+            {
+                name: 'ESPAÑA',
+                code: 'EUR',
+                exchangeRate: 1.04,
+                symbol: '€',
+                imageUrl: '/image/paises/es.png',
+                paymentMethods: [
+                    { name: 'BIZUM', details: '612237372 / 614153840 / CUALQUIERA DE LOS DOS' },
+                    { name: 'BANCO SANTANDER', details: 'Cuenta bancaria : ES0800495939582916425258' },
+                    { name: 'Titular', details: 'MAX FRANCIS SILVA RAMOS' },
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                ]
+            },
+            { 
+                name: 'COSTA RICA',
+                code: 'CRC',
+                exchangeRate: 600,
+                symbol: '₡',
+                imageUrl: '/image/paises/cr.png',
+                paymentMethods: [
+                    { name: 'SIMPE', details: '63223852' },
+                    { name: 'Titular', details: 'Solange Granja Duarte' },
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                ]
+            },
+            { 
+                name: 'BOLIVIA',
+                code: 'BOB',
+                exchangeRate: 15.5,
+                symbol: 'Bs.',
+                imageUrl: '/image/paises/bo.png',
+                paymentMethods: [
+                    { name: 'Banco ganadero', details: '1311307078' }, 
+                    { name: 'Tigo Money', details: '69172559' }, 
+                    { name: 'Titular', details: 'Brandon Salazar Gutiérrez'}, 
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                ]
+            },
+            { 
+                name: 'NICARAGUA',
+                code: 'NIO',
+                exchangeRate: 43.5,
+                symbol: 'C$',
+                imageUrl: '/image/paises/ni.png',
+                paymentMethods: [
+                    { name: 'BAC CÓRDOBAS', details: 'Email: Nomiflores72@gmail.com' }, 
+                    { name: 'Cta. ahorros:', details: '363278672' }, 
+                    { name: 'Titular', details: 'Nahomi Flores Velásquez'}, 
+                    { name: '¡IMPORTANTE!', details: '¡No colocar conceptos EN LOS PAGOS!' },
+                ]
+            },
+        ];
+
+        // Función para cargar tasas de cambio actualizadas desde la API
+        async function loadExchangeRates() {
+            try {
+                const response = await fetch('/api/get-exchange-rates');
+                if (response.ok) {
+                    const updatedRates = await response.json();
+                    
+                    // Actualizar las tasas de cambio manteniendo los demás datos
+                    countryData = countryData.map(country => {
+                        const updatedCountry = updatedRates.find(rate => rate.name === country.name);
+                        if (updatedCountry) {
+                            return {
+                                ...country,
+                                exchangeRate: updatedCountry.exchangeRate
+                            };
+                        }
+                        return country;
+                    });
+                    
+                    console.log('Tasas de cambio actualizadas exitosamente');
+                    
+                    // Actualizar la interfaz si hay un país seleccionado
+                    if (selectedCountry) {
+                        updatePriceDisplay();
+                    }
+                } else {
+                    console.log('No se pudieron cargar las tasas actualizadas, usando valores por defecto');
+                }
+            } catch (error) {
+                console.log('Error al cargar tasas de cambio:', error);
+                console.log('Usando tasas de cambio por defecto');
+            }
+        }
+
+        // Función para actualizar la visualización de precios
+        function updatePriceDisplay() {
+            if (selectedAmount && selectedCountry) {
+                const countryInfo = countryData.find(c => c.name === selectedCountry) || defaultCountryInfo;
+                totalPrice = selectedAmount.value * countryInfo.exchangeRate;
+                currencySymbol = countryInfo.symbol;
+                
+                totalPriceDisplay.textContent = formatNumber(totalPrice);
+                currencySymbolDisplay.textContent = currencySymbol;
+                baseAmountDisplay.textContent = selectedAmount.value.toFixed(2);
+            }
+        }
+
+        // Datos de vendedores (RUTAS DE IMAGEN Y RECOMENDACIÓN DE TAMAÑO ACTUALIZADAS)
+        // RECOMENDACIÓN DE TAMAÑO DE IMAGEN PARA VENDEDORES: Se recomienda usar imágenes cuadradas (ej. 60x60px o 80x80px)
+        // para los logos/fotos de los vendedores. Esto asegura que se vean bien en los botones circulares.
+        // Asegúrate de que los nombres de archivo coincidan con los nombres aquí (e.g., 'xjosdharckx.png').
+        const sellerData = [
+            { name: 'XJoseDharckX', phoneNumber: '584126027407', imageUrl: '/image/vendedores/xjosedharckx.png' }, // Ruta actualizada
+            { name: 'Miguel', phoneNumber: '5214951219766', imageUrl: '/image/vendedores/logo1.png' }, // Ruta actualizada
+            { name: 'Alfredo Favier', phoneNumber: '5353148505', imageUrl: '/image/vendedores/logo1.png' }, // Ruta actualizada
+            { name: 'Candy Candy', phoneNumber: '584144274483', imageUrl: '/image/vendedores/david.png' }, // Ruta actualizada
+            { name: 'Satoru', phoneNumber: '5491170897494', imageUrl: '/image/vendedores/satoru.png' }, // Ruta actualizada
+            { name: 'Ernesto', phoneNumber: '573025129990', imageUrl: '/image/vendedores/ernesto.png' }, // Ruta actualizada
+            { name: 'OSCAR', phoneNumber: '573002030533', imageUrl: '/image/vendedores/logo1.png' }, // Ruta actualizada
+            { name: 'SpartanoWolf98', phoneNumber: '584262276868', imageUrl: '/image/vendedores/SpartanoWolf98.png' }, // Nuevo vendedor agregado
+            { name: 'Jhack', phoneNumber: '584247582765', imageUrl: '/image/vendedores/Jhack.png' }, // Nuevo vendedor
+            // Puedes añadir más vendedores aquí si es necesario
+        ];
+
+        let selectedGame = '';
+        let selectedAmount = null; // Un solo artículo seleccionado (objeto)
+        let selectedCountry = ''; 
+        let selectedSeller = ''; 
+        let totalPrice = 0;
+        let currencySymbol = 'USD';
+        // Se asegura que defaultCountryInfo exista, usando un valor por defecto si no se encuentra 'USD'
+        let defaultCountryInfo = countryData.find(c => c.code === 'USD') || { name: 'ESTADOS UNIDOS', code: 'USD', exchangeRate: 1.00, symbol: '$', paymentMethods: [], imageUrl: '/image/paises/US.png' };
+
+
+        const countrySelectContainer = document.getElementById('countryButtonsContainer'); 
+        const gameButtonsContainer = document.getElementById('gameButtonsContainer');
+        const amountButtonsDiv = document.getElementById('amountButtons');
+        const sellerSelectContainer = document.getElementById('sellerButtonsContainer'); 
+        const priceSummaryDiv = document.getElementById('priceSummary');
+        const totalPriceDisplay = document.getElementById('totalPriceDisplay');
+        const currencySymbolDisplay = document.getElementById('currencySymbolDisplay');
+        const baseAmountDisplay = document.getElementById('baseAmountDisplay');
+        const messageDisplay = document.getElementById('messageDisplay');
+        const topupForm = document.getElementById('topupForm');
+        const paymentMethodsDisplayDiv = document.getElementById('paymentMethodsDisplay');
+        const paymentMethodsListDiv = document.getElementById('paymentMethodsList');
+        const transferWarningMessage = document.getElementById('transferWarningMessage');
+        const selectedItemsPreview = document.getElementById('selectedItemsPreview'); // Contenedor para miniaturas
+
+
+        // Función para formatear números con separadores de miles y decimales (puntos y comas)
+        function formatNumber(num) {
+            // Convierte el número a una cadena con 2 decimales
+            let formattedNum = num.toFixed(2);
+            // Separa la parte entera de la parte decimal
+            let parts = formattedNum.split('.');
+            // Formatea la parte entera con puntos como separador de miles
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            // Junta las partes con coma como separador decimal
+            return parts.join(',');
+        }
+
+        // Función para validar todos los campos y habilitar/deshabilitar el botón de Enviar Pedido
+        function updateSendOrderButtonState() {
+            const gameSelected = selectedGame !== '';
+            const amountSelected = selectedAmount !== null;
+            const countrySelected = selectedCountry !== '';
+            const sellerSelected = selectedSeller !== '';
+            
+            // Validar comprobante de pago - ya no es necesario
+            let paymentProofSelected = true; // Siempre true ya que no requerimos comprobante
+            
+            // Validar campos específicos del juego
+            let userInfoValid = false;
+            if (idNameInputs.style.display === 'block') {
+                userInfoValid = userIdInput.value.trim() !== '' && userNameInput.value.trim() !== '';
+            } else if (idServerInputs.style.display === 'block') {
+                const mlNameValid = document.getElementById('mlNameInput').style.display === 'block' ? 
+                    userNameMLInput.value.trim() !== '' : true;
+                userInfoValid = userIdServerInput.value.trim() !== '' && serverInput.value.trim() !== '' && mlNameValid;
+            } else if (idOnlyInputs.style.display === 'block') {
+                userInfoValid = userIdOnlyInput.value.trim() !== '';
+            } else if (codInputs.style.display === 'block') {
+                userInfoValid = emailInput.value.trim() !== '' && 
+                               passwordInput.value.trim() !== '' && 
+                               linkageInput.value.trim() !== '' && 
+                               exactAccountNameInput.value.trim() !== '';
+            }
+            
+            // Validar si el ID de usuario contiene solo números (aplicar solo a campos de ID)
+            let isUserIdNumeric = true;
+            if (idNameInputs.style.display === 'block' && userIdInput.value.trim() !== '') {
+                isUserIdNumeric = /^[0-9]*$/.test(userIdInput.value.trim());
+            } else if (idServerInputs.style.display === 'block' && userIdServerInput.value.trim() !== '') {
+                isUserIdNumeric = /^[0-9]*$/.test(userIdServerInput.value.trim());
+            } else if (idOnlyInputs.style.display === 'block' && userIdOnlyInput.value.trim() !== '') {
+                isUserIdNumeric = /^[0-9]*$/.test(userIdOnlyInput.value.trim());
+            }
+            
+            const allValid = gameSelected && amountSelected && countrySelected && 
+                             sellerSelected && userInfoValid && isUserIdNumeric;
+            
+            sendWhatsAppOrderBtn.disabled = !allValid;
+            
+            // Solo mostrar el botón si hay métodos de pago visibles
+            if (paymentMethodsDisplayDiv.style.display === 'block') {
+                sendWhatsAppOrderBtn.style.display = 'block';
+            } else {
+                sendWhatsAppOrderBtn.style.display = 'none';
+            }
+            
+            if (!allValid) {
+                if (!countrySelected) {
+                    showMessage('Por favor, selecciona tu país para continuar.', 'info');
+                } else if (!isUserIdNumeric && (userIdInput && userIdInput.value.trim() || userIdServerInput && userIdServerInput.value.trim() || userIdOnlyInput && userIdOnlyInput.value.trim())) {
+                    showMessage('El ID de Usuario (o UID) solo debe contener números.', 'error');
+                } else if (!messageDisplay.textContent || messageDisplay.style.display === 'none') {
+                    showMessage('Por favor, completa todos los campos necesarios para enviar el pedido.', 'info');
+                }
+            } else {
+                messageDisplay.style.display = 'none';
+            }
+        }
+
+
+        // Función para cargar los botones de juego
+        function loadGameOptions() {
+            gameButtonsContainer.innerHTML = ''; 
+            gameOptions.forEach(game => {
+                const gameItemDiv = document.createElement('div');
+                gameItemDiv.classList.add('game-item');
+                gameItemDiv.dataset.gameName = game.name;
+
+                const imgElement = document.createElement('img');
+                imgElement.src = game.logoUrl || 'https://placehold.co/120x120/cccccc/000000?text=No Image'; 
+                imgElement.alt = `Logo de ${game.name}`;
+                imgElement.classList.add('game-logo');
+                
+                imgElement.onerror = function() {
+                    this.onerror = null; 
+                    this.src = 'https://placehold.co/120x120/cccccc/000000?text=No Image'; 
+                    console.error('Failed to load game logo image:', game.logoUrl);
+                };
+
+                const nameSpan = document.createElement('span');
+                nameSpan.classList.add('game-name-label');
+                nameSpan.textContent = game.name;
+
+                gameItemDiv.appendChild(imgElement);
+                gameItemDiv.appendChild(nameSpan);
+
+                gameItemDiv.addEventListener('click', () => {
+                    selectedGame = game.name;
+                    selectedAmount = null; // Limpiar artículo seleccionado al cambiar de juego
+                    
+                    Array.from(gameButtonsContainer.children).forEach(div => div.classList.remove('selected'));
+                    gameItemDiv.classList.add('selected');
+
+                    updateAmountSelection(); 
+                    updatePriceSummary();
+                    updateInputFields(); // Actualiza los campos de entrada al seleccionar un juego
+                    messageDisplay.style.display = 'none';
+                    transferWarningMessage.style.display = 'block';
+                    updateSendOrderButtonState();
+
+                    // Desplazamiento suave a la sección de artículos
+                    amountSelectionDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+                gameButtonsContainer.appendChild(gameItemDiv);
+            });
+        }
+
+        // Función para actualizar los botones de monto con imágenes y precio local
+        function updateAmountSelection() {
+            amountButtonsDiv.innerHTML = ''; 
+            if (selectedGame) {
+                amountSelectionDiv.style.display = 'block'; 
+                const currentAmounts = gameOptions.find(g => g.name === selectedGame)?.amounts;
+                const countryInfo = countryData.find(c => c.name === selectedCountry) || defaultCountryInfo; 
+
+                if (currentAmounts && currentAmounts.length > 0) {
+                    currentAmounts.forEach(amount => {
+                        const itemDiv = document.createElement('div'); 
+                        itemDiv.classList.add('amount-item'); // Ahora amount-item ya tiene los estilos base
+                        // Guardar todos los datos del artículo en el dataset para fácil recuperación
+                        itemDiv.dataset.value = amount.value; 
+                        itemDiv.dataset.label = amount.label; 
+                        itemDiv.dataset.imageUrl = amount.imageUrl; 
+
+                        const imgElement = document.createElement('img');
+                        imgElement.src = amount.imageUrl;
+                        imgElement.alt = amount.label;
+                        imgElement.classList.add('item-image');
+                        imgElement.width = 80;
+                        imgElement.height = 80;
+                        imgElement.loading = 'lazy'; 
+                        
+                        imgElement.onerror = function() {
+                            this.onerror = null; 
+                            this.src = 'https://placehold.co/80x80/cccccc/000000?text=No Image'; 
+                            console.error('Failed to load item image:', amount.imageUrl);
+                        };
+
+                        const itemTextContainer = document.createElement('div'); 
+                        itemTextContainer.classList.add('item-text-container');
+
+                        const labelSpan = document.createElement('span');
+                        labelSpan.classList.add('item-label');
+                        labelSpan.textContent = amount.label;
+
+                        // Verificar si está en promoción y agregar badge
+                        const promoInfo = getPromotionInfo(selectedGame, amount.label);
+                        if (promoInfo) {
+                            itemDiv.classList.add('promo-item', promoInfo.animation);
+                            const promoBadge = document.createElement('span');
+                            promoBadge.classList.add('promo-badge');
+                            promoBadge.textContent = promoInfo.badge;
+                            itemDiv.appendChild(promoBadge);
+                        }
+
+                        itemTextContainer.appendChild(labelSpan);
+
+                        // Lógica condicional para mostrar el precio: USD o moneda local
+                        if (selectedCountry === '') {
+                            // Mostrar solo precio en USD si no hay país seleccionado
+                            const priceUsdSpan = document.createElement('span');
+                            priceUsdSpan.classList.add('item-price-usd');
+                            priceUsdSpan.textContent = `${amount.value.toFixed(2)} USD`; 
+                            itemTextContainer.appendChild(priceUsdSpan);
+                        } else {
+                            // Mostrar precio en moneda local si hay país seleccionado
+                            const priceLocalSpan = document.createElement('span');
+                            priceLocalSpan.classList.add('item-price-local');
+                            const localPrice = amount.value * countryInfo.exchangeRate;
+                            priceLocalSpan.textContent = `${formatNumber(localPrice)} ${countryInfo.symbol}`; 
+                            itemTextContainer.appendChild(priceLocalSpan);
+                        }
+                        
+                        itemDiv.appendChild(imgElement);
+                        itemDiv.appendChild(itemTextContainer); 
+
+                        itemDiv.addEventListener('click', (e) => {
+                            // Prevenir que el click en el badge de promoción interfiera
+                            e.stopPropagation();
+                            
+                            // Deseleccionar todos los demás artículos
+                            Array.from(amountButtonsDiv.children).forEach(div => div.classList.remove('selected'));
+                            
+                            // Seleccionar solo este artículo
+                            itemDiv.classList.add('selected');
+                            selectedAmount = amount; // Almacenar el objeto del artículo seleccionado
+
+                            updatePriceSummary();
+                            messageDisplay.style.display = 'none'; 
+                            transferWarningMessage.style.display = 'block'; 
+                            updateSendOrderButtonState();
+
+                            // Desplazamiento suave a la sección de información del usuario
+                            userInfoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        });
+
+                        // Marcar como seleccionado si es el artículo actualmente seleccionado
+                        if (selectedAmount && selectedAmount.value === amount.value && selectedAmount.label === amount.label) {
+                            itemDiv.classList.add('selected');
+                        }
+
+                        amountButtonsDiv.appendChild(itemDiv);
+                    });
+                } else {
+                    amountButtonsDiv.innerHTML = '<p style="color: #FF6347; font-weight: bold;">No hay artículos disponibles para este juego.</p>';
+                }
+            } else {
+                amountSelectionDiv.style.display = 'none'; 
+            }
+        }
+
+        // Función para cargar opciones de país como botones
+        function loadCountryOptions() {
+            countrySelectContainer.innerHTML = ''; // Limpiar botones existentes
+            countryData.forEach(country => {
+                const countryItemDiv = document.createElement('div');
+                countryItemDiv.classList.add('country-item');
+                countryItemDiv.dataset.countryName = country.name;
+
+                const imgElement = document.createElement('img');
+                imgElement.src = country.imageUrl || `https://placehold.co/60x60/CCCCCC/000000?text=${country.code}`; // Usar código si no hay URL
+                imgElement.alt = `Bandera de ${country.name}`;
+                imgElement.classList.add('country-image');
+                
+                imgElement.onerror = function() {
+                    this.onerror = null; 
+                    this.src = `https://placehold.co/60x60/CCCCCC/000000?text=${country.code}`; 
+                    console.error('Failed to load country image:', country.imageUrl);
+                };
+
+                countryItemDiv.appendChild(imgElement);
+                // No se añade el nombre del país debajo de la imagen según la solicitud
+
+                countryItemDiv.addEventListener('click', () => {
+                    selectedCountry = country.name;
+                    // Deseleccionar todos los demás países
+                    Array.from(countrySelectContainer.children).forEach(div => div.classList.remove('selected'));
+                    countryItemDiv.classList.add('selected');
+                    
+                    updatePriceSummary(); // Actualizar el resumen con la nueva moneda
+                    if (selectedGame) { // Si ya hay un juego seleccionado, actualizar los precios de los artículos
+                        updateAmountSelection(); 
+                    }
+                    messageDisplay.style.display = 'none'; 
+                    transferWarningMessage.style.display = 'block'; 
+                    updateSendOrderButtonState();
+
+                    // Desplazamiento suave a la sección de juegos
+                    gameSelectionSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+                countrySelectContainer.appendChild(countryItemDiv);
+            });
+            selectedCountry = ''; // Asegurarse de que no haya país preseleccionado al cargar
+        }
+
+        // Función para cargar opciones de vendedor como botones
+        function loadSellerOptions() {
+            sellerSelectContainer.innerHTML = ''; // Limpiar botones existentes
+            sellerData.forEach(seller => {
+                const sellerItemDiv = document.createElement('div');
+                sellerItemDiv.classList.add('seller-item');
+                sellerItemDiv.dataset.sellerName = seller.name;
+
+                const imgElement = document.createElement('img');
+                imgElement.src = seller.imageUrl || 'https://placehold.co/60x60/CCCCCC/000000?text=V'; // Placeholder si no hay imagen
+                imgElement.alt = `Foto de ${seller.name}`;
+                imgElement.classList.add('seller-image');
+                
+                imgElement.onerror = function() {
+                    this.onerror = null; 
+                    this.src = 'https://placehold.co/60x60/CCCCCC/000000?text=V'; 
+                    console.error('Failed to load seller image:', seller.imageUrl);
+                };
+
+                const nameSpan = document.createElement('span');
+                nameSpan.classList.add('seller-name-label');
+                nameSpan.textContent = seller.name;
+
+                if (seller.name === 'XJoseDharckX') {
+                    nameSpan.classList.add('highlighted-seller');
+                }
+
+                sellerItemDiv.appendChild(imgElement);
+                sellerItemDiv.appendChild(nameSpan);
+
+                sellerItemDiv.addEventListener('click', () => {
+                    selectedSeller = seller.name;
+                    // Deseleccionar todos los demás vendedores
+                    Array.from(sellerSelectContainer.children).forEach(div => div.classList.remove('selected'));
+                    sellerItemDiv.classList.add('selected');
+
+                    messageDisplay.style.display = 'none'; 
+                    transferWarningMessage.style.display = 'block'; 
+                    updateSendOrderButtonState();
+
+                    // Desplazamiento suave al botón de enviar
+                    sendWhatsAppOrderBtn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+                sellerSelectContainer.appendChild(sellerItemDiv);
+            });
+            selectedSeller = ''; // Asegurarse de que no haya vendedor preseleccionado al cargar
+        }
+
+        // Función: Actualiza la visibilidad y requisitos de los campos de entrada
+        function updateInputFields() {
+            idNameInputs.style.display = 'none';
+            idServerInputs.style.display = 'none';
+            idOnlyInputs.style.display = 'none';
+            codInputs.style.display = 'none';
+            document.getElementById('mlNameInput').style.display = 'none'; 
+
+            const allInputs = [
+                userIdInput, userNameInput, userIdServerInput, serverInput, userNameMLInput,
+                userIdOnlyInput, emailInput, passwordInput, linkageInput, exactAccountNameInput
+            ];
+            allInputs.forEach(input => {
+                if (input) { 
+                    input.value = '';
+                    input.required = false;
+                }
+            });
+
+            const currentGame = gameOptions.find(g => g.name === selectedGame);
+            if (!currentGame) return;
+
+            switch (currentGame.inputRequirement) {
+                case 'id_name':
+                    idNameInputs.style.display = 'block';
+                    userIdInput.required = true;
+                    userNameInput.required = true;
+                    break;
+                case 'id_server':
+                    idServerInputs.style.display = 'block';
+                    userIdServerInput.required = true;
+                    serverInput.required = true;
+                    break;
+                case 'id_server_name': 
+                    idServerInputs.style.display = 'block';
+                    userIdServerInput.required = true;
+                    serverInput.required = true;
+                    document.getElementById('mlNameInput').style.display = 'block'; 
+                    userNameMLInput.required = true;
+                    break;
+                case 'id_only':
+                    idOnlyInputs.style.display = 'block';
+                    userIdOnlyInput.required = true;
+                    break;
+                case 'cod_full':
+                    codInputs.style.display = 'block';
+                    emailInput.required = true;
+                    passwordInput.required = true;
+                    linkageInput.required = true;
+                    exactAccountNameInput.required = true;
+                    break;
+                default:
+                    break;
+            }
+            updateSendOrderButtonState(); 
+        }
+
+
+        // Manejadores de input para validar y restablecer botones
+        [userIdInput, userNameInput, userIdServerInput, serverInput, userNameMLInput, userIdOnlyInput,
+         emailInput, passwordInput, linkageInput, exactAccountNameInput].forEach(input => {
+            if (input) { 
+                input.addEventListener('input', () => {
+                    messageDisplay.style.display = 'none'; 
+                    transferWarningMessage.style.display = 'block'; 
+                    updateSendOrderButtonState();
+                });
+            }
+        });
+
+
+
+        // Manejador de cambio de vendedor (AHORA MANEJADO POR CLICK EN BOTONES)
+        // Ya no es necesario sellerSelect.addEventListener('change', ...)
+        
+        // Manejador de cambio de país (AHORA MANEJADO POR CLICK EN BOTONES)
+        // Ya no es necesario countrySelect.addEventListener('change', ...)
+        
+        // Función para actualizar el resumen del precio y los métodos de pago
+        function updatePriceSummary() {
+            // selectedAmount ahora es un objeto o null
+            let selectedAmountUSD = selectedAmount ? selectedAmount.value : 0;
+
+            if (selectedAmountUSD > 0 && selectedCountry) {
+                const countryInfo = countryData.find(country => country.name === selectedCountry); 
+                
+                if (!countryInfo) {
+                    priceSummaryDiv.style.display = 'none'; 
+                    paymentMethodsDisplayDiv.style.display = 'none'; 
+                    selectedItemsPreview.innerHTML = ''; 
+                    return;
+                }
+
+                totalPrice = selectedAmountUSD * countryInfo.exchangeRate;
+                currencySymbol = countryInfo.symbol;
+                
+                totalPriceDisplay.textContent = formatNumber(totalPrice); 
+                currencySymbolDisplay.textContent = currencySymbol;
+                baseAmountDisplay.textContent = selectedAmountUSD.toFixed(2);
+                priceSummaryDiv.style.display = 'block'; 
+
+                // Mostrar miniatura del artículo seleccionado (singular)
+                selectedItemsPreview.innerHTML = '';
+                if (selectedAmount) {
+                    const img = document.createElement('img');
+                    img.src = selectedAmount.imageUrl;
+                    img.alt = selectedAmount.label;
+                    img.title = selectedAmount.label; 
+                    img.classList.add('selected-item-thumbnail');
+                    img.onerror = function() {
+                        this.onerror = null; 
+                        this.src = 'https://placehold.co/50x50/cccccc/000000?text=No Image'; 
+                        console.error('Failed to load thumbnail image:', selectedAmount.imageUrl);
+                    };
+                    selectedItemsPreview.appendChild(img);
+                }
+
+                // Mostrar métodos de pago para el país seleccionado
+                paymentMethodsListDiv.innerHTML = '';
+                if (countryInfo.paymentMethods && countryInfo.paymentMethods.length > 0) {
+                    paymentMethodsDisplayDiv.style.display = 'block'; 
+                    countryInfo.paymentMethods.forEach(method => {
+                        const p = document.createElement('p');
+                        p.innerHTML = `<span>${method.name}:</span> ${method.details}`;
+                        paymentMethodsListDiv.appendChild(p);
+                    });
+
+                    sendWhatsAppOrderBtn.style.display = 'block';
+                } else {
+                    paymentMethodsDisplayDiv.style.display = 'none'; 
+
+                    sendWhatsAppOrderBtn.style.display = 'none';
+                }
+
+            } else {
+                priceSummaryDiv.style.display = 'none'; 
+                paymentMethodsDisplayDiv.style.display = 'none'; 
+
+                selectedItemsPreview.innerHTML = ''; 
+            }
+        }
+
+        // Función para mostrar mensajes al usuario
+        function showMessage(msg, type) {
+            messageDisplay.textContent = msg;
+            messageDisplay.style.display = 'block'; 
+            messageDisplay.classList.remove('message-error', 'message-success', 'message-info'); 
+
+            if (type === 'error') {
+                messageDisplay.classList.add('message-error');
+            } else if (type === 'success') {
+                messageDisplay.classList.add('message-success');
+            } else if (type === 'info') {
+                messageDisplay.classList.add('message-info');
+            }
+        }
+
+        // Función para mostrar el modal de advertencia de WhatsApp
+        function showWhatsAppWarningModal() {
+            whatsappWarningModal.style.display = 'flex'; 
+            messageDisplay.style.display = 'none'; 
+        }
+
+        // Función para ocultar el modal de advertencia de WhatsApp
+        function hideWhatsAppWarningModal() {
+            whatsappWarningModal.style.display = 'none'; 
+        }
+
+
+
+
+        // Manejador del envío del formulario (modificado para WhatsApp) - ahora activado por sendWhatsAppOrderBtn
+        topupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (sendWhatsAppOrderBtn.disabled) {
+                return;
+            }
+            
+            // Realizar validaciones finales antes de mostrar el modal
+            if (!selectedCountry) { showMessage('Por favor, selecciona tu país para continuar.', 'error'); return; }
+            const currentGame = gameOptions.find(g => g.name === selectedGame);
+            if (!currentGame) { showMessage('Por favor, selecciona un juego.', 'error'); return; }
+            if (selectedAmount === null) { showMessage('Por favor, selecciona un artículo/monto.', 'error'); return; }
+
+            let isValid = true;
+            let errorMessage = '';
+
+            switch (currentGame.inputRequirement) {
+                case 'id_name':
+                    if (!userIdInput.value.trim() || !userNameInput.value.trim()) {
+                        isValid = false;
+                        errorMessage = 'Por favor, ingresa tu ID y Nombre de Jugador.';
+                    } else if (!/^[0-9]*$/.test(userIdInput.value.trim())) {
+                        isValid = false;
+                        errorMessage = 'El ID de Jugador solo debe contener números.';
+                    }
+                    break;
+                case 'id_server':
+                    if (!userIdServerInput.value.trim() || !serverInput.value.trim()) {
+                        isValid = false;
+                        errorMessage = 'Por favor, ingresa el UID y el Servidor.';
+                    } else if (!/^[0-9]*$/.test(userIdServerInput.value.trim())) {
+                        isValid = false;
+                        errorMessage = 'El UID solo debe contener números.';
+                    }
+                    break;
+                case 'id_server_name': 
+                    if (!userIdServerInput.value.trim() || !serverInput.value.trim() || !userNameMLInput.value.trim()) {
+                        isValid = false;
+                        errorMessage = 'Por favor, ingresa la ID, el Servidor y el Nombre de Jugador.';
+                    } else if (!/^[0-9]*$/.test(userIdServerInput.value.trim())) {
+                        isValid = false;
+                        errorMessage = 'La ID solo debe contener números.';
+                    }
+                    break;
+                case 'id_only':
+                    if (!userIdOnlyInput.value.trim()) {
+                        isValid = false;
+                        errorMessage = 'Por favor, ingresa tu ID de Jugador.';
+                    } else if (!/^[0-9]*$/.test(userIdOnlyInput.value.trim())) {
+                        isValid = false;
+                        errorMessage = 'El ID de Jugador solo debe contener números.';
+                    }
+                    break;
+                case 'cod_full':
+                    if (!emailInput.value.trim() || !passwordInput.value.trim() || !linkageInput.value.trim() || !exactAccountNameInput.value.trim()) {
+                        isValid = false;
+                        errorMessage = 'Por favor, completa todos los campos de Call of Duty Mobile.';
+                    } else if (!emailInput.value.includes('@')) { 
+                        isValid = false;
+                        errorMessage = 'Por favor, ingresa un correo electrónico válido.';
+                    }
+                    break;
+                default:
+                    isValid = false;
+                    errorMessage = 'Tipo de juego no reconocido o campos incompletos.';
+                    break;
+            }
+
+            if (!isValid) {
+                showMessage(errorMessage, 'error');
+                return;
+            }
+
+            if (!selectedSeller) { showMessage('Por favor, selecciona un vendedor.', 'error'); return; }
+            
+            showWhatsAppWarningModal();
+        });
+
+        // Oyente de eventos para el botón "Confirmar y Enviar" en el modal (este es el que realmente envía a WhatsApp)
+        confirmWhatsAppBtn.addEventListener('click', async () => {
+            hideWhatsAppWarningModal(); 
+            loadingOverlay.style.display = 'flex'; 
+
+            gameHidden.value = selectedGame;
+            amountUSDHidden.value = selectedAmount ? selectedAmount.value : ''; 
+            totalPriceHidden.value = totalPrice;
+            currencySymbolHidden.value = currencySymbol;
+
+            // Generar información del artículo seleccionado para el mensaje de WhatsApp
+            const selectedItemForWhatsapp = selectedAmount ? 
+                `- ${selectedAmount.label} (${selectedAmount.value.toFixed(2)} USD / ${formatNumber(selectedAmount.value * (countryData.find(c => c.name === selectedCountry) || defaultCountryInfo).exchangeRate)} ${(countryData.find(c => c.name === selectedCountry) || defaultCountryInfo).symbol})` : 
+                'No se seleccionó ningún artículo.';
+
+            const sellerInfo = sellerData.find(seller => seller.name === selectedSeller);
+            const whatsappRecipientNumber = sellerInfo ? sellerInfo.phoneNumber : DEFAULT_WHATSAPP_NUMBER; 
+            
+            let playerInfo = '';
+            const currentGame = gameOptions.find(g => g.name === selectedGame);
+
+            if (currentGame) {
+                switch (currentGame.inputRequirement) {
+                    case 'id_name':
+                        playerInfo = `🆔 *ID del Jugador*: ${userIdInput.value.trim()}\n👤 *Nombre del Jugador*: ${userNameInput.value.trim()}`;
+                        break;
+                    case 'id_server':
+                        playerInfo = `🆔 *UID*: ${userIdServerInput.value.trim()}\n🌐 *Servidor*: ${serverInput.value.trim()}`;
+                        break;
+                    case 'id_server_name': 
+                        playerInfo = `🆔 *ID del Jugador*: ${userIdServerInput.value.trim()}\n🌐 *Servidor*: ${serverInput.value.trim()}\n👤 *Nombre del Jugador*: ${userNameMLInput.value.trim()}`;
+                        break;
+                    case 'id_only':
+                        playerInfo = `🆔 *ID del Jugador*: ${userIdOnlyInput.value.trim()}`;
+                        break;
+                    case 'cod_full':
+                        playerInfo = `📧 *Correo*: ${emailInput.value.trim()}\n🔑 *Contraseña*: ${passwordInput.value.trim()}\n🔗 *Vinculación*: ${linkageInput.value.trim()}\n📝 *Nombre Exacto*: ${exactAccountNameInput.value.trim()}`;
+                        break;
+                    default:
+                        playerInfo = 'Información del jugador no disponible.';
+                        break;
+                }
+            }
+
+            const whatsappMessageContent =
+                `📝 *Pedido de Recarga - DHARCK STORE*:\n\n` +
+                `${playerInfo}\n` + 
+                `💼 *Vendedor*: ${selectedSeller}\n` + 
+                `🎮 *Juego*: ${selectedGame}\n` +
+                `🛒 *Artículo Seleccionado*:\n${selectedItemForWhatsapp}\n` + 
+                `💸 *Total a Pagar*: ${formatNumber(totalPrice)} ${currencySymbol}\n` + 
+                `  _(Base: ${(selectedAmount ? selectedAmount.value : 0).toFixed(2)} USD + comisión)_\n` + 
+                `🌎 *País*: ${selectedCountry}\n\n` +
+                `⚠️ *¡Importante!*: Por favor, envíame el comprobante de pago.`;
+
+            // -----------------------------------------------------
+            // Crear orden pendiente en el backend
+            // -----------------------------------------------------
+            const countryInfo = countryData.find(c => c.name === selectedCountry);
+            
+            // Mapear correctamente los datos según el tipo de juego
+            let playerId = '';
+            let playerName = '';
+            let playerEmail = '';
+            let additionalInfo = '';
+
+            switch (currentGame.inputRequirement) {
+                case 'id_name':
+                    playerId = userIdInput.value.trim();
+                    playerName = userNameInput.value.trim();
+                    break;
+                case 'id_server':
+                    playerId = userIdServerInput.value.trim();
+                    additionalInfo = serverInput.value.trim();
+                    break;
+                case 'id_server_name':
+                    playerId = userIdServerInput.value.trim();
+                    playerName = userNameMLInput.value.trim();
+                    additionalInfo = serverInput.value.trim();
+                    break;
+                case 'id_only':
+                    playerId = userIdOnlyInput.value.trim();
+                    break;
+                case 'cod_full':
+                    playerEmail = emailInput.value.trim();
+                    playerName = exactAccountNameInput.value.trim();
+                    additionalInfo = `Contraseña: ${passwordInput.value.trim()}, Vinculación: ${linkageInput.value.trim()}`;
+                    break;
+            }
+
+            const orderData = {
+                sellerName: selectedSeller,
+                gameName: selectedGame,
+                itemLabel: selectedAmount ? selectedAmount.label : 'N/A',
+                amountUSD: selectedAmount ? selectedAmount.value : 0,
+                totalPrice: totalPrice,
+                currencySymbol: countryInfo ? countryInfo.symbol : currencySymbol,
+                playerId: playerId,
+                playerName: playerName,
+                playerEmail: playerEmail,
+                additionalInfo: additionalInfo,
+                countryName: selectedCountry
+            };
+
+            try {
+                const BASE_API_URL = window.location.origin + '/api';
+                const response = await fetch(`${BASE_API_URL}/create-pending-order`, { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Error al crear la orden pendiente:', errorText);
+                    showMessage('Error al registrar la orden en el servidor. Por favor, avisa al soporte.', 'error');
+                } else {
+                    showMessage('Orden registrada exitosamente y preparando WhatsApp...', 'success');
+                }
+            } catch (error) {
+                console.error('Error de red al intentar crear la orden:', error);
+                showMessage('Error de conexión al servidor al intentar registrar la orden.', 'error');
+            }
+            // -----------------------------------------------------
+            // FIN: Creación de orden pendiente
+            // -----------------------------------------------------
+
+            // Abrir WhatsApp en una nueva pestaña/ventana
+            window.open(`https://wa.me/${whatsappRecipientNumber}?text=${encodeURIComponent(whatsappMessageContent)}`, '_blank');
+
+            // Después de un breve retraso, ocultar la animación de carga y mostrar el mensaje de éxito
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none'; 
+                showMessage('¡Pedido registrado exitosamente! Será procesado por nuestro equipo y entregado en 5-15 minutos.', 'success'); 
+
+                // Opcional: Limpiar el formulario después de un envío exitoso
+                topupForm.reset();
+                selectedGame = '';
+                selectedAmount = null; 
+                selectedCountry = ''; 
+                // No necesitamos countrySelect.value = ''; ni sellerSelect.value = ''; porque ya no son <select>
+                selectedSeller = ''; 
+                priceSummaryDiv.style.display = 'none'; 
+                paymentMethodsDisplayDiv.style.display = 'none'; 
+                amountSelectionDiv.style.display = 'none'; 
+                amountButtonsDiv.innerHTML = '';
+                selectedItemsPreview.innerHTML = ''; 
+                
+                // Quitar la clase 'selected' de todos los botones de juego, país, vendedor y ocultar campos de usuario
+                Array.from(gameButtonsContainer.children).forEach(div => div.classList.remove('selected'));
+                Array.from(countrySelectContainer.children).forEach(div => div.classList.remove('selected'));
+                Array.from(sellerSelectContainer.children).forEach(div => div.classList.remove('selected'));
+                Array.from(amountButtonsDiv.children).forEach(div => div.classList.remove('selected'));
+                updateInputFields(); 
+
+                transferWarningMessage.style.display = 'block'; 
+                updateSendOrderButtonState(); 
+            }, 2000); 
+        });
+
+        // Oyente de eventos para el botón "Cancelar" en el modal
+        cancelWhatsAppBtn.addEventListener('click', () => {
+            hideWhatsAppWarningModal(); 
+            showMessage('Envío de pedido cancelado.', 'info');
+        });
+
+       // Función para cargar configuración de artículos desde localStorage
+        function loadArticlesConfig() {
+            const savedConfig = localStorage.getItem('gameArticlesConfig');
+            if (savedConfig) {
+                const config = JSON.parse(savedConfig);
+                
+                // Actualizar gameOptions con la configuración guardada
+                gameOptions.forEach(game => {
+                    if (config[game.name]) {
+                        // Filtrar solo artículos activos
+                        game.amounts = config[game.name].articles
+                            .filter(article => article.active)
+                            .map(article => ({
+                                value: article.value,
+                                label: article.label,
+                                imageUrl: article.imageUrl,
+                                promotion: article.promotion
+                            }));
+                    }
+                });
+            }
+        }
+
+        // Inicializar la página cuando se carga el DOM
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Cargar configuración de artículos desde localStorage
+            loadArticlesConfig();
+            
+            // Cargar tasas de cambio actualizadas al inicio
+            await loadExchangeRates();
+            
+            loadCountryOptions(); // Carga los botones de país
+            loadGameOptions(); 
+            loadSellerOptions(); // Carga los botones de vendedor
+            updateSendOrderButtonState(); 
+            updateInputFields();
+            
+            // Actualizar tasas cada 5 minutos para mantener precios actualizados
+            setInterval(loadExchangeRates, 5 * 60 * 1000); // 5 minutos
+        });
+
+    </script>
+</body>
+</html>

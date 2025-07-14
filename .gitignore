@@ -1,0 +1,57 @@
+# Archivos de caché del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Directorios de Python
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+.Python/
+build/
+dist/
+*.egg-info/
+.venv/
+env/
+venv/
+venv.bak/
+.mypy_cache/
+.pytest_cache/
+.tox/
+.poetry/
+
+# Archivos de credenciales sensibles (¡MUY IMPORTANTE!)
+# *.json  # COMENTADO - NO ignorar todos los JSON
+*.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Archivos específicos de credenciales
+service-account-key.json
+credentials.json
+
+# Vercel
+.vercel/
+.next/
+node_modules/
+
+# Archivos de log
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de compilación y salida
+# Si generas algún archivo en el proceso de build que no deba estar en git
+# por ejemplo, archivos de distribución o minificados si no están en 'public'
+# dist/
+# build/
+
+# Ignorar la carpeta de imágenes si no quieres que el contenido se suba directamente
+# pero en tu caso, sí quieres que 'public/image' se suba.
+# /public/image/ # Descomentar si quieres ignorar todas las imágenes dentro de public/image
+
+# Ignorar archivos específicos de datos si no son parte del control de versiones
+# tasas_de_cambio.xlsx # Descomentar si no quieres que este archivo se suba

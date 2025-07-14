@@ -1,0 +1,35 @@
+# Ignorar el bot de WhatsApp (se ejecutará en VPS)
+whatsapp-sheet-bot/
+
+# Ignorar archivos de desarrollo
+.git/
+__pycache__/
+*.pyc
+venv/
+env/
+.venv/
+
+# Ignorar credenciales sensibles
+*.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+service-account-key.json
+credentials.json
+
+# Vercel
+.vercel/
+.next/
+node_modules/
+
+# Archivos de log
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# Ignorar cualquier archivo que sea solo para pruebas o documentación
+# tests/
+# docs/
+# README.md
+# README.txt
