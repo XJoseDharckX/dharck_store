@@ -679,33 +679,39 @@
             font-size: 0.9em;
         }
 
+
+
+        /* CSS simplificado para controles de artículos */
         .article-controls {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
+            flex-wrap: wrap;
             gap: 8px;
+            margin-top: 8px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
         }
 
         .control-group {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
+            min-width: fit-content;
         }
 
         .control-group label {
+            font-size: 0.75rem;
+            color: #666;
+            min-width: 45px;
             font-weight: 500;
-            color: #555;
-            min-width: 60px;
-            font-size: 0.8rem;
         }
 
         .control-group input[type="number"] {
-            width: 80px;
-            padding: 6px 8px;
-            border: 2px solid #dee2e6;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            width: 60px;
+            padding: 3px 6px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 0.75rem;
         }
 
         .control-group input[type="checkbox"] {
@@ -719,11 +725,12 @@
             border-color: #667eea;
         }
 
+        /* Toggle switch más pequeño */
         .toggle-switch {
             position: relative;
             display: inline-block;
-            width: 44px;
-            height: 24px;
+            width: 32px;
+            height: 18px;
         }
 
         .toggle-switch input {
@@ -740,47 +747,52 @@
             right: 0;
             bottom: 0;
             background-color: #ccc;
-            transition: .4s;
-            border-radius: 24px;
+            transition: .3s;
+            border-radius: 18px;
         }
 
         .slider:before {
             position: absolute;
             content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
+            height: 14px;
+            width: 14px;
+            left: 2px;
+            bottom: 2px;
             background-color: white;
-            transition: .4s;
+            transition: .3s;
             border-radius: 50%;
         }
 
         input:checked + .slider {
-            background-color: #00E676;
+            background-color: #4CAF50;
         }
 
         input:checked + .slider:before {
-            transform: translateX(20px);
+            transform: translateX(14px);
         }
 
         .promo-toggle {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .promo-toggle label {
-            font-size: 0.8rem;
-            min-width: 50px;
+            font-size: 0.75rem;
+            min-width: 40px;
+        }
+
+        .promo-toggle input[type="checkbox"] {
+            width: 12px;
+            height: 12px;
         }
 
         .promo-badge {
-            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            background: #ff6b35;
             color: white;
-            padding: 2px 6px;
-            border-radius: 8px;
-            font-size: 0.7em;
+            padding: 1px 4px;
+            border-radius: 4px;
+            font-size: 0.6rem;
             font-weight: bold;
         }
 
@@ -908,36 +920,33 @@
                 max-width: none;
             }
             
+            /* Responsive para móviles */
             .article-controls {
                 flex-direction: column;
-                gap: 8px;
-                align-items: stretch;
+                gap: 6px;
             }
             
             .control-group {
                 justify-content: space-between;
-                gap: 8px;
-            }
-            
-            .toggle-switch {
-                width: 36px;
-                height: 20px;
-            }
-            
-            .slider:before {
-                height: 14px;
-                width: 14px;
-                left: 3px;
-                bottom: 3px;
-            }
-            
-            input:checked + .slider:before {
-                transform: translateX(16px);
+                width: 100%;
             }
             
             .control-group input[type="number"] {
-                width: 70px;
-                padding: 4px 6px;
+                width: 50px;
+            }
+            
+            .toggle-switch {
+                width: 28px;
+                height: 16px;
+            }
+            
+            .slider:before {
+                height: 12px;
+                width: 12px;
+            }
+            
+            input:checked + .slider:before {
+                transform: translateX(12px);
             }
         }
     </style>
@@ -1982,6 +1991,12 @@
         
         // Función para cargar la configuración de artículos
         async function loadArticlesManagement() {
+            const loadingMessage = document.getElementById('articlesLoadingMessage');
+            const errorMessage = document.getElementById('articlesErrorMessage');
+            
+            loadingMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+            
             try {
                 // Intentar cargar desde el servidor primero
                 const response = await fetch('/api/articles-config');
@@ -1990,16 +2005,18 @@
                     const serverConfig = await response.json();
                     
                     // Si hay configuración en el servidor, usarla
-                    if (Object.keys(serverConfig).length > 0) {
+                    if (serverConfig && Object.keys(serverConfig).length > 0) {
                         gameArticlesConfig = serverConfig;
+                        console.log('Configuración cargada desde servidor');
                     } else {
                         // Si no hay configuración en servidor, usar inicial
                         gameArticlesConfig = JSON.parse(JSON.stringify(initialGameConfig));
+                        console.log('Usando configuración inicial');
                         // Guardar configuración inicial en servidor
                         await saveArticleSettings();
                     }
                 } else {
-                    throw new Error('Error al cargar desde servidor');
+                    throw new Error(`Error HTTP ${response.status}`);
                 }
             } catch (error) {
                 console.error('Error cargando desde servidor, usando localStorage:', error);
@@ -2007,12 +2024,22 @@
                 // Fallback a localStorage
                 const savedConfig = localStorage.getItem('gameArticlesConfig');
                 if (savedConfig) {
-                    gameArticlesConfig = JSON.parse(savedConfig);
+                    try {
+                        gameArticlesConfig = JSON.parse(savedConfig);
+                        console.log('Configuración cargada desde localStorage');
+                    } catch (parseError) {
+                        console.error('Error parseando localStorage:', parseError);
+                        gameArticlesConfig = JSON.parse(JSON.stringify(initialGameConfig));
+                    }
                 } else {
                     gameArticlesConfig = JSON.parse(JSON.stringify(initialGameConfig));
+                    console.log('Usando configuración inicial por defecto');
                 }
+                
+                showNotification('Configuración cargada desde cache local', 'success');
             }
             
+            loadingMessage.style.display = 'none';
             renderGamesGrid();
         }
         
@@ -2104,9 +2131,15 @@
             const price = parseFloat(newPrice);
             if (isNaN(price) || price < 0) {
                 showNotification('Precio inválido', 'error');
+                // Restaurar valor anterior
+                const input = document.getElementById(`price_${articleIndex}`);
+                if (input) {
+                    input.value = gameArticlesConfig[gameName].articles[articleIndex].value;
+                }
                 return;
             }
             
+            const oldPrice = gameArticlesConfig[gameName].articles[articleIndex].value;
             gameArticlesConfig[gameName].articles[articleIndex].value = price;
             
             // Actualizar vista del precio
@@ -2114,14 +2147,22 @@
             const priceDisplay = articleCard.querySelector('.article-price');
             priceDisplay.textContent = `$${price.toFixed(2)} USD`;
             
+            // Mostrar notificación de cambio
+            showNotification(`Precio actualizado: $${oldPrice.toFixed(2)} → $${price.toFixed(2)}`, 'success');
+            
             // Auto-guardar después de cambio de precio
             saveArticleSettings();
         }
         
         // Función para activar/desactivar artículo
         function toggleArticleActive(gameName, articleIndex) {
-            gameArticlesConfig[gameName].articles[articleIndex].active = 
-                !gameArticlesConfig[gameName].articles[articleIndex].active;
+            const article = gameArticlesConfig[gameName].articles[articleIndex];
+            const wasActive = article.active;
+            article.active = !wasActive;
+            
+            // Mostrar notificación
+            const status = article.active ? 'activado' : 'desactivado';
+            showNotification(`Artículo "${article.label}" ${status}`, 'success');
             
             // Actualizar vista
             renderArticlesGrid(gameName);
@@ -2133,8 +2174,13 @@
         
         // Función para activar/desactivar promoción
         function toggleArticlePromotion(gameName, articleIndex) {
-            gameArticlesConfig[gameName].articles[articleIndex].promotion = 
-                !gameArticlesConfig[gameName].articles[articleIndex].promotion;
+            const article = gameArticlesConfig[gameName].articles[articleIndex];
+            const wasPromo = article.promotion;
+            article.promotion = !wasPromo;
+            
+            // Mostrar notificación
+            const status = article.promotion ? 'activada' : 'desactivada';
+            showNotification(`Promoción "${article.label}" ${status}`, 'success');
             
             // Actualizar vista
             renderArticlesGrid(gameName);

@@ -30,7 +30,7 @@ const SELLER_SHEET_MAPPING = {
   'Ernesto': 'Ernesto',
   'OSCAR': 'Oscar',
   'SpartanoWolf98': 'SpartanoWolf98',
-  'Jhack': 'jhack'  // Nuevo vendedor con hoja "jhack"
+  'Jhack': 'Jhack'  // ✅ Jhack está correctamente mapeado
 };
 
 // Función para obtener la hoja específica del vendedor
@@ -212,6 +212,7 @@ async function deletePendingOrder(orderId, rowNumber) {
   }
 }
 
+// ✅ ASEGURAR QUE ESTÉ EN LA EXPORTACIÓN
 module.exports = {
   getGoogleSheet,
   getSellerSheet,
@@ -219,5 +220,5 @@ module.exports = {
   deleteOrder,
   getAllOrders,
   deletePendingOrder,
-  SELLER_SHEET_MAPPING
+  SELLER_SHEET_MAPPING  // ✅ Verificar que esté aquí
 };

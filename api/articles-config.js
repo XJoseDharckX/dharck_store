@@ -50,7 +50,7 @@ module.exports = async (req, res) => {
             
         } else if (req.method === 'POST') {
             // Guardar nueva configuración en Google Sheets
-            const { gameArticlesConfig } = req.body;
+            const gameArticlesConfig = req.body; // Cambiar esta línea
             
             let configSheet;
             try {
