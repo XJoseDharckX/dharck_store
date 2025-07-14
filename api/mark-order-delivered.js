@@ -104,7 +104,6 @@ const ARTICLE_PROFIT_CONFIG = {
   '10800 CP': 4.00,
   
 
-  'MOBILE LEGENDS': {
       // Agregar después de CALL OF DUTY MOBILE en XJOSEDHARCKX_PROFIT_CONFIG:
       // MOBILE LEGENDS - Ganancias personalizadas para XJoseDharckX
       'PASE SEMANAL ML': 0.30,
@@ -119,7 +118,7 @@ const ARTICLE_PROFIT_CONFIG = {
       '3099+589💎': 5.50,
       '4649+883💎': 8.00,
       '7740+1548💎': 13.50,
-  }
+  
 };
 
 // Configuración de ganancias personalizadas para XJoseDharckX

@@ -105,40 +105,4 @@ function getInputRequirement(gameName) {
         'DELTA FORCE STEAM': 'ID de Steam'
     };
     return requirements[gameName.toUpperCase()] || 'ID de jugador';
-}
-
-// Guardar nueva configuración en Google Sheets
-const gameArticlesConfig = req.body; // Cambiar esta línea
-
-let configSheet;
-try {
-    configSheet = doc.sheetsByTitle['ArticulosConfig'];
-} catch {
-    configSheet = await doc.addSheet({
-        title: 'ArticulosConfig',
-        headerValues: ['juego', 'configuracion']
-    });
-}
-
-// Limpiar hoja existente
-await configSheet.clear();
-await configSheet.setHeaderRow(['juego', 'configuracion']);
-
-// Guardar cada juego
-const rows = [];
-Object.keys(gameArticlesConfig).forEach(gameName => {
-    rows.push({
-        juego: gameName,
-        configuracion: JSON.stringify(gameArticlesConfig[gameName])
-    });
-});
-
-await configSheet.addRows(rows);
-
-res.status(200).json({ success: true, message: 'Configuración guardada exitosamente' });
-}
-} catch (error) {
-    console.error('Error en articles-config:', error);
-    res.status(500).json({ error: 'Error interno del servidor', details: error.message });
-}
 };
