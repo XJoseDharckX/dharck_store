@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RECARGAS DHARCK STORE</title>
-    <!-- La ruta /image/logo1.png asume que 'logo1.png' está en la carpeta 'public/image/' en tu proyecto de Vercel. -->
     <link rel="icon" href="/image/logo1.png" type="image/png">
+    
+    <!-- Version Control -->
+    <script src="/version.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0RB1V3F1WL"></script>
 <script>
@@ -1257,13 +1259,13 @@
                 badge: '🔥Cupon +25%',
                 animation: 'promo-pulse',
                 articles: [
-               //  '💎499+CUPON',
-                // '💎999+CUPON',
+                 '💎499+CUPON',
+                 '💎999+CUPON',
                  '💎1999+CUPON',
-               //  '💎2499+CUPON',
-               //  '💎2999+CUPON',
+                 '💎2499+CUPON',
+                 '💎2999+CUPON',
                  '💎4999+CUPON',
-              //   '💎9999+CUPON',
+                 '💎9999+CUPON',
               ] // Artículos en promoción
             },
 
@@ -2426,8 +2428,16 @@
        // Función para cargar configuración de artículos desde servidor o localStorage
         async function loadArticlesConfig() {
             try {
-                // Intentar cargar desde el servidor primero
-                const response = await fetch('/api/articles-config');
+                // Agregar timestamp para evitar caché del navegador
+                const timestamp = new Date().getTime();
+                const response = await fetch(`/api/articles-config?t=${timestamp}`, {
+                    method: 'GET',
+                    headers: {
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'Expires': '0'
+                    }
+                });
                 
                 if (response.ok) {
                     const serverConfig = await response.json();
@@ -2441,7 +2451,7 @@
                                 logoUrl: gameConfig.logoUrl,
                                 inputRequirement: gameConfig.inputRequirement,
                                 amounts: gameConfig.articles
-                                    .filter(article => article.active)
+                                    .filter(article => article.active) // Solo artículos activos
                                     .map(article => ({
                                         value: article.value,
                                         label: article.label,
@@ -2449,9 +2459,11 @@
                                         promotion: article.promotion
                                     }))
                             };
-                        });
+                        }).filter(game => game.amounts.length > 0); // Solo juegos con artículos activos
                         
-                        console.log('Configuración cargada desde servidor');
+                        // Actualizar localStorage con la nueva configuración
+                        localStorage.setItem('gameArticlesConfig', JSON.stringify(serverConfig));
+                        console.log('Configuración cargada desde servidor y sincronizada');
                         return;
                     }
                 }
@@ -2459,13 +2471,12 @@
                 console.error('Error cargando desde servidor:', error);
             }
             
-            // Fallback a localStorage - CORREGIDO
+            // Fallback a localStorage
             const savedConfig = localStorage.getItem('gameArticlesConfig');
             if (savedConfig) {
                 try {
                     const config = JSON.parse(savedConfig);
                     
-                    // Convertir localStorage a formato gameOptions también
                     gameOptions = Object.keys(config).map(gameName => {
                         const gameConfig = config[gameName];
                         return {
@@ -2481,12 +2492,12 @@
                                     promotion: article.promotion
                                 }))
                         };
-                    });
+                    }).filter(game => game.amounts.length > 0);
                     
                     console.log('Configuración cargada desde localStorage');
                 } catch (parseError) {
                     console.error('Error parseando localStorage:', parseError);
-                    gameOptions = []; // Asegurar que quede vacío si hay error
+                    gameOptions = [];
                 }
             }
         }
@@ -2507,6 +2518,37 @@
             setInterval(loadExchangeRates, 5 * 60 * 1000);
         });
 
+    </script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+                console.log('Service Worker registrado:', registration);
+                
+                // Verificar actualizaciones cada 30 segundos
+                setInterval(() => {
+                    registration.update();
+                }, 30000);
+                
+                // Escuchar actualizaciones del service worker
+                registration.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            // Hay una nueva versión disponible
+                            if (confirm('Nueva versión disponible. ¿Recargar página?')) {
+                                window.location.reload();
+                            }
+                        }
+                    });
+                });
+            })
+            .catch(error => {
+                console.log('Error registrando Service Worker:', error);
+            });
+    }
     </script>
 </body>
 </html>
