@@ -683,33 +683,34 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 15px;
+            margin-top: 10px;
+            gap: 8px;
         }
 
         .control-group {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
         }
 
         .control-group label {
             font-weight: 500;
             color: #555;
-            min-width: 80px;
-            font-size: 0.9rem;
+            min-width: 60px;
+            font-size: 0.8rem;
         }
 
         .control-group input[type="number"] {
-            width: 100px;
-            padding: 8px 10px;
+            width: 80px;
+            padding: 6px 8px;
             border: 2px solid #dee2e6;
-            border-radius: 6px;
-            font-size: 0.9rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
         }
 
         .control-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
+            width: 14px;
+            height: 14px;
             cursor: pointer;
         }
 
@@ -721,8 +722,8 @@
         .toggle-switch {
             position: relative;
             display: inline-block;
-            width: 60px;
-            height: 34px;
+            width: 44px;
+            height: 24px;
         }
 
         .toggle-switch input {
@@ -740,16 +741,16 @@
             bottom: 0;
             background-color: #ccc;
             transition: .4s;
-            border-radius: 34px;
+            border-radius: 24px;
         }
 
         .slider:before {
             position: absolute;
             content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
             background-color: white;
             transition: .4s;
             border-radius: 50%;
@@ -760,21 +761,26 @@
         }
 
         input:checked + .slider:before {
-            transform: translateX(26px);
+            transform: translateX(20px);
         }
 
         .promo-toggle {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
+        }
+
+        .promo-toggle label {
+            font-size: 0.8rem;
+            min-width: 50px;
         }
 
         .promo-badge {
             background: linear-gradient(45deg, #ff6b6b, #feca57);
             color: white;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.8em;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 0.7em;
             font-weight: bold;
         }
 
@@ -901,6 +907,38 @@
                 width: 100%;
                 max-width: none;
             }
+            
+            .article-controls {
+                flex-direction: column;
+                gap: 8px;
+                align-items: stretch;
+            }
+            
+            .control-group {
+                justify-content: space-between;
+                gap: 8px;
+            }
+            
+            .toggle-switch {
+                width: 36px;
+                height: 20px;
+            }
+            
+            .slider:before {
+                height: 14px;
+                width: 14px;
+                left: 3px;
+                bottom: 3px;
+            }
+            
+            input:checked + .slider:before {
+                transform: translateX(16px);
+            }
+            
+            .control-group input[type="number"] {
+                width: 70px;
+                padding: 4px 6px;
+            }
         }
     </style>
 </head>
@@ -911,7 +949,7 @@
     <!-- Login Form -->
     <div id="loginContainer" class="login-container">
         <div class="login-form">
-            <h2><i class="fas fa-lock"></i> Acceso Administrativo</h2>
+            <h2><i class="fas fa-lock"></i> Acceso | Administrativo</h2>
             <form id="loginForm">
                 <div class="form-group">
                     <label for="username"><i class="fas fa-user"></i> Usuario:</label>
@@ -1272,7 +1310,7 @@
             emptyState.style.display = 'none';
             
             try {
-                const response = await fetch('/api/get-pending-orders');
+                const response = await fetch('/api/pending-orders');
                 
                 if (!response.ok) {
                     throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -1469,7 +1507,7 @@
             ratesGrid.innerHTML = '';
             
             try {
-                const response = await fetch('/api/get-exchange-rates');
+                const response = await fetch('/api/exchange-rates');
                 
                 if (!response.ok) {
                     throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -1523,7 +1561,7 @@
             try {
                 showNotification('Actualizando tasa de cambio...', 'info');
                 
-                const response = await fetch('/api/update-exchange-rate', {
+                const response = await fetch('/api/exchange-rates', {
                     method: 'POST',
                     headers: { 
                         'Content-Type': 'application/json',
@@ -1926,8 +1964,8 @@
             'MOBILE LEGENDS': {
                 logoUrl: '/image/ml.png',
                 articles: [
-                    { label: 'PASE SEMANAL ML', value: 1.60, imageUrl: '/image/ml_pase.png', active: true, promotion: false },
-                    { label: 'CREPUSCULAR', value: 9.50, imageUrl: '/image/ml_pase.png', active: true, promotion: false },
+                    { label: 'PASE SEMANAL ML', value: 1.60, imageUrl: '/image/ml7.png', active: true, promotion: false },
+                    { label: 'CREPUSCULAR', value: 9.50, imageUrl: '/image/ml7.png', active: true, promotion: false },
                     { label: '50+5💎', value: 0.90, imageUrl: '/image/ml1.png', active: true, promotion: false },
                     { label: '150+15💎', value: 2.80, imageUrl: '/image/ml1.png', active: true, promotion: false },
                     { label: '250+25💎', value: 4.40, imageUrl: '/image/ml2.png', active: true, promotion: false },
@@ -2117,7 +2155,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ gameArticlesConfig })
+                    body: JSON.stringify(gameArticlesConfig)
                 });
                 
                 if (response.ok) {
