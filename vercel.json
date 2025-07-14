@@ -8,6 +8,18 @@
     {
       "source": "/",
       "destination": "/index.html"
+    },
+    {
+      "source": "/api/get-pending-orders",
+      "destination": "/api/pending-orders"
+    },
+    {
+      "source": "/api/get-exchange-rates",
+      "destination": "/api/exchange-rates"
+    },
+    {
+      "source": "/api/update-exchange-rate",
+      "destination": "/api/exchange-rates"
     }
   ]
 }
