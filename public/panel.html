@@ -1943,13 +1943,36 @@
         };
         
         // Función para cargar la configuración de artículos
-        function loadArticlesManagement() {
-            // Cargar desde localStorage o usar configuración inicial
-            const savedConfig = localStorage.getItem('gameArticlesConfig');
-            if (savedConfig) {
-                gameArticlesConfig = JSON.parse(savedConfig);
-            } else {
-                gameArticlesConfig = JSON.parse(JSON.stringify(initialGameConfig));
+        async function loadArticlesManagement() {
+            try {
+                // Intentar cargar desde el servidor primero
+                const response = await fetch('/api/articles-config');
+                
+                if (response.ok) {
+                    const serverConfig = await response.json();
+                    
+                    // Si hay configuración en el servidor, usarla
+                    if (Object.keys(serverConfig).length > 0) {
+                        gameArticlesConfig = serverConfig;
+                    } else {
+                        // Si no hay configuración en servidor, usar inicial
+                        gameArticlesConfig = JSON.parse(JSON.stringify(initialGameConfig));
+                        // Guardar configuración inicial en servidor
+                        await saveArticleSettings();
+                    }
+                } else {
+                    throw new Error('Error al cargar desde servidor');
+                }
+            } catch (error) {
+                console.error('Error cargando desde servidor, usando localStorage:', error);
+                
+                // Fallback a localStorage
+                const savedConfig = localStorage.getItem('gameArticlesConfig');
+                if (savedConfig) {
+                    gameArticlesConfig = JSON.parse(savedConfig);
+                } else {
+                    gameArticlesConfig = JSON.parse(JSON.stringify(initialGameConfig));
+                }
             }
             
             renderGamesGrid();
@@ -2065,6 +2088,9 @@
             // Actualizar vista
             renderArticlesGrid(gameName);
             renderGamesGrid();
+            
+            // Auto-guardar
+            saveArticleSettings();
         }
         
         // Función para activar/desactivar promoción
@@ -2074,20 +2100,36 @@
             
             // Actualizar vista
             renderArticlesGrid(gameName);
+            
+            // Auto-guardar
+            saveArticleSettings();
         }
         
         // Función para guardar configuración
-        function saveArticleSettings() {
+        async function saveArticleSettings() {
             try {
+                // Guardar localmente
                 localStorage.setItem('gameArticlesConfig', JSON.stringify(gameArticlesConfig));
-                showNotification('Configuración guardada exitosamente', 'success');
                 
-                // Aquí podrías enviar la configuración a una API si es necesario
-                // await fetch('/api/save-articles-config', { ... });
+                // Guardar en el servidor
+                const response = await fetch('/api/articles-config', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ gameArticlesConfig })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    showNotification('Configuración guardada exitosamente en el servidor', 'success');
+                } else {
+                    throw new Error('Error al guardar en el servidor');
+                }
                 
             } catch (error) {
                 console.error('Error al guardar configuración:', error);
-                showNotification('Error al guardar la configuración', 'error');
+                showNotification('Error al guardar la configuración: ' + error.message, 'error');
             }
         }
         
