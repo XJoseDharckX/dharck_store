@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dharck-store-v3.3'; // Versión actualizada
+const CACHE_NAME = 'dharck-store-v3.4'; // Versión actualizada
 const urlsToCache = [
   '/',
   '/index.html',
