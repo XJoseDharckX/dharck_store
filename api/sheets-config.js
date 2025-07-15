@@ -31,7 +31,8 @@ const SELLER_SHEET_MAPPING = {
   'OSCAR': 'Oscar',
   'SpartanoWolf98': 'SpartanoWolf98',
   'Jhack': 'Jhack',
-  'Enmanuel': 'Enmanuel' // NUEVO VENDEDOR AGREGADO
+  'Enmanuel': 'Enmanuel', // NUEVO VENDEDOR AGREGADO
+  'Mateo': 'Mateo' // NUEVO VENDEDOR AGREGADO
 };
 
 // Función para obtener la hoja específica del vendedor

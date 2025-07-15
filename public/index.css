@@ -1,891 +1,810 @@
-   /* Fuentes */
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #4A00E0, #8E2DE2, #FF00FF, #00FFFF, #00FF00); /* Degradado más claro y vibrante */
-            background-size: 400% 400%;
-            animation: gradient-animation 20s ease infinite; /* Animación más lenta y suave */
+/* Fuentes */
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #000000, #1a1a2e, #16213e, #0f3460);
+    background-size: 400% 400%;
+    animation: gradient-animation 20s ease infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    position: relative;
+    overflow-x: hidden;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-            display: flex;
-            flex-direction: column; /* Cambiado a columna para apilar el header y el form-container */
-            align-items: center;
-            justify-content: flex-start; /* Alinear arriba para el header fijo */
-            min-height: 100vh;
-            margin: 0;
-            position: relative;
-            overflow-x: hidden;
-            padding: 0; /* Remover padding aquí, se gestionará en el header y form-container */
-            box-sizing: border-box;
-        }
-      
-        @keyframes gradient-animation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+@keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
-        /* LOGO DE FONDO ELIMINADO */
+/* Header de título */
+.app-header {
+    width: 100%;
+    background: linear-gradient(to right, #000000, #1a1a2e, #000000);
+    padding: 15px 0;
+    box-shadow: 0 5px 25px rgba(255, 217, 0, 0.6), 0 0 40px rgba(30, 144, 255, 0.4);
+    z-index: 100;
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #FFD700;
+    position: relative;
+}
 
-        /* NUEVO ESTILO: Header de título */
-        .app-header {
-            width: 100%;
-            background: linear-gradient(to right, #1A004B, #6A0DAD, #1A004B); /* Degradado oscuro y vibrante para el header */
-            padding: 15px 0; /* Padding vertical */
-            box-shadow: 0 5px 25px rgba(138, 43, 226, 0.8), 0 0 40px rgba(0, 255, 255, 0.5); /* Sombra intensa */
-            z-index: 100; /* Asegurar que esté por encima de todo */
-            position: sticky; /* Se queda en la parte superior al hacer scroll */
-            top: 0;
-            display: flex;
-            justify-content: center; /* Centrar el contenido horizontalmente */
-            align-items: center; /* Centrar el contenido verticalmente */
-            margin-bottom: 30px; /* Espacio entre el header y el formulario */
-            border-bottom: 2px solid #00FFFF; /* Borde inferior de neón */
-            position: relative; /* Necesario para posicionar el botón de soporte */
-        }
+.dharck-store-title-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 900px;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
 
-        .dharck-store-title-container {
-            display: flex;
-            align-items: center;
-            justify-content: center; /* Centrar dentro del header */
-            width: 100%; /* Ocupar todo el ancho disponible del header */
-            max-width: 900px; /* Limitar ancho del contenido del título */
-            padding: 0 20px; /* Padding horizontal para el contenido del título */
-            box-sizing: border-box;
-        }
-        .dharck-store-title {
-            /* Colores más definidos para el texto del título */
-            color: #00FFFF; /* Cian brillante, más legible */
-            text-shadow: 0 0 10px rgba(0, 255, 255, 1), 0 0 20px rgba(0, 255, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.6); /* Resplandor cian */
-            animation: none; /* Eliminar animación del título para mayor claridad */
-            font-weight: bold;
-            font-size: 3.5em; /* Título aún más grande */
-            line-height: 1;
-            margin: 0;
-            margin-right: 25px; /* Más espacio entre texto y logo */
-            background: none; /* Eliminar background-clip ya que ahora es color sólido */
-            -webkit-background-clip: unset;
-            background-clip: unset;
-        }
-        /* Animación para el título (si se quiere mantener algo) */
-        @keyframes header-neon-glow {
-            0% { text-shadow: 0 0 8px #00FFFF, 0 0 15px #00FFFF, 0 0 25px #00FFFF; }
-            50% { text-shadow: 0 0 12px #00FFFF, 0 0 20px #00FFFF, 0 0 35px #00FFFF; }
-            100% { text-shadow: 0 0 8px #00FFFF, 0 0 15px #00FFFF, 0 0 25px #00FFFF; }
-        }
-        .dharck-store-title {
-            animation: header-neon-glow 1.5s infinite alternate; /* Aplicar una animación de brillo */
-        }
+.dharck-store-title {
+    color: #ffffff;
+    text-shadow: 0 0 10px rgb(255, 217, 0), 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6);
+    animation: header-gold-glow 1.5s infinite alternate;
+    font-weight: bold;
+    font-size: 3.5em;
+    line-height: 1;
+    margin: 0;
+    margin-right: 25px;
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+}
 
-        .title-logo {
-            height: 80px; /* Logo más grande en el header */
-            width: auto;
-            border-radius: 50%;
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.8), 0 0 35px rgba(255, 0, 255, 0.8); /* Doble resplandor neón */
-            transition: transform 0.3s ease;
-        }
-        .title-logo:hover {
-            transform: scale(1.05) rotate(5deg); /* Efecto de hover sutil */
-        }
+@keyframes header-gold-glow {
+    0% { text-shadow: 0 0 8px #FFD700, 0 0 15px #FFD700, 0 0 25px #FFD700; }
+    50% { text-shadow: 0 0 12px #FFD700, 0 0 20px #FFD700, 0 0 35px #FFD700; }
+    100% { text-shadow: 0 0 8px #FFD700, 0 0 15px #FFD700, 0 0 25px #FFD700; }
+}
 
-        /* ESTILOS PARA EL BOTÓN DE SOPORTE TÉCNICO */
-        .support-button {
-            position: absolute;
-            right: 20px; /* Posicionarlo a la derecha del header */
-            top: 50%;
-            transform: translateY(-50%);
-            background: linear-gradient(to right, #FF00FF, #8E2DE2); /* Degradado magenta-morado */
-            color: #FFFFFF;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9em;
-            font-weight: bold;
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.7); /* Resplandor magenta */
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px; /* Espacio entre icono y texto */
-        }
-        .support-button:hover {
-            background: linear-gradient(to right, #8E2DE2, #FF00FF); /* Invertir degradado al hover */
-            box-shadow: 0 0 25px rgba(255, 0, 255, 1); /* Resplandor más fuerte */
-            transform: translateY(-50%) scale(1.05); /* Ligeramente más grande */
-        }
-        .support-icon {
-            width: 20px;
-            height: 20px;
-            fill: #FFFFFF; /* Color del icono */
-        }
-        /* FIN DE ESTILOS PARA EL BOTÓN DE SOPORTE TÉCNICO */
+.title-logo {
+    height: 80px;
+    width: auto;
+    border-radius: 50%;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), 0 0 35px rgba(30, 144, 255, 0.6);
+    transition: transform 0.3s ease;
+}
 
+.title-logo:hover {
+    transform: scale(1.05) rotate(5deg);
+}
 
-        /* Colores de los cuadros más claros y llamativos */
-        .form-container, .section-container {
-            background-color: #1A004B; /* Un color índigo más claro que el anterior, pero aún oscuro */
-            border: 2px solid #6A0DAD; /* Borde morado brillante */
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 0 25px rgba(106, 13, 173, 0.6), /* Sombra morada */
-                        0 0 35px rgba(0, 255, 255, 0.5), /* Sombra cian */
-                        inset 0 0 12px rgba(106, 13, 173, 0.3); /* Resplandor interno */
-            max-width: 900px;
-            width: 100%;
-            color: #E0F7FA;
-            box-sizing: border-box;
-            z-index: 1;
-            position: relative;
-            margin-top: 20px;
-        }
-        
-        .section-container {
-            margin-top: 30px;
-        }
+/* Botón de soporte técnico */
+.support-button {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(to right, #1e90ff, #4169e1);
+    color: #FFFFFF;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(30, 144, 255, 0.7);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
-        /* Estilo para cada grupo de formulario (label + input/select) */
-        .form-group {
-            margin-bottom: 25px; /* Más espacio entre grupos */
-        }
+.support-button:hover {
+    background: linear-gradient(to right, #4169e1, #1e90ff);
+    box-shadow: 0 0 25px rgba(30, 144, 255, 1);
+    transform: translateY(-50%) scale(1.05);
+}
 
-        label {
-            display: block;
-            margin-bottom: 10px; /* Más espacio debajo de la etiqueta */
-            font-weight: bold;
-            color: #00FFFF; /* Cian neón */
-            text-shadow: 0 0 6px rgba(0, 255, 255, 0.6);
-            font-size: 1.2em; /* Etiquetas más grandes */
-        }
+.support-icon {
+    width: 20px;
+    height: 20px;
+    fill: #FFFFFF;
+}
 
-        input[type="text"],
-        input[type="tel"],
-        input[type="email"],
-        input[type="password"] { /* Eliminamos 'select' de aquí ya que ahora son botones para país y vendedor */
-            width: 100%;
-            padding: 14px; /* Más padding */
-            border: 2px solid #6A0DAD; /* Borde más pronunciado */
-            border-radius: 10px; /* Más redondeado */
-            background-color: rgba(30, 0, 60, 0.9); /* Fondo oscuro con ligera transparencia */
-            color: #FFFFFF; /* Texto blanco */
-            font-size: 1.15em; /* Texto un poco más grande */
-            transition: all 0.3s ease;
-            box-shadow: inset 0 0 8px rgba(106, 13, 173, 0.3); /* Sombra interna sutil */
-            height: 50px; /* Altura fija para celdas de selección, asegurando el mismo tamaño */
-            box-sizing: border-box; /* Incluir padding y borde en la altura */
-            -webkit-appearance: none; /* Eliminar estilo por defecto en Safari/Chrome */
-            -moz-appearance: none; /* Eliminar estilo por defecto en Firefox */
-            appearance: none;
-        }
+/* Contenedores principales */
+.form-container, .section-container {
+    background-color: #1a1a1a;
+    border: 2px solid #FFD700;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.4), 0 0 35px rgba(30, 144, 255, 0.3), inset 0 0 12px rgba(255, 215, 0, 0.2);
+    max-width: 900px;
+    width: 100%;
+    color: #FFFFFF;
+    box-sizing: border-box;
+    z-index: 1;
+    position: relative;
+    margin-top: 20px;
+}
 
-        input[type="text"]::placeholder,
-        input[type="tel"]::placeholder,
-        input[type="email"]::placeholder,
-        input[type="password"]::placeholder {
-            color: #B0B0B0; /* Placeholder más claro */
-        }
+.section-container {
+    margin-top: 30px;
+}
 
-        input[type="text"]:focus,
-        input[type="tel"]:focus,
-        input[type="email"]:focus,
-        input[type="password"]:focus { /* Eliminamos 'select' de aquí */
-            outline: none;
-            border-color: #00FF00; /* Borde verde neón al enfocar */
-            box-shadow: 0 0 0 4px rgba(0, 255, 0, 0.6), inset 0 0 10px rgba(0, 255, 0, 0.4); /* Resplandor más fuerte */
-        }
+.form-group {
+    margin-bottom: 25px;
+}
 
-        /* ESTILOS PARA LOS BOTONES DE JUEGO Y ARTÍCULOS */
-        #gameButtonsContainer, #amountButtons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Base para escritorio */
-            gap: 20px; /* Espacio entre botones */
-            justify-content: center;
-            margin-top: 15px;
-        }
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #FFD700;
+    text-shadow: 0 0 6px rgba(255, 215, 0, 0.6);
+    font-size: 1.2em;
+}
 
-        /* Estilos base para los elementos de juego y artículos */
-        .game-item, .amount-item { /* Aplicamos estilos base a ambos */
-            background-color: rgba(30, 0, 60, 0.7); /* Fondo oscuro con transparencia */
-            border: 2px solid #8A2BE2; /* Borde morado */
-            border-radius: 15px; /* Más redondeado */
-            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.6); /* Sombra pronunciada */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-height: 200px; /* Altura mínima uniforme, se ajustará individualmente si es necesario */
-            text-align: center;
-            box-sizing: border-box;
-            position: relative;
-            overflow: hidden;
-        }
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #1e90ff;
+    border-radius: 10px;
+    background-color: rgba(26, 26, 26, 0.9);
+    color: #FFFFFF;
+    font-size: 1.15em;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 8px rgba(30, 144, 255, 0.3);
+    height: 50px;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
 
-        .game-item::before, .amount-item::before { /* Efecto de brillo al pasar el ratón para ambos */
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.15) 0%, transparent 80%);
-            transform: rotate(45deg);
-            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-            opacity: 0;
-            z-index: 0; /* Asegurar que el brillo esté detrás del contenido */
-        }
-        .game-item:hover::before, .amount-item:hover::before {
-            transform: rotate(45deg) translate(20%, 20%);
-            opacity: 1;
-        }
-        .game-item:hover:not(.selected), .amount-item:hover:not(.selected) { /* Hover solo si no está seleccionado */
-            background-color: rgba(138, 43, 226, 0.8); /* Morado más brillante */
-            box-shadow: 0 8px 25px rgba(138, 43, 226, 1), 0 0 30px rgba(0, 255, 255, 0.5); /* Doble resplandor */
-            transform: translateY(-8px); /* Efecto de elevación más notable */
-        }
+input[type="text"]::placeholder,
+input[type="tel"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+    color: #B0B0B0;
+}
 
-        /* Estilos para el estado seleccionado (aplicados a ambos) */
-        .game-item.selected, .amount-item.selected {
-            background: linear-gradient(to right, #00E676, #00FFFF); /* Degradado verde-cian intenso */
-            border-color: #00FFFF;
-            color: #1A052E; /* Texto oscuro */
-            box-shadow: 0 0 30px rgba(0, 255, 255, 1), 0 0 40px rgba(0, 230, 118, 1); /* Resplandor muy brillante */
-            transform: scale(1.08); /* Efecto de escala más pronunciado */
-        }
+input[type="text"]:focus,
+input[type="tel"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: #FFD700;
+    box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.6), inset 0 0 10px rgba(255, 215, 0, 0.4);
+}
 
-        .game-logo {
-            width: 120px; /* Tamaño del logo del juego */
-            height: 120px;
-            object-fit: contain;
-            margin-bottom: 15px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* Resplandor en el logo */
-            z-index: 1; /* Asegurar que el logo esté encima del brillo */
-        }
+/* Contenedores de botones */
+#countryButtonsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 15px;
+    justify-content: center;
+    margin-top: 15px;
+}
 
-        .game-name-label {
-            color: #FFFFFF; /* Texto blanco predeterminado */
-            font-weight: bold;
-            font-size: 1.3em; /* Texto del nombre del juego más grande */
-            line-height: 1.3;
-            z-index: 1; /* Asegurar que el texto esté encima del brillo */
-        }
+#gameButtonsContainer, #amountButtons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    margin-top: 15px;
+}
 
-        .game-item.selected .game-name-label {
-            color: #1A052E; /* Texto oscuro cuando está seleccionado */
-        }
-        /* FIN DE ESTILOS PARA LOS BOTONES DE JUEGO */
+#sellerButtonsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    justify-content: center;
+    margin-top: 15px;
+}
 
-        /* ESTILOS PARA EL SISTEMA DE PROMOCIONES */
-        .promo-item {
-            position: relative;
-            overflow: visible !important;
-            border: 2px solid #ff6b35 !important;
-            box-shadow: 0 0 15px rgba(255, 107, 53, 0.5) !important;
-        }
+/* Botones de país (redondos) */
+.country-item {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid #1e90ff;
+    background-color: rgba(26, 26, 26, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
 
-        .promo-badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: linear-gradient(135deg, #FF6B35, #F7931E);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: bold;
-            z-index: 2;
-            pointer-events: none; /* Evitar interferencia con clicks */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
+.country-item:hover:not(.selected) {
+    border-color: #FFD700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    transform: scale(1.05);
+}
 
-        @keyframes promo-badge-glow {
-            0% { box-shadow: 0 0 15px rgba(255, 107, 53, 0.8); }
-            100% { box-shadow: 0 0 25px rgba(255, 107, 53, 1), 0 0 35px rgba(247, 147, 30, 0.8); }
-        }
+.country-item.selected {
+    border-color: #FFD700;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+    transform: scale(1.1);
+}
 
-        /* Animaciones de promoción */
-        @keyframes promo-pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
+.country-flag {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
 
-        @keyframes promo-glow {
-            0%, 100% { box-shadow: 0 0 15px rgba(255, 107, 53, 0.5); }
-            50% { box-shadow: 0 0 25px rgba(255, 107, 53, 0.8); }
-        }
+/* Botones de juego */
+.game-item {
+    background-color: rgba(26, 26, 26, 0.8);
+    border: 2px solid #1e90ff;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(30, 144, 255, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 200px;
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
 
-        @keyframes promo-shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-2px); }
-            75% { transform: translateX(2px); }
-        }
+.game-item::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255, 215, 0, 0.15) 0%, transparent 80%);
+    transform: rotate(45deg);
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+    opacity: 0;
+    z-index: 0;
+}
 
-        @keyframes promo-bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
-        }
+.game-item:hover::before {
+    transform: rotate(45deg) translate(20%, 20%);
+    opacity: 1;
+}
 
-        .promo-pulse {
-            animation: promo-pulse 2s ease-in-out infinite;
-        }
+.game-item:hover:not(.selected) {
+    background-color: rgba(30, 144, 255, 0.6);
+    box-shadow: 0 8px 25px rgba(30, 144, 255, 0.8), 0 0 30px rgba(255, 215, 0, 0.4);
+    transform: translateY(-8px);
+}
 
-        .promo-glow {
-            animation: promo-glow 1.5s ease-in-out infinite;
-        }
+.game-item.selected {
+    background: linear-gradient(to right, #FFD700, #FFA500);
+    border-color: #FFD700;
+    color: #000000;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 40px rgba(255, 165, 0, 0.8);
+    transform: scale(1.08);
+}
 
-        .promo-shake {
-            animation: promo-shake 0.5s ease-in-out infinite;
-        }
+.game-logo {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    z-index: 1;
+}
 
-        .promo-bounce {
-            animation: promo-bounce 1s ease-in-out infinite;
-        }
+.game-name-label {
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 1.3em;
+    line-height: 1.3;
+    z-index: 1;
+}
 
-        /* Efecto hover mejorado para items en promoción */
-        .promo-item:hover {
-            transform: scale(1.08) !important;
-            box-shadow: 0 0 25px rgba(255, 107, 53, 0.8) !important;
-        }
+.game-item.selected .game-name-label {
+    color: #000000;
+}
 
-        /* Estilo especial para el badge cuando el item está seleccionado */
-        .promo-item.selected .promo-badge {
-            background: linear-gradient(45deg, #28a745, #20c997);
-            animation: promo-pulse 1s ease-in-out infinite;
-        }
+/* Botones de artículos */
+.amount-item {
+    background-color: rgba(26, 26, 26, 0.8);
+    border: 2px solid #1e90ff;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(30, 144, 255, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 220px;
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
 
-        /* Efecto especial para artículos en promoción */
-        .promo-item::after {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #FF6B35, #F7931E, #FF6B35);
-            background-size: 200% 200%;
-            border-radius: 17px;
-            z-index: -1;
-            animation: promo-border-flow 3s linear infinite;
-        }
+.amount-item::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255, 215, 0, 0.15) 0%, transparent 80%);
+    transform: rotate(45deg);
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+    opacity: 0;
+    z-index: 0;
+}
 
-        @keyframes promo-border-flow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        /* FIN DE ESTILOS PARA EL SISTEMA DE PROMOCIONES */
+.amount-item:hover::before {
+    transform: rotate(45deg) translate(20%, 20%);
+    opacity: 1;
+}
 
+.amount-item:hover:not(.selected) {
+    background-color: rgba(30, 144, 255, 0.6);
+    box-shadow: 0 8px 25px rgba(30, 144, 255, 0.8), 0 0 30px rgba(255, 215, 0, 0.4);
+    transform: translateY(-8px);
+}
 
-        /* Estilos específicos para el selector de artículos */
-        .amount-item {
-            min-height: 180px; /* Altura mínima uniforme, ligeramente menor que game-item */
-            padding: 15px; /* Ajuste de padding */
-        }
-        .item-image {
-            width: 100px; /* Imágenes más grandes */
-            height: 100px;
-            object-fit: contain;
-            margin-bottom: 5px; /* Ajuste para separar de los labels */
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.4); /* Pequeño resplandor en la imagen */
-            z-index: 1; /* Asegurar que la imagen esté encima del brillo */
-        }
-        /* Contenedor para el label y el precio, para que queden apilados */
-        .item-text-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            width: 100%; /* Asegurar que ocupe el ancho disponible */
-            z-index: 1; /* Asegurar que el texto esté encima del brillo */
-        }
-        .item-label {
-            color: #FFFFFF; /* Texto blanco predeterminado */
-            font-weight: bold;
-            font-size: 1.2em; /* Texto más grande */
-            line-height: 1.3;
-            display: block; /* Asegura que el label esté en su propia fila */
-            margin-bottom: 5px; /* Espacio entre label y precios */
-            word-break: break-word; /* Romper palabras largas */
-            overflow-wrap: break-word; /* Compatible con navegadores antiguos */
-        }
-        .amount-item.selected .item-label {
-            color: #1A052E; /* Texto oscuro cuando está seleccionado */
-        }
-        .item-price-usd { /* NUEVO ESTILO: Precio en USD */
-            color: #A9A9A9; /* Gris claro para el precio USD */
-            font-size: 0.85em; /* Tamaño un poco más pequeño */
-            font-weight: normal; /* No negrita */
-            margin-bottom: 2px; /* Espacio entre USD y precio local */
-        }
-        .item-price-local { /* Estilo para el precio local */
-            color: #00FF00; /* Verde neón */
-            font-size: 0.95em; /* Un poco más grande que el USD */
-            font-weight: bold;
-            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
-            display: block; /* Asegura que el precio esté en su propia fila */
-        }
+.amount-item.selected {
+    background: linear-gradient(to right, #FFD700, #FFA500);
+    border-color: #FFD700;
+    color: #000000;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 40px rgba(255, 165, 0, 0.8);
+    transform: scale(1.08);
+}
 
-        /* Estilo para los artículos seleccionados en el resumen */
-        #selectedItemsPreview {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(0, 255, 255, 0.3); /* Separador sutil */
-        }
-        .selected-item-thumbnail {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-            border-radius: 8px;
-            border: 2px solid #00FFFF;
-            box-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
-        }
+.item-image {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+    z-index: 1;
+}
 
+.item-text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    z-index: 1;
+    flex-grow: 1;
+    justify-content: space-between;
+}
 
-        #priceSummary, #messageDisplay, #paymentMethodsDisplay {
-            padding: 25px; /* Más padding */
-            border-radius: 15px; /* Más redondeado */
-            margin-top: 30px; /* Más margen superior */
-            text-align: center;
-            background-color: rgba(30, 0, 60, 0.9); /* Fondo oscuro translúcido, consistente */
-            border: 2px solid #8A2BE2; /* Borde morado neón */
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5); /* Sombra más fuerte */
-        }
-        #priceSummary p, #paymentMethodsList p {
-            color: #E0F7FA; /* Texto claro para legibilidad */
-        }
+.item-label {
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 1.1em;
+    line-height: 1.3;
+    display: block;
+    margin-bottom: 8px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
 
-        #totalPriceDisplay {
-            font-weight: bold;
-            color: #00FFFF; /* Cian neón */
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8); /* Resplandor al total */
-            font-size: 1.8em; /* Total más grande */
-        }
-        #currencySymbolDisplay {
-            color: #00FF00; /* Verde neón para el símbolo de moneda */
-            text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
-        }
-        #baseAmountDisplay {
-            color: #A9A9A9; /* Gris más claro para el monto base */
-            font-size: 1em;
-        }
-        #paymentMethodsList p span {
-            color: #00E676; /* Verde neón para los nombres de los métodos */
-            font-weight: bold;
-        }
+.amount-item.selected .item-label {
+    color: #000000;
+}
 
-        /* Visualización de mensajes */
-        #messageDisplay {
-            font-weight: bold;
-            padding: 20px;
-            border-radius: 10px;
-            text-shadow: 0 0 5px rgba(0,0,0,0.2);
-            color: white;
-            font-size: 1.1em;
-        }
-        .message-error {
-            background-color: #A30000; /* Rojo oscuro vibrante */
-            border: 2px solid #FF5555;
-            color: #FFDDDD; /* Texto rojo muy claro */
-        }
-        .message-success {
-            background-color: #007A00; /* Verde oscuro vibrante */
-            border: 2px solid #00FF00;
-            color: #DDFFDD; /* Texto verde muy claro */
-        }
-        .message-info {
-            background-color: #0000A3; /* Azul oscuro vibrante */
-            border: 2px solid #5555FF;
-            color: #DDEEFF; /* Texto azul muy claro */
-        }
-        /* Advertencia de transferencia */
-        .transfer-warning {
-            background-color: #E25822; /* Naranja más oscuro */
-            border: 3px solid #FFD700; /* Borde amarillo brillante más grueso */
-            color: #2A0000; /* Texto oscuro para alto contraste */
-            font-weight: bold;
-            padding: 22px; /* Más padding */
-            border-radius: 15px; /* Más redondeado */
-            margin-top: 30px; /* Más margen superior */
-            text-align: center;
-            box-shadow: 0 0 25px rgba(255, 100, 50, 0.9), 0 0 40px rgba(255, 215, 0, 0.9); /* Doble resplandor neón */
-            animation: pulse-warning 1.8s infinite alternate; /* Animación de pulsación más lenta */
-        }
+.item-price-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
 
-        /* Estilos de botones de acción */
-        .action-button { 
-            background: linear-gradient(to right, #00e676, #00c853); /* Degradado verde neón */
-            color: #0d001a; /* Texto muy oscuro en el botón neón */
-            padding: 15px 20px; /* Más padding para mayor tamaño */
-            border: none;
-            border-radius: 10px; /* Más redondeado */
-            cursor: pointer;
-            font-size: 1.2em; /* Texto más grande */
-            font-weight: bold;
-            display: block; /* Asegura que ocupe su propia línea y se pueda centrar */
-            max-width: 450px; /* Ancho máximo para el botón */
-            margin: 20px auto 0 auto; /* Centrar horizontalmente y añadir margen superior */
-            box-shadow: 0 5px 20px rgba(0, 230, 118, 0.7); /* Sombra con resplandor verde neón */
-            transition: all 0.3s ease;
-        }
+.item-price-usd {
+    color: #A9A9A9;
+    font-size: 0.85em;
+    font-weight: normal;
+    margin-bottom: 3px;
+}
 
-        .action-button:hover:not(:disabled) { /* Hover solo si no está deshabilitado */
-            background: linear-gradient(to right, #00c853, #00ffff); /* Verde a cian neón al pasar el ratón */
-            box-shadow: 0 8px 25px rgba(0, 255, 255, 0.8); /* Resplandor cian al pasar el ratón */
-            transform: translateY(-3px) scale(1.01); /* Efecto 3D sutil */
-        }
+.item-price-local {
+    color: #1e90ff;
+    font-size: 0.95em;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+    display: block;
+}
 
-        .action-button:disabled { /* Estilo para botones deshabilitados */
-            background: linear-gradient(to right, #505050, #707070); /* Degradado gris sutil */
-            color: #A0A0A0; /* Texto gris claro */
-            cursor: not-allowed;
-            opacity: 0.8; /* Menos opacidad para indicar inactividad */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.4); /* Sombra sutil para profundidad */
-            transform: none; /* Eliminar transform en disabled */
-        }
+.amount-item.selected .item-price-local {
+    color: #000000;
+    text-shadow: none;
+}
 
-        /* Estilo específico para el botón de confirmar transferencia */
-        #confirmTransferBtn {
-            background: linear-gradient(to right, #FF00FF, #8a2be2); /* Degradado magenta-morado neón */
-            box-shadow: 0 5px 20px rgba(255, 0, 255, 0.7); /* Sombra con resplandor magenta neón */
-        }
-        #confirmTransferBtn:hover:not(:disabled) {
-            background: linear-gradient(to right, #8a2be2, #FF00FF); /* Degradado invertido */
-            box-shadow: 0 8px 25px rgba(255, 0, 255, 0.8); /* Resplandor más fuerte */
-        }
+.buy-button {
+    background: linear-gradient(to right, #1e90ff, #4169e1);
+    color: #FFFFFF;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(30, 144, 255, 0.4);
+    z-index: 2;
+}
 
+.buy-button:hover {
+    background: linear-gradient(to right, #FFD700, #FFA500);
+    color: #000000;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.6);
+    transform: translateY(-2px);
+}
 
-        /* Estilos del modal (advertencia WhatsApp) */
-        #whatsappWarningModal > div {
-            background-color: rgba(20, 0, 50, 0.98); /* Fondo oscuro casi opaco */
-            border: 3px solid #00FFFF; /* Borde cian neón más grueso */
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.8); /* Sombra con resplandor cian más fuerte */
-            color: #E0F7FA; /* Texto principal claro */
-            padding: 30px;
-            border-radius: 15px;
-        }
-        #whatsappWarningModal h2 {
-            color: #00FFFF; /* Cian neón */
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
-            font-size: 1.8em;
-        }
-        #whatsappWarningModal p {
-            color: #E0F7FA;
-            font-size: 1.1em;
-        }
-        #whatsappWarningModal p span {
-            color: #FF00FF; /* Magenta neón */
-            text-shadow: 0 0 8px rgba(255, 0, 255, 0.7);
-        }
-        #whatsappWarningModal #cancelWhatsApp,
-        #whatsappWarningModal #confirmWhatsApp {
-            padding: 12px 25px; /* Botones más grandes */
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 1.1em;
-            margin: 10px;
-        }
-        #whatsappWarningModal #cancelWhatsApp {
-            background-color: #555555;
-            color: #E0F7FA;
-            border: 1px solid #777777;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.4);
-        }
-        #whatsappWarningModal #cancelWhatsApp:hover {
-            background-color: #777777;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.6);
-        }
-        #whatsappWarningModal #confirmWhatsApp {
-            background: linear-gradient(to right, #00E676, #00FFFF);
-            color: #1A052E;
-            box-shadow: 0 5px 18px rgba(0, 255, 255, 0.8);
-        }
-        #whatsappWarningModal #confirmWhatsApp:hover {
-            background: linear-gradient(to right, #00FFFF, #00E676);
-            box-shadow: 0 8px 25px rgba(0, 255, 255, 1);
-        }
+.amount-item.selected .buy-button {
+    background: linear-gradient(to right, #000000, #333333);
+    color: #FFD700;
+}
 
-        /* Estilos para la animación de carga */
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .loading-text {
-            animation: pulse-text 1.5s infinite alternate; /* Animación de pulsación para el texto de carga */
-        }
-        @keyframes pulse-text {
-            0% { opacity: 0.7; transform: scale(1); }
-            100% { opacity: 1; transform: scale(1.05); }
-        }
+/* Botones de vendedor */
+.seller-item {
+    background-color: rgba(26, 26, 26, 0.8);
+    border: 2px solid #1e90ff;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(30, 144, 255, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 120px;
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+}
 
-        /* ESTILO PARA EL VENDEDOR DESTACADO */
-        .highlighted-seller {
-            color: #FFD700 !important; /* Color amarillo dorado vibrante */
-            font-weight: bold !important;
-            text-shadow: 0 0 8px rgba(255, 215, 0, 0.8); /* Resplandor amarillo */
-        }
+.seller-item:hover:not(.selected) {
+    background-color: rgba(30, 144, 255, 0.6);
+    box-shadow: 0 8px 25px rgba(30, 144, 255, 0.8);
+    transform: translateY(-5px);
+}
 
-        /* ESTILOS NUEVOS PARA PAÍSES Y VENDEDORES (BOTONES CON IMAGEN) */
-        #countryButtonsContainer, #sellerButtonsContainer {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* 4 columnas para pantallas más grandes, ajusta minmax */
-            gap: 15px; /* Espacio entre botones */
-            justify-content: center;
-            margin-top: 15px;
-        }
+.seller-item.selected {
+    background: linear-gradient(to right, #FFD700, #FFA500);
+    border-color: #FFD700;
+    color: #000000;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+    transform: scale(1.05);
+}
 
-        .country-item, .seller-item {
-            background-color: rgba(30, 0, 60, 0.7);
-            border: 2px solid #6A0DAD;
-            border-radius: 15px; /* Ligeramente redondeado */
-            box-shadow: 0 3px 10px rgba(106, 13, 173, 0.4);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 10px; /* Reducir padding */
-            cursor: pointer;
-            transition: all 0.2s ease;
-            height: 100px; /* Altura fija para mantener el mismo tamaño */
-            box-sizing: border-box;
-            position: relative;
-            overflow: hidden;
-            text-decoration: none; /* Asegurar que no haya subrayado si se usan anclas */
-            color: inherit; /* Heredar color de texto */
-        }
+.seller-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 8px;
+    border: 2px solid #FFD700;
+}
 
-        .country-item:hover:not(.selected), .seller-item:hover:not(.selected) {
-            background-color: rgba(106, 13, 173, 0.8);
-            box-shadow: 0 5px 15px rgba(106, 13, 173, 0.7), 0 0 20px rgba(0, 255, 255, 0.3);
-            transform: translateY(-3px);
-        }
+.seller-name {
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 0.9em;
+    line-height: 1.2;
+}
 
-        .country-item.selected, .seller-item.selected {
-            background: linear-gradient(to right, #00FFFF, #00E676); /* Degradado cian-verde */
-            border-color: #00FFFF;
-            color: #1A052E;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.8), 0 0 30px rgba(0, 230, 118, 0.7);
-            transform: scale(1.05);
-        }
+.seller-item.selected .seller-name {
+    color: #000000;
+}
 
-        .country-image, .seller-image {
-            width: 60px; /* Tamaño de imagen para país y vendedor */
-            height: 60px;
-            object-fit: cover; /* Recortar si es necesario */
-            border-radius: 50%; /* COMPLETAMENTE REDONDO */
-            margin-bottom: 5px;
-            border: 2px solid rgba(0, 255, 255, 0.6); /* Borde cian sutil */
-            box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
-            transition: transform 0.2s ease;
-        }
+/* Resumen de pedido y métodos de pago */
+#priceSummary, #messageDisplay, #paymentMethodsDisplay {
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 30px;
+    text-align: center;
+    background-color: rgba(26, 26, 26, 0.9);
+    border: 2px solid #FFD700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
 
-        .country-image.selected, .seller-image.selected {
-            border-color: #1A052E; /* Borde oscuro cuando está seleccionado */
-        }
+#priceSummary p, #paymentMethodsList p {
+    color: #FFFFFF;
+}
 
-        .seller-name-label {
-            font-size: 0.9em; /* Tamaño de fuente más pequeño para el nombre del vendedor */
-            font-weight: bold;
-            color: #E0F7FA; /* Color claro por defecto */
-            text-align: center;
-            line-height: 1.2;
-            word-break: break-word; /* Asegura que nombres largos se ajusten */
-        }
+#totalPriceDisplay {
+    font-weight: bold;
+    color: #FFD700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    font-size: 1.8em;
+}
 
-        .seller-item.selected .seller-name-label {
-            color: #1A052E; /* Texto oscuro cuando el vendedor está seleccionado */
-        }
+#currencySymbolDisplay {
+    color: #1e90ff;
+    text-shadow: 0 0 10px rgba(30, 144, 255, 0.8);
+}
 
-        /* Media Queries para Responsive Design */
-        @media (max-width: 992px) { /* Tablets y pantallas medianas */
-            #gameButtonsContainer, #amountButtons {
-                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Intentará 3+ columnas */
-                gap: 18px;
-            }
-            #countryButtonsContainer, #sellerButtonsContainer {
-                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); /* Ajuste para tablets */
-                gap: 12px;
-            }
-            .support-button {
-                right: 15px; /* Ajustar posición en tablets */
-                padding: 8px 12px;
-                font-size: 0.85em;
-            }
-        }
+#baseAmountDisplay {
+    color: #A9A9A9;
+    font-size: 1em;
+}
 
-        @media (max-width: 768px) { /* Tabletas pequeñas y móviles grandes */
-            .app-header {
-                padding: 10px 0;
-                flex-wrap: wrap; /* Permite que los elementos se envuelvan */
-                justify-content: center; /* Centrar el contenido cuando se envuelve */
-                height: auto; /* Altura auto para que se ajuste al contenido envuelto */
-            }
-            .dharck-store-title-container {
-                width: 100%; /* Ocupar todo el ancho para centrar */
-                justify-content: center; /* Centrar título y logo */
-                margin-bottom: 10px; /* Espacio debajo del título en móviles */
-            }
-            .dharck-store-title {
-                font-size: 2.2em; /* Reducir tamaño del título en móvil */
-                margin-right: 15px;
-            }
-            .title-logo {
-                height: 50px; /* Reducir tamaño del logo en móvil */
-            }
-            .support-button {
-                position: static; /* Cambiar a estático para que fluya con el contenido */
-                margin-top: 10px; /* Margen superior para separarlo del título */
-                transform: none; /* Eliminar transformación */
-                width: auto; /* Ancho automático */
-                max-width: 250px; /* Limitar ancho del botón */
-                margin-left: auto; /* Centrar horizontalmente si está en su propia línea */
-                margin-right: auto;
-            }
-            .form-container, .section-container { /* Aplicar a ambos contenedores */
-                padding: 20px;
-                border-radius: 15px;
-                margin-top: 20px; /* Ajustar margen */
-            }
-            /* Ajuste para los botones de juego y artículos en móvil */
-            #gameButtonsContainer, #amountButtons {
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Intentará 3-4 columnas */
-                gap: 15px;
-            }
-            #countryButtonsContainer, #sellerButtonsContainer {
-                grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); /* Ajuste para móviles */
-                gap: 10px;
-            }
-            .country-image, .seller-image {
-                width: 50px;
-                height: 50px;
-            }
-            .country-item, .seller-item {
-                height: 90px; /* Altura ajustada para móvil */
-            }
-            .seller-name-label {
-                font-size: 0.8em; /* Más pequeño en móvil */
-            }
-            .game-item {
-                min-height: 160px;
-                padding: 15px;
-            }
-            .game-logo {
-                width: 90px;
-                height: 90px;
-            }
-            .game-name-label {
-                font-size: 1.1em;
-            }
-            .amount-item {
-                min-height: 140px; /* Altura ajustada para artículos en móvil */
-                padding: 15px;
-            }
-            .item-image {
-                width: 70px;
-                height: 70px;
-            }
-            .item-label {
-                font-size: 1em;
-            }
-            label {
-                font-size: 1.1em;
-            }
-            input[type="text"], input[type="tel"], input[type="email"], input[type="password"] {
-                padding: 10px;
-                font-size: 1em;
-                height: 45px; /* Ajustar altura para móvil */
-            }
-            .action-button {
-                padding: 12px 15px;
-                font-size: 1.1em;
-                max-width: 90%; /* Ajustar ancho máximo para móvil */
-            }
-            #whatsappWarningModal > div {
-                max-width: 90%;
-            }
-        }
+#paymentMethodsList p span {
+    color: #1e90ff;
+    font-weight: bold;
+}
 
-        @media (max-width: 576px) { /* Móviles pequeños a medianos */
-            #gameButtonsContainer, #amountButtons {
-                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Intentará 3 columnas, pero puede caer a 2 si el espacio es muy reducido */
-                gap: 10px;
-            }
-            #countryButtonsContainer, #sellerButtonsContainer {
-                grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); /* Para móviles pequeños */
-                gap: 8px;
-            }
-            .country-image, .seller-image {
-                width: 45px;
-                height: 45px;
-            }
-            .country-item, .seller-item {
-                height: 80px;
-                padding: 8px;
-            }
-            .seller-name-label {
-                font-size: 0.7em;
-            }
-            .game-item {
-                min-height: 140px;
-            }
-            .amount-item {
-                min-height: 120px;
-            }
-            .support-button {
-                font-size: 0.8em;
-                padding: 8px 10px;
-            }
-        }
+/* Miniaturas de artículos seleccionados */
+#selectedItemsPreview {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 215, 0, 0.3);
+}
 
-        @media (max-width: 400px) { /* Móviles muy pequeños */
-            .app-header {
-                padding: 8px 0;
-            }
-            .dharck-store-title {
-                font-size: 1.8em;
-                margin-right: 10px;
-            }
-            .title-logo {
-                height: 40px;
-            }
-            #gameButtonsContainer, #amountButtons {
-                grid-template-columns: repeat(2, 1fr); /* Garantiza 2 columnas */
-                gap: 8px;
-            }
-            #countryButtonsContainer, #sellerButtonsContainer {
-                grid-template-columns: repeat(2, 1fr); /* 2 columnas para el mínimo de móviles */
-            }
-            .country-image, .seller-image {
-                width: 40px;
-                height: 40px;
-            }
-            .country-item, .seller-item {
-                height: 70px;
-                padding: 6px;
-            }
-            .seller-name-label {
-                font-size: 0.65em;
-            }
-            .game-item {
-                min-height: 120px;
-            }
-            .game-logo {
-                width: 80px;
-                height: 80px;
-            }
-            .amount-item {
-                min-height: 110px;
-            }
-            .form-container, .section-container { /* Aplicar a ambos contenedores */
-                padding: 15px;
-                margin-top: 15px; /* Ajustar margen */
-            }
-            .support-button {
-                font-size: 0.75em;
-                padding: 6px 8px;
-            }
-        }
+.selected-item-thumbnail {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 2px solid #FFD700;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+/* Mensajes */
+#messageDisplay {
+    font-weight: bold;
+    padding: 20px;
+    border-radius: 10px;
+    text-shadow: 0 0 5px rgba(0,0,0,0.2);
+    color: white;
+    font-size: 1.1em;
+}
+
+.message-error {
+    background-color: #8B0000;
+    border: 2px solid #FF4444;
+    color: #FFDDDD;
+}
+
+.message-success {
+    background-color: #006400;
+    border: 2px solid #00FF00;
+    color: #DDFFDD;
+}
+
+.message-info {
+    background-color: #000080;
+    border: 2px solid #4444FF;
+    color: #DDEEFF;
+}
+
+/* Advertencia de transferencia */
+.transfer-warning {
+    background-color: #B8860B;
+    border: 3px solid #FFD700;
+    color: #000000;
+    font-weight: bold;
+    padding: 22px;
+    border-radius: 15px;
+    margin-top: 30px;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.9);
+    animation: pulse-warning 1.8s infinite alternate;
+}
+
+@keyframes pulse-warning {
+    0% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.9); }
+    100% { box-shadow: 0 0 35px rgba(255, 215, 0, 1); }
+}
+
+/* Botón de acción principal */
+.action-button {
+    background: linear-gradient(to right, #FFD700, #FFA500);
+    color: #000000;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: bold;
+    display: block;
+    max-width: 450px;
+    margin: 20px auto 0 auto;
+    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.7);
+    transition: all 0.3s ease;
+}
+
+.action-button:hover:not(:disabled) {
+    background: linear-gradient(to right, #FFA500, #FFD700);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.8);
+    transform: translateY(-3px) scale(1.01);
+}
+
+.action-button:disabled {
+    background: linear-gradient(to right, #505050, #707070);
+    color: #A0A0A0;
+    cursor: not-allowed;
+    opacity: 0.8;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    transform: none;
+}
+
+/* Botón de confirmar transferencia */
+#confirmTransferBtn {
+    background: linear-gradient(to right, #1e90ff, #4169e1);
+    box-shadow: 0 5px 20px rgba(30, 144, 255, 0.7);
+}
+
+#confirmTransferBtn:hover:not(:disabled) {
+    background: linear-gradient(to right, #4169e1, #1e90ff);
+    box-shadow: 0 8px 25px rgba(30, 144, 255, 0.8);
+}
+
+/* Modal de WhatsApp */
+#whatsappWarningModal > div {
+    background-color: rgba(26, 26, 26, 0.98);
+    border: 3px solid #FFD700;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+    color: #FFFFFF;
+    padding: 30px;
+    border-radius: 15px;
+}
+
+#whatsappWarningModal h2 {
+    color: #FFD700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    font-size: 1.8em;
+}
+
+#whatsappWarningModal p {
+    color: #FFFFFF;
+    font-size: 1.1em;
+}
+
+#whatsappWarningModal p span {
+    color: #1e90ff;
+    text-shadow: 0 0 8px rgba(30, 144, 255, 0.7);
+}
+
+#whatsappWarningModal #cancelWhatsApp,
+#whatsappWarningModal #confirmWhatsApp {
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin: 10px;
+}
+
+#whatsappWarningModal #cancelWhatsApp {
+    background-color: #555555;
+    color: #FFFFFF;
+    border: 1px solid #777777;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+}
+
+#whatsappWarningModal #cancelWhatsApp:hover {
+    background-color: #777777;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.6);
+}
+
+#whatsappWarningModal #confirmWhatsApp {
+    background: linear-gradient(to right, #FFD700, #FFA500);
+    color: #000000;
+    border: none;
+    box-shadow: 0 3px 8px rgba(255, 215, 0, 0.4);
+}
+
+#whatsappWarningModal #confirmWhatsApp:hover {
+    background: linear-gradient(to right, #FFA500, #FFD700);
+    box-shadow: 0 5px 12px rgba(255, 215, 0, 0.6);
+}
+
+/* Estilos para promociones */
+.promo-item {
+    position: relative;
+    overflow: visible !important;
+    border: 2px solid #ff6b35 !important;
+    box-shadow: 0 0 15px rgba(255, 107, 53, 0.5) !important;
+}
+
+.promo-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: linear-gradient(135deg, #FF6B35, #F7931E);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+    z-index: 2;
+    pointer-events: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+@keyframes promo-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes promo-glow {
+    0%, 100% { box-shadow: 0 0 15px rgba(255, 107, 53, 0.5); }
+    50% { box-shadow: 0 0 25px rgba(255, 107, 53, 0.8); }
+}
+
+.promo-pulse {
+    animation: promo-pulse 2s ease-in-out infinite;
+}
+
+.promo-glow {
+    animation: promo-glow 1.5s ease-in-out infinite;
+}
+
+.promo-item:hover {
+    transform: scale(1.08) !important;
+    box-shadow: 0 0 25px rgba(255, 107, 53, 0.8) !important;
+}
+
+.promo-item.selected .promo-badge {
+    background: linear-gradient(45deg, #28a745, #20c997);
+    animation: promo-pulse 1s ease-in-out infinite;
+}
+
+/* Spinner de carga */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #countryButtonsContainer {
+        grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+        gap: 10px;
+    }
+    
+    .country-item {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .country-flag {
+        width: 50px;
+        height: 50px;
+    }
+    
+    #gameButtonsContainer, #amountButtons {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+    }
+    
+    #sellerButtonsContainer {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 10px;
+    }
+    
+    .dharck-store-title {
+        font-size: 2.5em;
+    }
+}
