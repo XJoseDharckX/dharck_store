@@ -1768,3 +1768,123 @@ input[type="password"]:focus {
     color: #000000;
     text-align: center;
 }
+
+/* === OPTIMIZACIONES DE RENDIMIENTO === */
+
+/* Optimizar imágenes */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    /* Usar GPU para acelerar renderizado */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Lazy loading placeholder */
+img.lazy {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+img.lazy.loaded {
+    opacity: 1;
+}
+
+/* Optimizar animaciones usando GPU */
+.game-item, .amount-item, .country-item, .seller-item {
+    /* Usar GPU para transformaciones */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    /* Optimizar transiciones */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.game-item:hover, .amount-item:hover, .country-item:hover, .seller-item:hover {
+    transform: translateZ(0) scale(1.02);
+}
+
+/* Optimizar contenedores principales */
+.form-container, .section-container {
+    /* Usar contenido de bloque para mejor rendimiento */
+    contain: layout style paint;
+    /* Optimizar repaint */
+    will-change: auto;
+}
+
+/* Reducir repaints en elementos fijos */
+.fixed-support-button {
+    /* Usar GPU para posicionamiento fijo */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    /* Optimizar z-index */
+    isolation: isolate;
+}
+
+/* Optimizar botones */
+button, .next-step, .prev-step {
+    /* Usar GPU para hover effects */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    /* Optimizar transiciones */
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+button:active {
+    transform: translateZ(0) scale(0.98);
+}
+
+/* Optimizar grids y flexbox */
+#gameButtonsContainer, #amountButtons, #countryButtonsContainer, #sellerButtonsContainer {
+    /* Optimizar layout */
+    contain: layout;
+    /* Usar GPU para scroll */
+    transform: translateZ(0);
+}
+
+/* Reducir complejidad de sombras */
+.game-item, .amount-item, .country-item, .seller-item {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.game-item:hover, .amount-item:hover, .country-item:hover, .seller-item:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+/* Optimizar loader */
+.loader {
+    /* Usar GPU para animación */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Media queries optimizadas */
+@media (max-width: 768px) {
+    /* Reducir efectos en móvil para mejor rendimiento */
+    .game-item:hover, .amount-item:hover, .country-item:hover, .seller-item:hover {
+        transform: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    /* Simplificar transiciones en móvil */
+    * {
+        transition-duration: 0.1s !important;
+    }
+    
+    /* Optimizar imágenes en móvil */
+    img {
+        image-rendering: optimizeSpeed;
+    }
+}
+
+/* Optimizar para dispositivos de baja potencia */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* === FINAL DE OPTIMIZACIONES === */
