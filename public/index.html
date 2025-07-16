@@ -108,7 +108,6 @@
                     </div>
                 </div>
                 <div class="step-navigation">
-                    <button type="button" class="prev-step" id="backToStep1">Anterior</button>
                     <button type="button" class="next-step" id="toStep3" disabled>Siguiente</button>
                 </div>
             </div>
@@ -269,7 +268,6 @@
                     </div>
                 </div>
                 <div class="step-navigation">
-                    <button type="button" class="prev-step" id="backToStep3">Anterior</button>
                     <button type="button" class="next-step" id="toStep5">Siguiente</button>
                 </div>
             </div>
@@ -285,7 +283,6 @@
                     </div>
                 </div>
                 <div class="step-navigation">
-                    <button type="button" class="prev-step" id="backToStep4">Anterior</button>
                     <button type="button" class="next-step" id="toStep6" disabled>Siguiente</button>
                 </div>
             </div>
@@ -415,28 +412,168 @@
         const linkageInput = document.getElementById('linkageInput');
         const exactAccountNameInput = document.getElementById('exactAccountNameInput');
 
+        // ========== SISTEMA DE PROMOCIONES DINÁMICAS ==========
+        // Sistema de promociones dinámicas (fácil activar/desactivar)
+        const ACTIVE_PROMOTIONS = {
+            // Activar/desactivar promociones cambiando true/false
+            'LORDS_MOBILE_PROMO': true,      // Promoción Lords Mobile
+            'FREE_FIRE_WEEKEND': true,       // Promoción Free Fire
+            'BLOOD_STRIKE_BONUS': false,     // Promoción Blood Strike
+            'GENSHIN_SPECIAL': false,        // Promoción Genshin Impact
+            'PUBG_MOBILE_PROMO': false,      // Promoción PUBG Mobile
+            'DELTA_FORCE_STEAM_PROMO': false, // Promoción Delta Force Steam
+            'DELTA_FORCE_GARENA_PROMO': false, // Promoción Delta Force Garena
+            'COD_MOBILE_PROMO': false,       // Promoción Call of Duty Mobile
+            'MOBILE_LEGENDS_PROMO': false    // Promoción Mobile Legends
+        };
+
+        // Configuración de promociones por juego
+        const PROMOTION_CONFIG = {
+            'LORDS MOBILE': {
+                active: ACTIVE_PROMOTIONS.LORDS_MOBILE_PROMO,
+                type: '+25%',
+                badge: '🔥Cupón aleatorio 20%-25%-30%',
+                animation: 'promo-pulse',
+                articles: [
+                    '💎499+CUPON',
+                    '💎999+CUPON',
+                    '💎1999+CUPON',
+                    '💎2499+CUPON',
+                    '💎2999+CUPON',
+                    '💎4999+CUPON',
+                    '💎9999+CUPON'
+                ]
+            },
+            'FREE FIRE': {
+                active: ACTIVE_PROMOTIONS.FREE_FIRE_WEEKEND,
+                type: '+20%',
+                badge: '🔥Promo Fin de Semana',
+                animation: 'promo-glow',
+                articles: [
+                    '💎SEMANAL',
+                    '💎MENSUAL',
+                    '💎100+10',
+                    '💎200+20',
+                    '💎310+31'
+                ]
+            },
+            'BLOOD STRIKE': {
+                active: ACTIVE_PROMOTIONS.BLOOD_STRIKE_BONUS,
+                type: '+15%',
+                badge: '🔥Bonus Especial',
+                animation: 'promo-pulse',
+                articles: [
+                    'PASE ELITE',
+                    'PASE PREMIUM',
+                    '1000+100',
+                    '2000+200'
+                ]
+            },
+            'GENSHIN IMPACT': {
+                active: ACTIVE_PROMOTIONS.GENSHIN_SPECIAL,
+                type: '+30%',
+                badge: '🔥Oferta Especial',
+                animation: 'promo-glow',
+                articles: [
+                    'PASE LUNAR',
+                    '300+30',
+                    '980+110'
+                ]
+            },
+            'PUBG MOBILE': {
+                active: ACTIVE_PROMOTIONS.PUBG_MOBILE_PROMO,
+                type: '+20%',
+                badge: '🔥Promo PUBG',
+                animation: 'promo-pulse',
+                articles: [
+                    '300+25',
+                    '600+60',
+                    '1500+300'
+                ]
+            },
+            'DELTA FORCE STEAM': {
+                active: ACTIVE_PROMOTIONS.DELTA_FORCE_STEAM_PROMO,
+                type: '+25%',
+                badge: '🔥Steam Especial',
+                animation: 'promo-glow',
+                articles: [
+                    '300+20 Coins',
+                    '420+40 Coins',
+                    '680+70 Coins'
+                ]
+            },
+            'DELTA FORCE GARENA': {
+                active: ACTIVE_PROMOTIONS.DELTA_FORCE_GARENA_PROMO,
+                type: '+25%',
+                badge: '🔥Garena Especial',
+                animation: 'promo-pulse',
+                articles: [
+                    '300+36 Coins',
+                    '420+62 Coins',
+                    '680+105 Coins'
+                ]
+            },
+            'CALL OF DUTY MOBILE': {
+                active: ACTIVE_PROMOTIONS.COD_MOBILE_PROMO,
+                type: '+20%',
+                badge: '🔥COD Promo',
+                animation: 'promo-glow',
+                articles: [
+                    '420 CP',
+                    '880 CP',
+                    '2400 CP'
+                ]
+            },
+            'MOBILE LEGENDS': {
+                active: ACTIVE_PROMOTIONS.MOBILE_LEGENDS_PROMO,
+                type: '+30%',
+                badge: '🔥ML Especial',
+                animation: 'promo-pulse',
+                articles: [
+                    'PASE SEMANAL ML',
+                    'CREPUSCULAR',
+                    '150+15💎',
+                    '250+25💎',
+                    '500+65💎'
+                ]
+            }
+        };
 
         // Función para verificar si un artículo está en promoción
         function isArticleInPromotion(gameName, articleLabel) {
-            // Buscar en gameOptions cargados desde el servidor
-            const game = gameOptions.find(g => g.name === gameName);
-            if (!game) return false;
-            
-            const article = game.amounts.find(a => a.label === articleLabel);
-            return article ? article.promotion : false;
+            const gamePromo = PROMOTION_CONFIG[gameName];
+            return gamePromo && gamePromo.active && gamePromo.articles.includes(articleLabel);
         }
 
         // Función para obtener información de promoción
         function getPromotionInfo(gameName, articleLabel) {
             if (isArticleInPromotion(gameName, articleLabel)) {
-                return {
-                    type: 'PROMO',
-                    badge: '🔥PROMO',
-                    animation: 'promo-pulse'
-                };
+                return PROMOTION_CONFIG[gameName];
             }
             return null;
         }
+
+        // Función para activar/desactivar promociones (para uso administrativo)
+        function togglePromotion(promotionKey, isActive) {
+            if (ACTIVE_PROMOTIONS.hasOwnProperty(promotionKey)) {
+                ACTIVE_PROMOTIONS[promotionKey] = isActive;
+                console.log(`Promoción ${promotionKey} ${isActive ? 'activada' : 'desactivada'}`);
+                
+                // Actualizar la vista si hay un juego seleccionado
+                if (selectedGame) {
+                    updateAmountSelection();
+                }
+            } else {
+                console.error(`Promoción ${promotionKey} no encontrada`);
+            }
+        }
+
+        // Función para obtener el estado de todas las promociones
+        function getPromotionStatus() {
+            return { ...ACTIVE_PROMOTIONS };
+        }
+
+        // ========== FIN SISTEMA DE PROMOCIONES ==========
 
         // Datos de juegos y sus precios base en USD
         // Se añade 'logoUrl' para cada juego para los botones.
@@ -449,13 +586,13 @@
                 logoUrl: '/image/lm1.png',
                 inputRequirement: 'id_name',
                 amounts: [
-//                    { label: '💎499+CUPON', value: 5.20, imageUrl: '/image/prize-2.png', promotion: false },
-//                    { label: '💎999+CUPON', value: 12.00, imageUrl: '/image/prize-3.png', promotion: false },
+                    { label: '💎499+CUPON', value: 5.20, imageUrl: '/image/prize-2.png', promotion: false },
+                    { label: '💎999+CUPON', value: 12.00, imageUrl: '/image/prize-3.png', promotion: false },
                     { label: '💎1999+CUPON', value: 20.00, imageUrl: '/image/prize-4.png', promotion: false },
-//                    { label: '💎2499+CUPON', value: 25.50, imageUrl: '/image/prize-5.png', promotion: false },
-//                    { label: '💎2999+CUPON', value: 30.00, imageUrl: '/image/prize-6.png', promotion: false },
+                    { label: '💎2499+CUPON', value: 25.50, imageUrl: '/image/prize-5.png', promotion: false },
+                    { label: '💎2999+CUPON', value: 30.00, imageUrl: '/image/prize-6.png', promotion: false },
                     { label: '💎4999+CUPON', value: 48.50, imageUrl: '/image/prize-7.png', promotion: false },
-  //                  { label: '💎9999+CUPON', value: 95.00, imageUrl: '/image/icon-happy.png', promotion: false },
+                    { label: '💎9999+CUPON', value: 95.00, imageUrl: '/image/icon-happy.png', promotion: false },
                     { label: 'PASE SEMANAL', value: 2.30, imageUrl: '/image/7day.png', promotion: false },
                     { label: 'PASE MENSUAL', value: 19.90, imageUrl: '/image/30day.png', promotion: false },
                     { label: '209💎', value: 2.30, imageUrl: '/image/prize-2.png', promotion: false },
@@ -1859,6 +1996,12 @@ function showStep(stepNumber) {
         console.log('- window.debugArticles() - Ver configuración actual');
         console.log('- window.refreshArticlesConfig() - Refrescar desde servidor');
         console.log('- window.clearCacheAndReload() - Limpiar caché y recargar');
+        console.log('- window.togglePromotion(key, true/false) - Activar/desactivar promociones');
+        console.log('- window.getPromotionStatus() - Ver estado de promociones');
+        
+        // Exponer funciones de promoción globalmente para debug
+        window.togglePromotion = togglePromotion;
+        window.getPromotionStatus = getPromotionStatus;
 
         // Auto-refresh cada 2 minutos para mantener sincronizado
         setInterval(async () => {

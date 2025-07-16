@@ -411,8 +411,8 @@ input[type="password"]:focus {
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
     z-index: 1;
-    background-color: #fff;
-    padding: 5px;
+    background: transparent !important;
+    padding: 0;
     box-sizing: border-box;
 }
 
@@ -497,8 +497,8 @@ input[type="password"]:focus {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
     z-index: 1;
-    background-color: #fff;
-    padding: 5px;
+    background: transparent !important;
+    padding: 0;
     box-sizing: border-box;
 }
 
@@ -837,37 +837,159 @@ input[type="password"]:focus {
     box-shadow: 0 5px 12px rgba(255, 215, 0, 0.6);
 }
 
-/* Estilos para promociones */
+/* ========== ESTILOS MEJORADOS PARA PROMOCIONES ========== */
 .promo-item {
     position: relative;
-    overflow: visible !important;
-    border: 2px solid #ff6b35 !important;
-    box-shadow: 0 0 15px rgba(255, 107, 53, 0.5) !important;
+    border: 3px solid #FFD700 !important;
+    background: linear-gradient(135deg, 
+        #000000 0%, 
+        #1a1a2e 50%, 
+        #B8860B 100%) !important;
+    box-shadow: 
+        0 0 20px rgba(255, 215, 0, 0.4),
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 215, 0, 0.2) !important;
+    transform: scale(1.05);
+    z-index: 10;
+}
+
+.promo-item::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+        #FFD700, 
+        #FFA500, 
+        #FFD700, 
+        #FFA500);
+    border-radius: inherit;
+    z-index: -1;
+    animation: promo-border-glow 2s ease-in-out infinite alternate;
 }
 
 .promo-badge {
     position: absolute;
     top: -8px;
     right: -8px;
-    background: linear-gradient(135deg, #FF6B35, #F7931E);
+    background: linear-gradient(135deg, #ff4444, #ff6666);
     color: white;
     padding: 4px 8px;
     border-radius: 12px;
     font-size: 10px;
     font-weight: bold;
-    z-index: 2;
-    pointer-events: none;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    font-family: 'Orbitron', monospace;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    box-shadow: 
+        0 2px 8px rgba(255, 68, 68, 0.4),
+        0 0 15px rgba(255, 68, 68, 0.3);
+    z-index: 15;
+    animation: promo-badge-pulse 1.5s ease-in-out infinite;
+    max-width: 120px;
+    text-align: center;
+    line-height: 1.2;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.promo-item:hover {
+    transform: scale(1.08) !important;
+    box-shadow: 
+        0 0 30px rgba(255, 215, 0, 0.6),
+        0 12px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 215, 0, 0.3) !important;
+}
+
+.promo-item .item-label {
+    color: #FFA500 !important;
+    text-shadow: 
+        0 0 10px rgba(255, 215, 0, 0.8),
+        0 2px 4px rgba(0, 0, 0, 0.8) !important;
+    font-weight: bold !important;
+}
+
+.promo-item .item-price-local,
+.promo-item .item-price-usd {
+    color: #FFD700 !important;
+    text-shadow: 
+        0 0 8px rgba(255, 215, 0, 0.6),
+        0 1px 3px rgba(0, 0, 0, 0.8) !important;
+    font-weight: bold !important;
+}
+
+/* Animaciones para promociones */
 @keyframes promo-pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+    0%, 100% {
+        box-shadow: 
+            0 0 20px rgba(255, 215, 0, 0.4),
+            0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    50% {
+        box-shadow: 
+            0 0 30px rgba(255, 215, 0, 0.7),
+            0 12px 40px rgba(0, 0, 0, 0.4);
+    }
 }
 
 @keyframes promo-glow {
-    0%, 100% { box-shadow: 0 0 15px rgba(255, 107, 53, 0.5); }
-    50% { box-shadow: 0 0 25px rgba(255, 107, 53, 0.8); }
+    0%, 100% {
+        box-shadow: 
+            0 0 20px rgba(255, 215, 0, 0.4),
+            0 8px 32px rgba(0, 0, 0, 0.3);
+        border-color: #FFD700;
+    }
+    50% {
+        box-shadow: 
+            0 0 40px rgba(255, 215, 0, 0.8),
+            0 15px 50px rgba(0, 0, 0, 0.5);
+        border-color: #FFA500;
+    }
+}
+
+@keyframes promo-border-glow {
+    0% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0.8;
+        transform: scale(1.02);
+    }
+}
+
+@keyframes promo-badge-pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 
+            0 2px 8px rgba(255, 68, 68, 0.4),
+            0 0 15px rgba(255, 68, 68, 0.3);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 
+            0 4px 12px rgba(255, 68, 68, 0.6),
+            0 0 25px rgba(255, 68, 68, 0.5);
+    }
+}
+
+/* Efectos especiales para artículos en promoción */
+.promo-item .item-image {
+    background: transparent !important;
+    padding: 0;
+    filter: brightness(1.1) contrast(1.1) drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+}
+
+.promo-item.selected {
+    border-color: #FFA500 !important;
+    background: linear-gradient(135deg, 
+        #1a1a2e 0%, 
+        #B8860B 50%, 
+        #000000 100%) !important;
+    box-shadow: 
+        0 0 40px rgba(255, 215, 0, 0.8),
+        0 15px 50px rgba(0, 0, 0, 0.5),
+        inset 0 2px 0 rgba(255, 215, 0, 0.4) !important;
 }
 
 .promo-pulse {
@@ -878,14 +1000,48 @@ input[type="password"]:focus {
     animation: promo-glow 1.5s ease-in-out infinite;
 }
 
-.promo-item:hover {
-    transform: scale(1.08) !important;
-    box-shadow: 0 0 25px rgba(255, 107, 53, 0.8) !important;
-}
-
 .promo-item.selected .promo-badge {
     background: linear-gradient(45deg, #28a745, #20c997);
     animation: promo-pulse 1s ease-in-out infinite;
+}
+
+/* Responsive para promociones */
+@media (max-width: 768px) {
+    .promo-badge {
+        font-size: 8px;
+        padding: 3px 6px;
+        max-width: 100px;
+        top: -6px;
+        right: -6px;
+    }
+    
+    .promo-item {
+        transform: scale(1.02);
+    }
+    
+    .promo-item:hover {
+        transform: scale(1.05) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .promo-badge {
+        font-size: 7px;
+        padding: 2px 4px;
+        max-width: 80px;
+        top: -4px;
+        right: -4px;
+    }
+}
+/* ========== FIN ESTILOS PROMOCIONES ========== */
+
+/* Asegurar que todas las imágenes de productos tengan fondo transparente */
+.amount-item img,
+.game-item img,
+.item-image,
+.game-logo {
+    background: transparent !important;
+    background-color: transparent !important;
 }
 
 /* Spinner de carga */
@@ -1075,6 +1231,8 @@ input[type="password"]:focus {
         height: 70%;
         width: 100%;
         margin-bottom: 5px;
+        background: transparent !important;
+        padding: 0;
     }
     
     .game-name-label, .item-text-container {
@@ -1158,6 +1316,8 @@ input[type="password"]:focus {
     .game-logo, .item-image {
         height: 70%;
         width: 100%;
+        background: transparent !important;
+        padding: 0;
     }
     
     .game-name-label, .item-text-container {
@@ -1221,126 +1381,154 @@ input[type="password"]:focus {
     transform: translateY(0);
 }
 
-/* Estilos mejorados para los títulos de los pasos */
+/* Nuevos estilos para los títulos con barra dorada y numeración - CENTRADOS */
 .step-title {
-    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-    border: 3px solid transparent;
-    border-image: linear-gradient(45deg, #ff6b6b, #ffa07a, #ff6b6b) 1;
-    border-radius: 20px;
-    padding: 20px 30px;
-    margin-bottom: 30px;
     position: relative;
-    overflow: hidden;
-    box-shadow: 
-        0 0 30px rgba(255, 107, 107, 0.3),
-        0 10px 20px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    text-align: center;
-    transform: perspective(1000px) rotateX(2deg);
-    transition: all 0.3s ease;
-}
-
-.step-title:hover {
-    transform: perspective(1000px) rotateX(0deg) translateY(-5px);
-    box-shadow: 
-        0 0 40px rgba(255, 107, 107, 0.5),
-        0 15px 30px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    margin: 30px auto;
+    padding: 0;
+    background: transparent;
+    border: none;
+    overflow: visible;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
 }
 
 .step-title h2 {
-    background: linear-gradient(45deg, #ff6b6b, #ffa07a, #ff8a80, #ff6b6b);
-    background-size: 300% 300%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-size: 2.2em;
-    font-weight: 800;
-    margin: 0;
+    background: linear-gradient(135deg, #FFD700, #FFA500, #FFD700);
+    background-size: 200% 200%;
+    color: #000000;
+    font-family: 'Orbitron', 'Arial Black', sans-serif;
+    font-size: 1.8em;
+    font-weight: 900;
+    margin: 0 auto;
+    padding: 20px 40px;
+    border-radius: 25px;
     position: relative;
-    z-index: 2;
-    text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
-    animation: gradient-shift 3s ease-in-out infinite, pulse-glow 2s infinite alternate;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 
+        0 8px 25px rgba(255, 215, 0, 0.4),
+        0 4px 15px rgba(0, 0, 0, 0.3),
+        inset 0 2px 0 rgba(255, 255, 255, 0.3),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+    text-shadow: 
+        1px 1px 2px rgba(255, 255, 255, 0.8),
+        0 0 10px rgba(255, 215, 0, 0.5);
     letter-spacing: 1px;
+    transition: all 0.3s ease;
+    animation: gold-shimmer 3s ease-in-out infinite;
+    border: 2px solid #B8860B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+.step-title h2:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 12px 35px rgba(255, 215, 0, 0.6),
+        0 6px 20px rgba(0, 0, 0, 0.4),
+        inset 0 2px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+    text-shadow: 
+        1px 1px 3px rgba(255, 255, 255, 0.9),
+        0 0 15px rgba(255, 215, 0, 0.7);
+}
+
+/* Círculo numerado - centrado a la izquierda */
 .step-title h2::before {
     content: attr(data-step);
     position: absolute;
     left: -25px;
     top: 50%;
     transform: translateY(-50%);
-    background: linear-gradient(135deg, #ff6b6b, #ffa07a);
-    color: white;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #1a1a1a, #333333, #1a1a1a);
+    color: #FFD700;
+    border: 3px solid #FFD700;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.7em;
-    font-weight: bold;
+    font-size: 1.2em;
+    font-weight: 900;
+    font-family: 'Orbitron', monospace;
     box-shadow: 
-        0 0 20px rgba(255, 107, 107, 0.6),
-        0 5px 15px rgba(0, 0, 0, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    animation: number-pulse 2s infinite;
+        0 0 20px rgba(255, 215, 0, 0.6),
+        0 6px 15px rgba(0, 0, 0, 0.4),
+        inset 0 2px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+    text-shadow: 
+        0 0 10px rgba(255, 215, 0, 0.8),
+        1px 1px 2px rgba(0, 0, 0, 0.5);
+    animation: number-glow 2s ease-in-out infinite alternate;
+    z-index: 10;
 }
 
-.step-title::before {
+/* Efecto de brillo en la barra dorada */
+.step-title h2::after {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient(from 0deg, transparent, rgba(255, 107, 107, 0.1), transparent, rgba(255, 160, 122, 0.1), transparent);
-    animation: rotate-bg 8s linear infinite;
-    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    border-radius: 25px;
+    transform: translateX(-100%);
+    animation: shine-effect 3s ease-in-out infinite;
+    pointer-events: none;
 }
 
-.step-title::after {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    right: 2px;
-    bottom: 2px;
-    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-    border-radius: 17px;
-    z-index: 1;
-}
-
-@keyframes gradient-shift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-}
-
-@keyframes pulse-glow {
-    0% { 
-        text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
-        filter: brightness(1);
-    }
-    100% { 
-        text-shadow: 0 0 30px rgba(255, 107, 107, 0.8), 0 0 40px rgba(255, 160, 122, 0.6);
-        filter: brightness(1.1);
-    }
-}
-
-@keyframes number-pulse {
+/* Animaciones */
+@keyframes gold-shimmer {
     0%, 100% { 
-        transform: translateY(-50%) scale(1);
-        box-shadow: 0 0 20px rgba(255, 107, 107, 0.6), 0 5px 15px rgba(0, 0, 0, 0.3);
+        background-position: 0% 50%;
+        border-color: #B8860B;
     }
     50% { 
-        transform: translateY(-50%) scale(1.1);
-        box-shadow: 0 0 30px rgba(255, 107, 107, 0.8), 0 8px 20px rgba(0, 0, 0, 0.4);
+        background-position: 100% 50%;
+        border-color: #FFD700;
     }
 }
 
-@keyframes rotate-bg {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+@keyframes number-glow {
+    0% { 
+        box-shadow: 
+            0 0 20px rgba(255, 215, 0, 0.6),
+            0 6px 15px rgba(0, 0, 0, 0.4),
+            inset 0 2px 0 rgba(255, 255, 255, 0.1),
+            inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+        text-shadow: 
+            0 0 10px rgba(255, 215, 0, 0.8),
+            1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    100% { 
+        box-shadow: 
+            0 0 30px rgba(255, 215, 0, 0.9),
+            0 8px 20px rgba(0, 0, 0, 0.5),
+            inset 0 2px 0 rgba(255, 255, 255, 0.2),
+            inset 0 -2px 0 rgba(0, 0, 0, 0.4);
+        text-shadow: 
+            0 0 15px rgba(255, 215, 0, 1),
+            1px 1px 3px rgba(0, 0, 0, 0.7);
+    }
+}
+
+@keyframes shine-effect {
+    0% { transform: translateX(-100%); }
+    50% { transform: translateX(100%); }
+    100% { transform: translateX(100%); }
 }
 
 /* Indicador de progreso */
@@ -1490,23 +1678,25 @@ input[type="password"]:focus {
     box-shadow: none;
 }
 
-/* Ajustes responsivos para títulos */
+/* Estilos responsivos para títulos centrados */
 @media (max-width: 768px) {
     .step-title {
-        padding: 15px 20px;
-        margin-bottom: 20px;
+        max-width: 90%;
+        margin: 25px auto;
     }
     
     .step-title h2 {
-        font-size: 1.6em;
-        letter-spacing: 0.5px;
+        font-size: 1.4em;
+        padding: 15px 30px;
+        border-radius: 20px;
+        max-width: 100%;
     }
     
     .step-title h2::before {
-        width: 35px;
-        height: 35px;
+        width: 40px;
+        height: 40px;
         left: -20px;
-        font-size: 0.6em;
+        font-size: 1em;
     }
     
     .prev-step, .next-step {
@@ -1516,13 +1706,31 @@ input[type="password"]:focus {
 }
 
 @media (max-width: 480px) {
+    .step-title {
+        max-width: 95%;
+        margin: 20px auto;
+    }
+    
     .step-title h2 {
-        font-size: 1.4em;
+        font-size: 1.2em;
+        padding: 12px 25px;
+        border-radius: 15px;
+        letter-spacing: 0.5px;
     }
     
     .step-title h2::before {
-        width: 30px;
-        height: 30px;
-        left: -15px;
+        width: 35px;
+        height: 35px;
+        left: -18px;
+        font-size: 0.9em;
     }
+}
+
+/* Asegurar que los títulos mantengan su estilo centrado en todos los estados */
+.step-title h2:focus,
+.step-title h2:active {
+    outline: none;
+    background: linear-gradient(135deg, #FFD700, #FFA500, #FFD700);
+    color: #000000;
+    text-align: center;
 }
