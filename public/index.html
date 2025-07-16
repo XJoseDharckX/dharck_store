@@ -23,7 +23,38 @@
 <body>
 
     <style>
-     
+        .fixed-support-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .fixed-support-button button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #00a884;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .fixed-support-button button:hover {
+            background-color: #008f72;
+            transform: scale(1.05);
+        }
+        
+        .fixed-support-button .support-icon {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            margin-right: 8px;
+        }
     </style>
 
     <!-- Header para el título de la aplicación -->
@@ -36,239 +67,272 @@
             <img src="/image/logo.png" alt="Logotipo de la TIENDA DHARCK" class="title-logo">    
         </div>
         <!-- BOTÓN DE SOPORTE TÉCNICO MEJORADO -->
-        <button class="support-button" onclick="window.open('https://wa.me/584126027407?text=Hola,%20necesito%20soporte%20t%C3%A9cnico%20de%20Dharck%20Store.', '_blank')">
-            <svg class="support-icon" viewBox="0 0 24 24">
-                <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.55 3.64 1.5 5.11L2 22l4.89-1.5C8.36 21.45 10.11 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm-1 16h2v-2h-2v2zm2-4h-2c0-3.25 3-3 3-5 0-1.1-.9-2-2-2s-2 .9-2 2h-2c0-2.21 1.79-4 4-4s4 1.79 4 4c0 2.5-3 2.75-3 5z"/>
-            </svg>
-            <span class="support-text">Ayuda</span>
-        </button>
+
     </header>
 
-    <!-- Nuevo contenedor para la selección de país - MOVIDO ARRIBA -->
-    <div class="section-container" id="countrySelectionSection">
-        <div class="form-group">
-            <label for="country">
-                SELECCIONA TU PAIS:
-            </label>
-            <div id="countryButtonsContainer">
-                <!-- Los botones de país se generarán aquí con JS -->
-            </div>
-        </div>
+    <!-- Barra de progreso -->
+    <div class="progress-container">
+        <div class="progress-bar" id="formProgress"></div>
     </div>
 
-    <!-- Nuevo contenedor para la selección de juegos -->
-    <div class="section-container" id="gameSelectionSection">
-        <div class="form-group">
-            <label>
-                SELECCIONA EL JUEGO:
-            </label>
-            <div id="gameButtonsContainer">
-                <!-- Los botones de juego se generarán aquí con JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Contenedor principal del formulario, ahora contiene los artículos, campos de usuario, vendedor y resumen de pedido -->
+    <!-- Contenedor principal del formulario -->
     <div class="form-container">
         <form id="topupForm">
-            <div id="amountSelection" class="form-group" style="display: none;">
-                <label>
-                    SELECCIONA EL ARTICULO(S):
-                </label>
-                <div id="amountButtons">
-                    <!-- Los divs de los artículos se generarán aquí con JS -->
+            <!-- PASO 1: Selección de país -->
+            <div class="form-step active" id="step1">
+                <div class="step-title">
+                    <h2 data-step="1">Selecciona tu país</h2>
+                </div>
+                <div class="section-container" id="countrySelectionSection">
+                    <div class="form-group">
+                        <div id="countryButtonsContainer">
+                            <!-- Los botones de país se generarán aquí con JS -->
+                        </div>
+                    </div>
+                </div>
+                <div class="step-navigation">
+                    <button type="button" class="next-step" id="toStep2" disabled>Siguiente</button>
                 </div>
             </div>
 
-            <!-- Sección de información del jugador, contendrá los campos dinámicos -->
-            <div id="userInfoSection">
-                <!-- ID y Nombre (Para Lords Mobile, Free Fire, Mobile Legends) -->
-                <div id="idNameInputs" style="display: none;">
+            <!-- PASO 2: Selección de juego -->
+            <div class="form-step" id="step2">
+                <div class="step-title">
+                    <h2 data-step="2">Selecciona el juego</h2>
+                </div>
+                <div class="section-container" id="gameSelectionSection">
                     <div class="form-group">
-                        <label for="userId">
-                            ID DEL JUGADOR:
-                        </label>
-                        <input
-                            type="tel"
-                            id="userId"
-                            name="userId"
-                            placeholder="Ej: 1234567890"
-                            pattern="[0-9]*"
-                            title="Por favor, ingresa solo números."
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="userName">
-                            NOMBRE DEL JUGADOR:
-                        </label>
-                        <input
-                            type="text"
-                            id="userName"
-                            name="userName"
-                            placeholder="Ej: ElCojeViejas300"
-                        />
+                        <div id="gameButtonsContainer">
+                            <!-- Los botones de juego se generarán aquí con JS -->
+                        </div>
                     </div>
                 </div>
-
-                <!-- ID y Servidor (Para Genshin Impact, Mobile Legends) -->
-                <div id="idServerInputs" style="display: none;">
-                    <div class="form-group">
-                        <label for="userIdServer">
-                            ID DEL JUGADOR (UID):
-                        </label>
-                        <input
-                            type="tel"
-                            id="userIdServer"
-                            name="userIdServer"
-                            placeholder="Ej: 123456789 (UID)"
-                            pattern="[0-9]*"
-                            title="Por favor, ingresa solo números para el UID."
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="serverInput">
-                            SERVIDOR:
-                        </label>
-                        <input
-                            type="text"
-                            id="serverInput"
-                            name="serverInput"
-                            placeholder="Ej: América, Asia, Europa"
-                        />
-                    </div>
-                    <!-- Nombre del jugador para Mobile Legends, si aplica en este grupo -->
-                    <div class="form-group" id="mlNameInput" style="display: none;">
-                        <label for="userNameML">
-                            NOMBRE DEL JUGADOR:
-                        </label>
-                        <input
-                            type="text"
-                            id="userNameML"
-                            name="userNameML"
-                            placeholder="Ej: MiNombreDeML"
-                        />
-                    </div>
-                </div>
-
-                <!-- ID Solamente (Para Blood Strike, PUBG Mobile, Delta Force) -->
-                <div id="idOnlyInputs" style="display: none;">
-                    <div class="form-group">
-                        <label for="userIdOnly">
-                            ID DEL JUGADOR:
-                        </label>
-                        <input
-                            type="tel"
-                            id="userIdOnly"
-                            name="userIdOnly"
-                            placeholder="Ej: 1234567890"
-                            pattern="[0-9]*"
-                            title="Por favor, ingresa solo números."
-                        />
-                    </div>
-                </div>
-
-                <!-- Campos completos para Call of Duty Mobile -->
-                <div id="codInputs" style="display: none;">
-                    <div class="form-group">
-                        <label for="emailInput">
-                            CORREO ELECTRÓNICO:
-                        </label>
-                        <input
-                            type="email"
-                            id="emailInput"
-                            name="emailInput"
-                            placeholder="Ej: tu_correo@example.com"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="passwordInput">
-                            CONTRASEÑA:
-                        </label>
-                        <input
-                            type="password"
-                            id="passwordInput"
-                            name="passwordInput"
-                            placeholder="Ingresa tu contraseña"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="linkageInput">
-                            VINCULACIÓN (Gmail, Facebook, Activision):
-                        </label>
-                        <input
-                            type="text"
-                            id="linkageInput"
-                            name="linkageInput"
-                            placeholder="Ej: Gmail"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="exactAccountNameInput">
-                            NOMBRE EXACTO DE LA CUENTA:
-                        </label>
-                        <input
-                            type="text"
-                            id="exactAccountNameInput"
-                            name="exactAccountNameInput"
-                            placeholder="Ej: TuNombreExactoEnCOD"
-                        />
-                    </div>
-                </div>
-            </div> <!-- Fin de userInfoSection -->
-
-            <div class="form-group">
-                <label for="seller">
-                    SELECCIONA EL VENDEDOR:
-                </label>
-                <div id="sellerButtonsContainer">
-                    <!-- Los botones de vendedor se generarán aquí con JS -->
+                <div class="step-navigation">
+                    <button type="button" class="prev-step" id="backToStep1">Anterior</button>
+                    <button type="button" class="next-step" id="toStep3" disabled>Siguiente</button>
                 </div>
             </div>
 
-            <!-- La selección de país se movió a la parte superior -->
+            <!-- PASO 3: Selección de artículo -->
+            <div class="form-step" id="step3">
+                <div class="step-title">
+                    <h2 data-step="3">Selecciona el artículo</h2>
+                </div>
+                <div id="amountSelection" class="form-group">
+                    <div id="amountButtons">
+                        <!-- Los divs de los artículos se generarán aquí con JS -->
+                    </div>
+                </div>
+                <div class="step-navigation">
+                    <button type="button" class="prev-step" id="backToStep2">Anterior</button>
+                    <button type="button" class="next-step" id="toStep4" disabled>Siguiente</button>
+                </div>
+            </div>
+
+            <!-- PASO 4: Información del jugador -->
+            <div class="form-step" id="step4">
+                <div class="step-title">
+                    <h2 data-step="4">Información del jugador</h2>
+                </div>
+                <div id="userInfoSection">
+                    <!-- ID y Nombre (Para Lords Mobile, Free Fire, Mobile Legends) -->
+                    <div id="idNameInputs" style="display: none;">
+                        <div class="form-group">
+                            <label for="userId">
+                                ID DEL JUGADOR:
+                            </label>
+                            <input
+                                type="tel"
+                                id="userId"
+                                name="userId"
+                                placeholder="Ej: 1234567890"
+                                pattern="[0-9]*"
+                                title="Por favor, ingresa solo números."
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="userName">
+                                NOMBRE DEL JUGADOR:
+                            </label>
+                            <input
+                                type="text"
+                                id="userName"
+                                name="userName"
+                                placeholder="Ej: ElCojeViejas300"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- ID y Servidor (Para Genshin Impact, Mobile Legends) -->
+                    <div id="idServerInputs" style="display: none;">
+                        <div class="form-group">
+                            <label for="userIdServer">
+                                ID DEL JUGADOR (UID):
+                            </label>
+                            <input
+                                type="tel"
+                                id="userIdServer"
+                                name="userIdServer"
+                                placeholder="Ej: 123456789 (UID)"
+                                pattern="[0-9]*"
+                                title="Por favor, ingresa solo números para el UID."
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="serverInput">
+                                SERVIDOR:
+                            </label>
+                            <input
+                                type="text"
+                                id="serverInput"
+                                name="serverInput"
+                                placeholder="Ej: América, Asia, Europa"
+                            />
+                        </div>
+                        <!-- Nombre del jugador para Mobile Legends, si aplica en este grupo -->
+                        <div class="form-group" id="mlNameInput" style="display: none;">
+                            <label for="userNameML">
+                                NOMBRE DEL JUGADOR:
+                            </label>
+                            <input
+                                type="text"
+                                id="userNameML"
+                                name="userNameML"
+                                placeholder="Ej: MiNombreDeML"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- ID Solamente (Para Blood Strike, PUBG Mobile, Delta Force) -->
+                    <div id="idOnlyInputs" style="display: none;">
+                        <div class="form-group">
+                            <label for="userIdOnly">
+                                ID DEL JUGADOR:
+                            </label>
+                            <input
+                                type="tel"
+                                id="userIdOnly"
+                                name="userIdOnly"
+                                placeholder="Ej: 1234567890"
+                                pattern="[0-9]*"
+                                title="Por favor, ingresa solo números."
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Campos completos para Call of Duty Mobile -->
+                    <div id="codInputs" style="display: none;">
+                        <div class="form-group">
+                            <label for="emailInput">
+                                CORREO ELECTRÓNICO:
+                            </label>
+                            <input
+                                type="email"
+                                id="emailInput"
+                                name="emailInput"
+                                placeholder="Ej: tu_correo@example.com"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="passwordInput">
+                                CONTRASEÑA:
+                            </label>
+                            <input
+                                type="password"
+                                id="passwordInput"
+                                name="passwordInput"
+                                placeholder="Ingresa tu contraseña"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="linkageInput">
+                                VINCULACIÓN (Gmail, Facebook, Activision):
+                            </label>
+                            <input
+                                type="text"
+                                id="linkageInput"
+                                name="linkageInput"
+                                placeholder="Ej: Gmail"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="exactAccountNameInput">
+                                NOMBRE EXACTO DE LA CUENTA:
+                            </label>
+                            <input
+                                type="text"
+                                id="exactAccountNameInput"
+                                name="exactAccountNameInput"
+                                placeholder="Ej: TuNombreExactoEnCOD"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="step-navigation">
+                    <button type="button" class="prev-step" id="backToStep3">Anterior</button>
+                    <button type="button" class="next-step" id="toStep5">Siguiente</button>
+                </div>
+            </div>
+
+            <!-- PASO 5: Selección de vendedor -->
+            <div class="form-step" id="step5">
+                <div class="step-title">
+                    <h2 data-step="5">Selecciona tu vendedor favorito</h2>
+                </div>
+                <div class="form-group">
+                    <div id="sellerButtonsContainer">
+                        <!-- Los botones de vendedor se generarán aquí con JS -->
+                    </div>
+                </div>
+                <div class="step-navigation">
+                    <button type="button" class="prev-step" id="backToStep4">Anterior</button>
+                    <button type="button" class="next-step" id="toStep6" disabled>Siguiente</button>
+                </div>
+            </div>
+
+            <!-- PASO 6: Resumen de pedido y Métodos de pago (combinados) -->
+            <div class="form-step" id="step6">
+                <div class="step-title">
+                    <h2 data-step="6">Resumen y Métodos de pago</h2>
+                </div>
+                <div id="priceSummary">
+                    <div id="selectedItemsPreview">
+                        <!-- Las miniaturas de los artículos seleccionados se mostrarán aquí -->
+                    </div>
+                    <p>
+                        TOTAL A PAGAR: <span id="totalPriceDisplay"></span> <span id="currencySymbolDisplay"></span>
+                    </p>
+                    <p>
+                        (BASADO EN <span id="baseAmountDisplay"></span> USD + COMISION!)
+                    </p>
+                </div>
+                
+                <div id="paymentMethodsDisplay">
+                    <div id="paymentMethodsList"></div>
+                </div>
+
+                <!-- Mensaje de advertencia actualizado -->
+                <div id="transferWarningMessage" class="transfer-warning">
+                    ¡Importante! Asegúrate de haber realizado el pago antes de enviar el pedido. La entrega puede demorar entre 5 a 15 minutos en reflejarse en el juego.
+                </div>
+
+                <!-- Solo un botón de envío -->
+                <button
+                    type="submit"
+                    id="sendWhatsAppOrderBtn"
+                    class="action-button"
+                >
+                    ENVIAR PEDIDO
+                </button>
+
+                <div id="messageDisplay" style="display: none;"></div>
+            </div>
+
+            <!-- Campos ocultos para el formulario -->
             <input type="hidden" id="gameHidden" name="game">
             <input type="hidden" id="amountUSDHidden" name="amountUSD">
             <input type="hidden" id="totalPriceHidden" name="totalPrice">
             <input type="hidden" id="currencySymbolHidden" name="currencySymbol">
-
-
-            <div id="priceSummary" style="display: none;">
-                <p>RESUMEN DE PEDIDO:</p>
-                <div id="selectedItemsPreview">
-                    <!-- Las miniaturas de los artículos seleccionados se mostrarán aquí -->
-                </div>
-                <p>
-                    TOTAL A PAGAR: <span id="totalPriceDisplay"></span> <span id="currencySymbolDisplay"></span>
-                </p>
-                <p>
-                    (BASADO EN <span id="baseAmountDisplay"></span> USD + COMISION!)
-                </p>
-            </div>
-
-            <div id="paymentMethodsDisplay" style="display: none;">
-                <p>METODOS DE PAGOS:</p>
-                <div id="paymentMethodsList"></div>
-            </div>
-
-
-
-            <!-- Mensaje de advertencia actualizado -->
-            <div id="transferWarningMessage" class="transfer-warning">
-                ¡Importante! Asegúrate de haber realizado el pago antes de enviar el pedido. La entrega puede demorar entre 5 a 15 minutos en reflejarse en el juego.
-            </div>
-
-            <!-- Solo un botón de envío -->
-            <button
-                type="submit"
-                id="sendWhatsAppOrderBtn"
-                class="action-button"
-                style="display: none;"
-                disabled="true"
-            >
-                ENVIAR PEDIDO
-            </button>
-
-            <div id="messageDisplay" style="display: none;"></div>
         </form>
     </div>
 
@@ -831,14 +895,20 @@
             }
             
             const allValid = gameSelected && amountSelected && countrySelected && 
-                             sellerSelected && userInfoValid && isUserIdNumeric;
+                             userInfoValid && isUserIdNumeric;
             
-            sendWhatsAppOrderBtn.disabled = !allValid;
+            // Verificar si estamos en el último paso (paso 6)
+            const currentStep = document.querySelector('.form-step.active');
+            const isLastStep = currentStep && currentStep.id === 'step6';
             
-            // Solo mostrar el botón si hay métodos de pago visibles
-            if (paymentMethodsDisplayDiv.style.display === 'block') {
+            // Solo mostrar el botón de enviar pedido en el último paso
+            if (isLastStep) {
+                // En el último paso, validamos todo
+                const completeValid = allValid && sellerSelected;
+                sendWhatsAppOrderBtn.disabled = !completeValid;
                 sendWhatsAppOrderBtn.style.display = 'block';
             } else {
+                // En cualquier otro paso, ocultamos el botón de enviar pedido
                 sendWhatsAppOrderBtn.style.display = 'none';
             }
             
@@ -896,8 +966,8 @@
                     transferWarningMessage.style.display = 'block';
                     updateSendOrderButtonState();
 
-                    // Desplazamiento suave a la sección de artículos
-                    amountSelectionDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Avanzar automáticamente al paso 3
+                    showStep(3);
                 });
                 gameButtonsContainer.appendChild(gameItemDiv);
             });
@@ -988,8 +1058,8 @@
                             transferWarningMessage.style.display = 'block'; 
                             updateSendOrderButtonState();
 
-                            // Desplazamiento suave a la sección de información del usuario
-                            userInfoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            // Avanzar automáticamente al paso 4
+                            showStep(4);
                         });
 
                         // Marcar como seleccionado si es el artículo actualmente seleccionado
@@ -1043,8 +1113,8 @@
                     transferWarningMessage.style.display = 'block'; 
                     updateSendOrderButtonState();
 
-                    // Desplazamiento suave a la sección de juegos
-                    gameSelectionSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Avanzar automáticamente al paso 2
+                    showStep(2);
                 });
                 countrySelectContainer.appendChild(countryItemDiv);
             });
@@ -1091,8 +1161,8 @@
                     transferWarningMessage.style.display = 'block'; 
                     updateSendOrderButtonState();
 
-                    // Desplazamiento suave al botón de enviar
-                    sendWhatsAppOrderBtn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Avanzar automáticamente al paso 6 (ahora combinado con el paso 7)
+                    showStep(6);
                 });
                 sellerSelectContainer.appendChild(sellerItemDiv);
             });
@@ -1157,6 +1227,101 @@
         }
 
 
+        // Referencias a los nuevos elementos
+        const toStep5Button = document.getElementById('toStep5');
+        const orderStatusPage = document.getElementById('orderStatusPage');
+        const orderStatusMessage = document.getElementById('orderStatusMessage');
+        const closeStatusPageButton = document.getElementById('closeStatusPage');
+
+        // Event listener para el botón Siguiente en el paso 4
+        if (toStep5Button) {
+            toStep5Button.addEventListener('click', () => {
+                // Verificar si todos los campos requeridos están completos
+                const currentGame = gameOptions.find(g => g.name === selectedGame);
+                if (!currentGame) return;
+                
+                let userInfoValid = false;
+                if (idNameInputs.style.display === 'block') {
+                    userInfoValid = userIdInput.value.trim() !== '' && userNameInput.value.trim() !== '';
+                } else if (idServerInputs.style.display === 'block') {
+                    const mlNameValid = document.getElementById('mlNameInput').style.display === 'block' ? 
+                        userNameMLInput.value.trim() !== '' : true;
+                    userInfoValid = userIdServerInput.value.trim() !== '' && serverInput.value.trim() !== '' && mlNameValid;
+                } else if (idOnlyInputs.style.display === 'block') {
+                    userInfoValid = userIdOnlyInput.value.trim() !== '';
+                } else if (codInputs.style.display === 'block') {
+                    userInfoValid = emailInput.value.trim() !== '' && 
+                                   passwordInput.value.trim() !== '' && 
+                                   linkageInput.value.trim() !== '' && 
+                                   exactAccountNameInput.value.trim() !== '';
+                }
+                
+                // Validar si el ID de usuario contiene solo números
+                let isUserIdNumeric = true;
+                if (idNameInputs.style.display === 'block' && userIdInput.value.trim() !== '') {
+                    isUserIdNumeric = /^[0-9]*$/.test(userIdInput.value.trim());
+                } else if (idServerInputs.style.display === 'block' && userIdServerInput.value.trim() !== '') {
+                    isUserIdNumeric = /^[0-9]*$/.test(userIdServerInput.value.trim());
+                } else if (idOnlyInputs.style.display === 'block' && userIdOnlyInput.value.trim() !== '') {
+                    isUserIdNumeric = /^[0-9]*$/.test(userIdOnlyInput.value.trim());
+                }
+                
+                if (userInfoValid && isUserIdNumeric) {
+                    showStep(5);
+                } else {
+                    if (!isUserIdNumeric && (userIdInput.value.trim() || userIdServerInput.value.trim() || userIdOnlyInput.value.trim())) {
+                        showMessage('El ID de Usuario (o UID) solo debe contener números.', 'error');
+                    } else {
+                        showMessage('Por favor, completa todos los campos necesarios para continuar.', 'info');
+                    }
+                }
+            });
+        }
+
+        // Event listener para el botón de cerrar la página de estado
+        if (closeStatusPageButton) {
+            closeStatusPageButton.addEventListener('click', () => {
+                orderStatusPage.style.display = 'none';
+            });
+        }
+
+        // Función para actualizar el estado del botón Siguiente en el paso 4
+        function updateStep4NextButton() {
+            const toStep5Button = document.getElementById('toStep5');
+            if (!toStep5Button) return;
+            
+            let userInfoValid = false;
+            if (idNameInputs.style.display === 'block') {
+                userInfoValid = userIdInput.value.trim() !== '' && userNameInput.value.trim() !== '';
+            } else if (idServerInputs.style.display === 'block') {
+                const mlNameValid = document.getElementById('mlNameInput').style.display === 'block' ? 
+                    userNameMLInput.value.trim() !== '' : true;
+                userInfoValid = userIdServerInput.value.trim() !== '' && serverInput.value.trim() !== '' && mlNameValid;
+            } else if (idOnlyInputs.style.display === 'block') {
+                userInfoValid = userIdOnlyInput.value.trim() !== '';
+            } else if (codInputs.style.display === 'block') {
+                userInfoValid = emailInput.value.trim() !== '' && 
+                               passwordInput.value.trim() !== '' && 
+                               linkageInput.value.trim() !== '' && 
+                               exactAccountNameInput.value.trim() !== '';
+            }
+            
+            let isUserIdNumeric = true;
+            if (idNameInputs.style.display === 'block' && userIdInput.value.trim() !== '') {
+                isUserIdNumeric = /^[0-9]*$/.test(userIdInput.value.trim());
+            } else if (idServerInputs.style.display === 'block' && userIdServerInput.value.trim() !== '') {
+                isUserIdNumeric = /^[0-9]*$/.test(userIdServerInput.value.trim());
+            } else if (idOnlyInputs.style.display === 'block' && userIdOnlyInput.value.trim() !== '') {
+                isUserIdNumeric = /^[0-9]*$/.test(userIdOnlyInput.value.trim());
+            }
+            
+            toStep5Button.disabled = !(userInfoValid && isUserIdNumeric);
+            
+            // Asegurar que el botón sea siempre visible
+            toStep5Button.style.display = 'block';
+            toStep5Button.style.visibility = 'visible';
+        }
+
         // Manejadores de input para validar y restablecer botones
         [userIdInput, userNameInput, userIdServerInput, serverInput, userNameMLInput, userIdOnlyInput,
          emailInput, passwordInput, linkageInput, exactAccountNameInput].forEach(input => {
@@ -1165,6 +1330,7 @@
                     messageDisplay.style.display = 'none'; 
                     transferWarningMessage.style.display = 'block'; 
                     updateSendOrderButtonState();
+                    updateStep4NextButton(); // Actualizar el estado del botón Siguiente
                 });
             }
         });
@@ -1240,6 +1406,41 @@
                 selectedItemsPreview.innerHTML = ''; 
             }
         }
+
+        // Función para mostrar un paso específico
+function showStep(stepNumber) {
+    // Ocultar todos los pasos
+    document.querySelectorAll('.form-step').forEach(step => {
+        step.classList.remove('active');
+    });
+    
+    // Mostrar el paso solicitado
+    const targetStep = document.getElementById(`step${stepNumber}`);
+    if (targetStep) {
+        targetStep.classList.add('active');
+        // Actualizar la barra de progreso (ahora con 6 pasos en total en lugar de 7)
+        const progressBar = document.getElementById('formProgress');
+        if (progressBar) {
+            progressBar.style.width = `${(stepNumber / 6) * 100}%`;
+        }
+        
+        // Asegurar que el botón Siguiente en el paso 4 esté visible y funcional
+        if (stepNumber === 4) {
+            const toStep5Button = document.getElementById('toStep5');
+            if (toStep5Button) {
+                toStep5Button.style.display = 'block';
+                toStep5Button.style.visibility = 'visible';
+                updateStep4NextButton();
+            }
+        }
+        
+        // NUEVA LÍNEA: Actualizar el estado del botón de envío cuando se navega a cualquier paso
+        updateSendOrderButtonState();
+        
+        // Desplazamiento suave al inicio del paso
+        targetStep.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
 
         // Función para mostrar mensajes al usuario
         function showMessage(msg, type) {
@@ -1353,6 +1554,15 @@
         confirmWhatsAppBtn.addEventListener('click', async () => {
             hideWhatsAppWarningModal(); 
             loadingOverlay.style.display = 'flex'; 
+            
+            // Mostrar la página de estado
+            orderStatusPage.style.display = 'flex';
+            
+            // Simular verificación del estado (en una implementación real, esto se haría con una llamada a la API)
+            // Por ahora, simplemente mostramos "En proceso"
+            orderStatusMessage.textContent = 'En proceso';
+            orderStatusMessage.classList.remove('delivered');
+            
 
             gameHidden.value = selectedGame;
             amountUSDHidden.value = selectedAmount ? selectedAmount.value : ''; 
@@ -1671,6 +1881,7 @@
             loadSellerOptions();
             updateSendOrderButtonState();
             updateInputFields();
+            updateStep4NextButton(); // Asegurar que el botón esté configurado correctamente
             
             // Intervalo para tasas de cambio
             setInterval(loadExchangeRates, 5 * 60 * 1000);
@@ -1710,5 +1921,39 @@
             });
     }
     </script>
+    <!-- Botón de soporte técnico fijo -->
+    <div class="fixed-support-button">
+        <button onclick="window.open('https://wa.me/584126027407?text=Hola,%20necesito%20soporte%20t%C3%A9cnico%20de%20Dharck%20Store.', '_blank')">
+            <svg class="support-icon" viewBox="0 0 24 24">
+                <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.55 3.64 1.5 5.11L2 22l4.89-1.5C8.36 21.45 10.11 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm-1 16h2v-2h-2v2zm2-4h-2c0-3.25 3-3 3-5 0-1.1-.9-2-2-2s-2 .9-2 2h-2c0-2.21 1.79-4 4-4s4 1.79 4 4c0 2.5-3 2.75-3 5z"/>
+            </svg>
+            <span>Soporte</span>
+        </button>
+    </div>
+    <!-- Página de estado del pedido -->
+    <div id="orderStatusPage" class="order-status-page">
+        <div class="order-status-container">
+            <h2>Estado de su pedido</h2>
+            <div class="loader"></div>
+            <div id="orderStatusMessage" class="status-message">En proceso</div>
+            <button id="closeStatusPage" class="close-button">Cerrar</button>
+        </div>
+    </div>
+    
+    <!-- Botón de soporte técnico fijo -->
+    <div class="fixed-support-button">
+        <button onclick="window.open('https://wa.me/584126027407?text=Hola,%20necesito%20soporte%20t%C3%A9cnico%20de%20Dharck%20Store.', '_blank')">
+            <svg class="support-icon" viewBox="0 0 24 24">
+                <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.55 3.64 1.5 5.11L2 22l4.89-1.5C8.36 21.45 10.11 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm-1 16h2v-2h-2v2zm2-4h-2c0-3.25 3-3 3-5 0-1.1-.9-2-2-2s-2 .9-2 2h-2c0-2.21 1.79-4 4-4s4 1.79 4 4c0 2.5-3 2.75-3 5z"/>
+            </svg>
+            <span>Soporte</span>
+        </button>
+    </div>
+    
+    <!-- Pie de página con derechos de autor -->
+    <footer class="footer">
+        <p>© 2025 DHARCK STORE. Todos los derechos reservados.</p>
+        <p>Creado por <span class="highlight">XJoseDharckX</span>, Dueño de Dharck Store.</p>
+    </footer>
 </body>
 </html>

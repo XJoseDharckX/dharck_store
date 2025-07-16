@@ -1,100 +1,3 @@
-/*os para la barra de progreso */
-     .progress-container {
-        width: 100%;
-        background-color: #1a1a2e;
-        border-radius: 10px;
-        margin: 10px 0;
-        overflow: hidden;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-     }
-     
-     .progress-bar {
-        height: 10px;
-        background: linear-gradient(90deg, #00ffff, #ff00ff);
-        border-radius: 10px;
-        transition: width 0.5s ease;
-        width: 0%;
-     }
-     
-     /* Estilos para los pasos del formulario */
-     .form-step {
-        display: none;
-        animation: fadeIn 0.5s;
-     }
-     
-     .form-step.active {
-        display: block;
-     }
-     
-     /* Botones de navegación */
-     .step-navigation {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-        flex-wrap: wrap;
-     }
-     
-     /* Botón de siguiente dorado */
-     .next-step {
-        background: linear-gradient(135deg, #FFD700, #FFA500);
-        color: #000;
-        border: 2px solid #FFD700;
-        padding: 12px 25px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-        display: block;
-        width: 100%;
-        margin-top: 20px;
-        font-size: 1.1em;
-     }
-     
-     .next-step:hover:not(:disabled) {
-        background: linear-gradient(135deg, #FFA500, #FFD700);
-        transform: translateY(-3px);
-        box-shadow: 0 5px 20px rgba(255, 215, 0, 0.7);
-     }
-     
-     .next-step:disabled {
-        background: linear-gradient(135deg, #A9A9A9, #D3D3D3);
-        border-color: #A9A9A9;
-        color: #666;
-        cursor: not-allowed;
-        box-shadow: none;
-     }
-     
-     /* Ajuste para el botón anterior */
-     .prev-step {
-        background: linear-gradient(135deg, #0a0a23, #1a1a3a);
-        color: white;
-        border: 2px solid #00ffff;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin-right: 10px;
-     }
-     
-     .prev-step:hover:not(:disabled) {
-        background: linear-gradient(135deg, #1a1a3a, #0a0a23);
-        border-color: #ff00ff;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
-     }
-     
-     .prev-step:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-     }
-     
-     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-     }
 /* Fuentes */
 body {
     font-family: 'Inter', sans-serif;
@@ -178,46 +81,54 @@ body {
     transform: scale(1.05) rotate(5deg);
 }
 
-/* Botón de soporte técnico */
+/* Botón de soporte técnico flotante */
 .support-button {
-    position: absolute;
+    position: fixed;
     right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 20px;
     background: linear-gradient(to right, #1e90ff, #4169e1);
     color: #FFFFFF;
-    padding: 10px 15px;
+    padding: 15px;
     border: none;
-    border-radius: 8px;
+    border-radius: 50%;
     cursor: pointer;
     font-size: 0.9em;
     font-weight: bold;
-    box-shadow: 0 0 15px rgba(30, 144, 255, 0.7);
+    box-shadow: 0 4px 20px rgba(30, 144, 255, 0.7);
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 8px;
-    flex-direction: column;
-    min-width: 60px;
-    text-align: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    z-index: 1000;
+    animation: float 3s ease-in-out infinite;
 }
 
 .support-button:hover {
     background: linear-gradient(to right, #4169e1, #1e90ff);
-    box-shadow: 0 0 25px rgba(30, 144, 255, 1);
-    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 6px 25px rgba(30, 144, 255, 1);
+    transform: scale(1.1);
 }
 
 .support-icon {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     fill: #FFFFFF;
 }
 
 .support-text {
-    font-size: 0.7em;
-    line-height: 1;
-    margin-top: 2px;
+    display: none; /* Ocultar texto en el botón flotante */
+}
+
+/* Animación de flotación */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 /* Contenedores principales */
@@ -236,9 +147,7 @@ body {
     margin-top: 20px;
 }
 
-.section-container {
-    margin-top: 30px;
-}
+
 
 .form-group {
     margin-bottom: 25px;
@@ -298,7 +207,15 @@ input[type="password"]:focus {
     margin-top: 15px;
 }
 
-#gameButtonsContainer, #amountButtons {
+#gameButtonsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+#amountButtons {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 20px;
@@ -363,7 +280,7 @@ input[type="password"]:focus {
     padding: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
-    height: 250px;
+    min-height: 200px;
     text-align: center;
     box-sizing: border-box;
     position: relative;
@@ -403,20 +320,18 @@ input[type="password"]:focus {
     transform: scale(1.08);
 }
 
-.game-logo, .item-image {
+.game-logo {
     width: 100%;
     height: 70%;
-    object-fit: contain;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    min-height: 154px;
+    object-fit: cover;
+    border-radius: 15px 15px 0 0;
+    box-shadow: none;
     z-index: 1;
-    background-color: #fff;
-    padding: 5px;
-    box-sizing: border-box;
+    flex-shrink: 0;
 }
 
-.game-name-label, .item-text-container {
+.game-name-label {
     color: #FFFFFF;
     font-weight: bold;
     font-size: 1.3em;
@@ -424,11 +339,10 @@ input[type="password"]:focus {
     z-index: 1;
     height: 30%;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    width: 100%;
+    padding: 8px 15px;
+    box-sizing: border-box;
 }
 
 .game-item.selected .game-name-label {
@@ -444,11 +358,11 @@ input[type="password"]:focus {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    padding: 15px;
+    justify-content: center; /* Ajustado para centrar verticalmente */
+    padding: 20px; /* Añadido para consistencia */
     cursor: pointer;
     transition: all 0.3s ease;
-    height: 280px;
+    min-height: 200px;
     text-align: center;
     box-sizing: border-box;
     position: relative;
@@ -491,16 +405,15 @@ input[type="password"]:focus {
 .item-image {
     width: 100%;
     height: 70%;
-    object-fit: contain;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+    min-height: 140px;
+    object-fit: cover;
+    border-radius: 15px 15px 0 0;
+    box-shadow: none;
     z-index: 1;
-    background-color: #fff;
-    padding: 5px;
-    box-sizing: border-box;
+    flex-shrink: 0;
 }
+
+
 
 .item-text-container {
     display: flex;
@@ -508,9 +421,11 @@ input[type="password"]:focus {
     align-items: center;
     text-align: center;
     width: 100%;
-    z-index: 1;
     height: 30%;
+    z-index: 1;
+    padding: 8px 15px;
     justify-content: center;
+    box-sizing: border-box;
 }
 
 .item-label {
@@ -837,55 +752,306 @@ input[type="password"]:focus {
     box-shadow: 0 5px 12px rgba(255, 215, 0, 0.6);
 }
 
-/* Estilos para promociones */
-.promo-item {
+/* Estilos para encabezados de sección */
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
     position: relative;
-    overflow: visible !important;
-    border: 2px solid #ff6b35 !important;
-    box-shadow: 0 0 15px rgba(255, 107, 53, 0.5) !important;
+}
+
+.step-number {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #000;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-right: 15px;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+    animation: stepGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes stepGlow {
+    0% {
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+        transform: scale(1);
+    }
+    100% {
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.9);
+        transform: scale(1.05);
+    }
+}
+
+.section-title {
+    color: #FFD700;
+    font-size: 1.8em;
+    font-weight: bold;
+    margin: 0;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    animation: titleGlow 3s ease-in-out infinite alternate;
+    letter-spacing: 1px;
+}
+
+@keyframes titleGlow {
+    0% {
+        text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    }
+    100% {
+        text-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 35px rgba(255, 165, 0, 0.8);
+    }
+}
+
+/* Separación entre secciones */
+.section-container {
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.section-container::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #FFD700, transparent);
+    opacity: 0.5;
+}
+
+.section-container:last-child::after {
+    display: none;
+}
+
+/* Estilos para promociones en una sola fila */
+.promo-section {
+    margin: 20px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d1b69 100%);
+    border: 2px solid #FFD700;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    position: relative;
+}
+
+.promo-section::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+    border-radius: 15px;
+    z-index: -1;
+    animation: promo-border-glow 3s ease-in-out infinite;
+}
+
+@keyframes promo-border-glow {
+    0%, 100% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.promo-section h3 {
+    color: #FFD700;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.4em;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    animation: promo-title-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes promo-title-glow {
+    0% {
+        text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    }
+    100% {
+        text-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 35px rgba(255, 165, 0, 0.8);
+    }
+}
+
+/* Grid de promociones mejorado - mínimo 2 por fila en móvil */
+.promo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+    justify-items: center;
+    min-width: 100%;
+    margin: 15px 0;
+    min-height: 100px;
+}
+
+/* Eliminar restricción de columna única para Lords Mobile */
+.promo-grid.lords-mobile-cupon {
+    grid-template-columns: inherit;
+    max-width: none;
+    margin: 0;
+}
+
+/* Estilos mejorados para artículos de promoción - mismo tamaño que artículos regulares */
+.promo-item {
+    background-color: rgba(26, 26, 26, 0.8);
+    border: 2px solid #1e90ff; /* Color unificado */
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(30, 144, 255, 0.4); /* Sombra unificada */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Ajustado para centrar */
+    padding: 20px; /* Añadido para consistencia */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 200px; /* Altura unificada */
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: none; /* Eliminado para que se ajuste al grid */
+}
+
+.promo-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(255, 0, 255, 0.3);
+    border-color: #00ffff;
+    background: linear-gradient(135deg, rgba(255, 0, 255, 0.2), rgba(0, 255, 255, 0.2));
+}
+
+/* Efecto de brillo para promociones */
+.promo-item::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700);
+    border-radius: 12px;
+    z-index: -1;
+    animation: borderGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes borderGlow {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.promo-item .item-image {
+    flex: 0 0 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.promo-item .item-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    transition: transform 0.3s ease;
+}
+
+.promo-item:hover .item-image img {
+    transform: scale(1.05);
+}
+
+.promo-item .item-text-container {
+    flex: 0 0 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 0.2rem;
+}
+
+.promo-item .item-label {
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    line-height: 1.2;
+}
+
+.promo-item .item-price {
+    color: #4CAF50;
+    font-weight: bold;
+    font-size: 1rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.promo-item.selected {
+    background: linear-gradient(135deg, rgba(255, 0, 255, 0.3), rgba(0, 255, 255, 0.3));
+    border-color: #00ffff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    transform: scale(1.02);
+}
+
+/* Badge de promoción mejorado */
+.promo-item .item-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(255, 68, 68, 0.4);
+    z-index: 2;
+    animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
 }
 
 .promo-badge {
     position: absolute;
     top: -8px;
     right: -8px;
-    background: linear-gradient(135deg, #FF6B35, #F7931E);
+    background: linear-gradient(45deg, #ff6b35, #f7931e);
     color: white;
     padding: 4px 8px;
     border-radius: 12px;
-    font-size: 10px;
+    font-size: 0.7em;
     font-weight: bold;
-    z-index: 2;
+    z-index: 10;
     pointer-events: none;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    animation: promo-pulse 2s ease-in-out infinite;
+    box-shadow: 0 0 10px rgba(255, 107, 53, 0.7);
 }
 
 @keyframes promo-pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-
-@keyframes promo-glow {
-    0%, 100% { box-shadow: 0 0 15px rgba(255, 107, 53, 0.5); }
-    50% { box-shadow: 0 0 25px rgba(255, 107, 53, 0.8); }
-}
-
-.promo-pulse {
-    animation: promo-pulse 2s ease-in-out infinite;
-}
-
-.promo-glow {
-    animation: promo-glow 1.5s ease-in-out infinite;
-}
-
-.promo-item:hover {
-    transform: scale(1.08) !important;
-    box-shadow: 0 0 25px rgba(255, 107, 53, 0.8) !important;
-}
-
-.promo-item.selected .promo-badge {
-    background: linear-gradient(45deg, #28a745, #20c997);
-    animation: promo-pulse 1s ease-in-out infinite;
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(255, 107, 53, 0.7);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(255, 107, 53, 1);
+    }
 }
 
 /* Spinner de carga */
@@ -894,126 +1060,7 @@ input[type="password"]:focus {
     100% { transform: rotate(360deg); }
 }
 
-/* Estilos para el botón de soporte técnico fijo */
-.fixed-support-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-}
 
-.fixed-support-button button {
-    background: linear-gradient(135deg, #00c6ff, #0072ff);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-}
-
-.fixed-support-button button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-}
-
-.fixed-support-button .support-icon {
-    width: 24px;
-    height: 24px;
-    fill: white;
-    margin-right: 8px;
-}
-
-/* Estilos para el pie de página */
-.footer {
-    background: linear-gradient(135deg, #000000, #1a1a3a);
-    color: #FFD700;
-    text-align: center;
-    padding: 20px;
-    margin-top: 40px;
-    border-top: 2px solid #FFD700;
-    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.footer .highlight {
-    color: #ff00ff;
-    font-weight: bold;
-}
-
-/* Estilos para la página de estado del pedido */
-.order-status-page {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-    backdrop-filter: blur(5px);
-}
-
-.order-status-container {
-    background: linear-gradient(135deg, #000000, #1a1a3a);
-    border: 2px solid #FFD700;
-    border-radius: 15px;
-    padding: 30px;
-    text-align: center;
-    max-width: 500px;
-    width: 90%;
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-}
-
-.order-status-container h2 {
-    color: #FFD700;
-    margin-bottom: 20px;
-    font-size: 1.8em;
-}
-
-.loader {
-    border: 5px solid #1a1a3a;
-    border-top: 5px solid #FFD700;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-    margin: 20px auto;
-}
-
-.status-message {
-    color: #ffffff;
-    font-size: 1.2em;
-    margin: 20px 0;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-}
-
-.status-message.delivered {
-    color: #00ff00;
-}
-
-.close-button {
-    background: linear-gradient(135deg, #FFD700, #FFA500);
-    color: #000;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 20px;
-    transition: all 0.3s ease;
-}
-
-.close-button:hover {
-    background: linear-gradient(135deg, #FFA500, #FFD700);
-    transform: translateY(-3px);
-}
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -1027,21 +1074,16 @@ input[type="password"]:focus {
     }
     
     .support-button {
-        right: 10px;
-        padding: 8px 10px;
-        font-size: 0.7em;
-        min-width: 50px;
-        flex-direction: column;
-        text-align: center;
+        right: 15px;
+        bottom: 15px;
+        width: 50px;
+        height: 50px;
+        padding: 12px;
     }
     
     .support-icon {
-        width: 16px;
-        height: 16px;
-    }
-    
-    .support-text {
-        font-size: 0.6em;
+        width: 20px;
+        height: 20px;
     }
     
     #countryButtonsContainer {
@@ -1064,22 +1106,24 @@ input[type="password"]:focus {
         gap: 12px;
     }
     
-    .game-item, .amount-item {
-        display: flex;
-        flex-direction: column;
-        height: 220px;
-        padding: 10px;
+    /* Layout vertical para juegos en móviles */
+    .game-item {
+        min-height: 160px;
+        padding: 0;
     }
     
-    .game-logo, .item-image {
-        height: 70%;
+    .game-logo {
         width: 100%;
-        margin-bottom: 5px;
+        height: 70%;
+        min-height: 112px;
+        object-fit: cover;
+        border-radius: 15px 15px 0 0;
     }
     
-    .game-name-label, .item-text-container {
+    .game-name-label {
+        font-size: 1.1em;
         height: 30%;
-        font-size: 1em;
+        padding: 6px 12px;
     }
     
     #amountButtons {
@@ -1087,12 +1131,37 @@ input[type="password"]:focus {
         gap: 12px;
     }
     
-    .item-label {
-        font-size: 1em;
+    /* Layout vertical para artículos en móviles */
+    .amount-item {
+        min-height: 160px;
+        padding: 0;
     }
     
-    .item-price {
+    .item-image {
+        width: 100%;
+        height: 70%;
+        min-height: 112px;
+        object-fit: cover;
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .item-text-container {
+        height: 30%;
+        padding: 6px 12px;
+    }
+    
+    .item-label {
         font-size: 0.9em;
+        margin-bottom: 4px;
+    }
+    
+    .item-price-container {
+        margin-bottom: 0;
+    }
+    
+    .item-price-usd,
+    .item-price-local {
+        font-size: 0.8em;
     }
     
     /* VENDEDORES MANTIENEN SU TAMAÑO ORIGINAL */
@@ -1101,8 +1170,132 @@ input[type="password"]:focus {
         gap: 15px;
     }
 }
+/* Para móviles pequeños */
+@media (max-width: 480px) {
+    #amountButtons, .promo-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+/* Para tablets */
+@media (min-width: 481px) and (max-width: 768px) {
+    #amountButtons, .promo-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+}
+
+/* Para desktop */
+@media (min-width: 769px) {
+    #amountButtons, .promo-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+}
+
+/* Responsive para headers y promociones */
+@media (max-width: 768px) {
+    .section-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .step-number {
+        margin-right: 0;
+        margin-bottom: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 1em;
+    }
+    
+    .section-title {
+        font-size: 1.2em;
+    }
+    
+    .promo-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+    
+    .promo-grid.lords-mobile-cupon {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .promo-item {
+        height: 160px;
+        padding: 0.6rem;
+    }
+    
+    .promo-item .item-label {
+        font-size: 0.8rem;
+    }
+    
+    .promo-item .item-price {
+        font-size: 0.9rem;
+    }
+    
+    .promo-section {
+        padding: 15px;
+        margin: 15px 0;
+    }
+}
 
 @media (max-width: 480px) {
+    .step-number {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9em;
+    }
+    
+    .section-title {
+        font-size: 1em;
+    }
+    
+    .promo-section h3 {
+        font-size: 1.1em;
+    }
+    
+    .promo-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .promo-grid.lords-mobile-cupon {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .promo-item {
+        height: 140px;
+        padding: 0.5rem;
+    }
+    
+    .promo-item .item-label {
+        font-size: 0.75rem;
+    }
+    
+    .promo-item .item-price {
+        font-size: 0.85rem;
+    }
+    
+    .promo-item .item-badge {
+        padding: 0.15rem 0.4rem;
+        font-size: 0.6rem;
+    }
+}
+
+/* Asegurar mínimo 2 columnas en móvil */
+@media (max-width: 480px) {
+    .promo-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    #amountButtons {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
     .dharck-store-title {
         font-size: 1.8em;
         margin-right: 10px;
@@ -1113,21 +1306,16 @@ input[type="password"]:focus {
     }
     
     .support-button {
-        right: 5px;
-        padding: 6px 8px;
-        font-size: 0.6em;
-        min-width: 45px;
-        flex-direction: column;
-        text-align: center;
+        right: 10px;
+        bottom: 10px;
+        width: 45px;
+        height: 45px;
+        padding: 10px;
     }
     
     .support-icon {
-        width: 14px;
-        height: 14px;
-    }
-    
-    .support-text {
-        font-size: 0.5em;
+        width: 18px;
+        height: 18px;
     }
     
     #countryButtonsContainer {
@@ -1150,32 +1338,57 @@ input[type="password"]:focus {
         gap: 10px;
     }
     
-    .game-item, .amount-item {
-        height: 180px;
-        padding: 8px;
+    /* Layout vertical para juegos en móviles pequeños */
+    .game-item {
+        min-height: 140px;
+        padding: 0;
     }
     
-    .game-logo, .item-image {
-        height: 70%;
+    .game-logo {
         width: 100%;
+        height: 70%;
+        min-height: 98px;
+        object-fit: cover;
+        border-radius: 15px 15px 0 0;
     }
     
-    .game-name-label, .item-text-container {
+    .game-name-label {
+        font-size: 0.95em;
         height: 30%;
-        font-size: 0.85em;
+        padding: 4px 10px;
     }
     
-    #amountButtons {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+    /* Layout vertical para artículos en móviles pequeños */
+    .amount-item {
+        min-height: 140px;
+        padding: 0;
+    }
+    
+    .item-image {
+        width: 100%;
+        height: 70%;
+        min-height: 98px;
+        object-fit: cover;
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .item-text-container {
+        height: 30%;
+        padding: 4px 10px;
     }
     
     .item-label {
-        font-size: 0.9em;
+        font-size: 0.8em;
+        margin-bottom: 3px;
     }
     
-    .item-price {
-        font-size: 0.8em;
+    .item-price-container {
+        margin-bottom: 0;
+    }
+    
+    .item-price-usd,
+    .item-price-local {
+        font-size: 0.7em;
     }
     
     /* VENDEDORES MANTIENEN SU TAMAÑO ORIGINAL */
@@ -1184,345 +1397,254 @@ input[type="password"]:focus {
         gap: 15px;
     }
     
-    .next-step, .prev-step {
-        padding: 10px 15px;
+    .step-number {
+        width: 30px;
+        height: 30px;
         font-size: 0.9em;
     }
     
-    .next-step {
-        width: 100%;
-        margin-top: 15px;
+    .section-title {
+        font-size: 1em;
     }
     
-    .step-navigation {
-        flex-direction: column;
-    }
-    
-    .prev-step {
-        margin-right: 0;
-        margin-bottom: 10px;
+    .promo-section h3 {
+        font-size: 1.1em;
     }
 }
 
-/* Estilos para los pasos del formulario */
-.form-step {
-    display: none;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    margin-bottom: 30px;
-    width: 100%;
-    max-width: 900px;
+@media (min-width: 481px) and (max-width: 768px) {
+    .promo-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
 }
 
-.form-step.active {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
+@media (min-width: 769px) {
+    .promo-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+    }
 }
 
-/* Estilos mejorados para los títulos de los pasos */
-.step-title {
-    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-    border: 3px solid transparent;
-    border-image: linear-gradient(45deg, #ff6b6b, #ffa07a, #ff6b6b) 1;
-    border-radius: 20px;
-    padding: 20px 30px;
-    margin-bottom: 30px;
+/* Estilos para headers de sección */
+.section-container {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 15px;
+    border: 1px solid #333;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #ffd700;
     position: relative;
-    overflow: hidden;
-    box-shadow: 
-        0 0 30px rgba(255, 107, 107, 0.3),
-        0 10px 20px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    text-align: center;
-    transform: perspective(1000px) rotateX(2deg);
-    transition: all 0.3s ease;
 }
 
-.step-title:hover {
-    transform: perspective(1000px) rotateX(0deg) translateY(-5px);
-    box-shadow: 
-        0 0 40px rgba(255, 107, 107, 0.5),
-        0 15px 30px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.step-title h2 {
-    background: linear-gradient(45deg, #ff6b6b, #ffa07a, #ff8a80, #ff6b6b);
-    background-size: 300% 300%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-size: 2.2em;
-    font-weight: 800;
-    margin: 0;
-    position: relative;
-    z-index: 2;
-    text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
-    animation: gradient-shift 3s ease-in-out infinite, pulse-glow 2s infinite alternate;
-    letter-spacing: 1px;
-}
-
-.step-title h2::before {
-    content: attr(data-step);
-    position: absolute;
-    left: -25px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: linear-gradient(135deg, #ff6b6b, #ffa07a);
-    color: white;
+.step-number {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #000;
     width: 40px;
     height: 40px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.7em;
     font-weight: bold;
-    box-shadow: 
-        0 0 20px rgba(255, 107, 107, 0.6),
-        0 5px 15px rgba(0, 0, 0, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    animation: number-pulse 2s infinite;
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+    animation: pulse 2s infinite;
 }
 
-.step-title::before {
+.section-title {
+    color: #ffd700;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Estilos para promociones */
+.promo-section {
+    background: linear-gradient(135deg, #2d1810 0%, #4a2c1a 100%);
+    border: 2px solid #ffd700;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.promo-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.promo-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.promo-title {
+    color: #ffd700;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.promo-subtitle {
+    color: #ffed4e;
+    font-size: 1rem;
+    margin: 0 0 1rem 0;
+    opacity: 0.9;
+}
+
+.promo-badge {
+    background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+    color: white;
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 10px rgba(255, 68, 68, 0.3);
+}
+
+.promo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.promo-grid.lords-mobile-cupon {
+    grid-template-columns: 1fr;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+
+
+/* Estilos para secciones de promoción */
+.promo-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.05));
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+.promo-section::before {
     content: '';
     position: absolute;
     top: -50%;
     left: -50%;
     width: 200%;
     height: 200%;
-    background: conic-gradient(from 0deg, transparent, rgba(255, 107, 107, 0.1), transparent, rgba(255, 160, 122, 0.1), transparent);
-    animation: rotate-bg 8s linear infinite;
-    z-index: 1;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+    animation: promoSectionGlow 4s ease-in-out infinite;
+    z-index: 0;
 }
 
-.step-title::after {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    right: 2px;
-    bottom: 2px;
-    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-    border-radius: 17px;
-    z-index: 1;
+@keyframes promoSectionGlow {
+    0%, 100% { transform: rotate(0deg) scale(1); opacity: 0.5; }
+    50% { transform: rotate(180deg) scale(1.1); opacity: 0.8; }
 }
 
-@keyframes gradient-shift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-}
-
-@keyframes pulse-glow {
-    0% { 
-        text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
-        filter: brightness(1);
-    }
-    100% { 
-        text-shadow: 0 0 30px rgba(255, 107, 107, 0.8), 0 0 40px rgba(255, 160, 122, 0.6);
-        filter: brightness(1.1);
-    }
-}
-
-@keyframes number-pulse {
-    0%, 100% { 
-        transform: translateY(-50%) scale(1);
-        box-shadow: 0 0 20px rgba(255, 107, 107, 0.6), 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-    50% { 
-        transform: translateY(-50%) scale(1.1);
-        box-shadow: 0 0 30px rgba(255, 107, 107, 0.8), 0 8px 20px rgba(0, 0, 0, 0.4);
-    }
-}
-
-@keyframes rotate-bg {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Indicador de progreso */
-.progress-container {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto 30px auto;
-    padding: 0 20px;
-    box-sizing: border-box;
-}
-
-.progress-bar {
-    height: 8px;
-    background: linear-gradient(to right, #FFD700, #1e90ff);
-    border-radius: 4px;
-    transition: width 0.5s ease;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-}
-
-/* Botones de navegación entre pasos */
-.step-navigation {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    flex-wrap: wrap;
-}
-
-/* Asegurar que el botón Siguiente sea visible en el paso 4 */
-#step4 .step-navigation {
-    display: flex !important;
-}
-
-#step4 .next-step {
-    display: block !important;
-    visibility: visible !important;
-}
-
-/* Estilos específicos para el paso 6 */
-#step6 .action-button {
-    width: 100%;
-    margin: 20px 0;
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 8px;
-    font-size: 1.2em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-}
-
-#step6 .action-button:hover:not(:disabled) {
-    background: linear-gradient(135deg, #ee5a24, #ff6b6b);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-}
-
-#step6 .action-button:disabled {
-    background: #666;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-/* Asegurar que el botón de envío esté siempre visible en el paso 6 */
-#step6 #sendWhatsAppOrderBtn {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    width: 100%;
-    margin: 25px 0;
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24, #ff6b6b);
-    background-size: 200% 200%;
-    color: white;
-    border: none;
-    padding: 18px 35px;
-    border-radius: 12px;
-    font-size: 1.3em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 
-        0 8px 25px rgba(255, 107, 107, 0.3),
-        0 4px 10px rgba(0, 0, 0, 0.2);
-    animation: button-glow 2s infinite alternate;
-}
-
-#step6 #sendWhatsAppOrderBtn:hover:not(:disabled) {
-    background: linear-gradient(135deg, #ee5a24, #ff6b6b, #ee5a24);
-    transform: translateY(-3px);
-    box-shadow: 
-        0 12px 35px rgba(255, 107, 107, 0.4),
-        0 6px 15px rgba(0, 0, 0, 0.3);
-    animation: none;
-}
-
-#step6 #sendWhatsAppOrderBtn:disabled {
-    background: linear-gradient(135deg, #666, #555);
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    animation: none;
-    opacity: 0.7;
-}
-
-@keyframes button-glow {
-    0% {
-        box-shadow: 
-            0 8px 25px rgba(255, 107, 107, 0.3),
-            0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-    100% {
-        box-shadow: 
-            0 8px 25px rgba(255, 107, 107, 0.5),
-            0 4px 10px rgba(0, 0, 0, 0.2),
-            0 0 20px rgba(255, 107, 107, 0.3);
-    }
-}
-
-.prev-step, .next-step {
-    background: linear-gradient(135deg, #000000, #0f3460);
+.promo-title {
     color: #FFD700;
-    border: 2px solid #FFD700;
-    border-radius: 25px;
-    padding: 10px 20px;
+    font-size: 1.5em;
     font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 0 0 20px 0;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    animation: promoTitlePulse 3s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
-.prev-step:hover, .next-step:hover {
-    background: linear-gradient(135deg, #0f3460, #000000);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), 0 0 10px rgba(255, 215, 0, 0.3);
+@keyframes promoTitlePulse {
+    0%, 100% {
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        transform: scale(1);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 165, 0, 0.8);
+        transform: scale(1.02);
+    }
 }
 
-.prev-step:disabled, .next-step:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-/* Ajustes responsivos para títulos */
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .step-title {
-        padding: 15px 20px;
-        margin-bottom: 20px;
+    .section-header {
+        flex-direction: column;
+        text-align: center;
     }
     
-    .step-title h2 {
-        font-size: 1.6em;
-        letter-spacing: 0.5px;
+    .step-number {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
     }
     
-    .step-title h2::before {
-        width: 35px;
-        height: 35px;
-        left: -20px;
-        font-size: 0.6em;
+    .section-title {
+        font-size: 1.2rem;
     }
     
-    .prev-step, .next-step {
-        padding: 8px 15px;
-        font-size: 0.9rem;
+    .promo-title {
+        font-size: 1.2rem;
     }
 }
 
 @media (max-width: 480px) {
-    .step-title h2 {
-        font-size: 1.4em;
+    .section-container {
+        padding: 0.8rem;
+        margin-bottom: 1.5rem;
     }
     
-    .step-title h2::before {
-        width: 30px;
-        height: 30px;
-        left: -15px;
+    .promo-section {
+        padding: 1rem;
+    }
+    
+    .step-number {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+    
+    .section-title {
+        font-size: 1.1rem;
     }
 }
