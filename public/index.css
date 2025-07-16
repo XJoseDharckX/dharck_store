@@ -148,6 +148,8 @@ body {
     max-width: 100%;
     padding: 0 15px;
     box-sizing: border-box;
+    /* Evitar que el contenedor se desborde */
+    overflow: hidden;
 }
 
 .dharck-store-title {
@@ -162,6 +164,9 @@ body {
     background: none;
     -webkit-background-clip: unset;
     background-clip: unset;
+    /* Evitar que el texto se corte */
+    white-space: nowrap;
+    flex-shrink: 1;
 }
 
 @keyframes header-gold-glow {
@@ -176,10 +181,18 @@ body {
     border-radius: 50%;
     box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), 0 0 35px rgba(30, 144, 255, 0.6);
     transition: transform 0.3s ease;
+    /* Optimización para rendimiento */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    /* Asegurar que no se deforme */
+    object-fit: contain;
+    max-width: 80px;
+    /* Evitar que el logo se estire */
+    flex-shrink: 0;
 }
 
 .title-logo:hover {
-    transform: scale(1.05) rotate(5deg);
+    transform: translateZ(0) scale(1.05) rotate(5deg);
 }
 
 /* Botón de soporte técnico */
@@ -1179,12 +1192,24 @@ input[type="password"]:focus {
 /* Responsive */
 @media (max-width: 768px) {
     .dharck-store-title {
-        font-size: 2.5em;
-        margin-right: 15px;
+        font-size: 2.2em;
+        margin-right: 12px;
+        /* Permitir que el texto se ajuste */
+        white-space: nowrap;
     }
     
     .title-logo {
-        height: 60px;
+        height: 40px;
+        max-width: 40px;
+        width: auto;
+        /* Mantener proporción */
+        flex-shrink: 0;
+    }
+    
+    .dharck-store-title-container {
+        padding: 0 12px;
+        /* Asegurar que todo quepa */
+        min-height: 50px;
     }
     
     .form-container, .section-container {
@@ -1283,12 +1308,24 @@ input[type="password"]:focus {
 
 @media (max-width: 480px) {
     .dharck-store-title {
-        font-size: 2em;
-        margin-right: 10px;
+        font-size: 1.8em;
+        margin-right: 8px;
+        /* Texto más compacto */
+        white-space: nowrap;
     }
     
     .title-logo {
-        height: 50px;
+        height: 32px;
+        max-width: 32px;
+        width: auto;
+        flex-shrink: 0;
+    }
+    
+    .dharck-store-title-container {
+        padding: 0 8px;
+        min-height: 40px;
+        /* Asegurar alineación */
+        align-items: center;
     }
     
     .form-container, .section-container {
@@ -1394,6 +1431,52 @@ input[type="password"]:focus {
     
     .step-navigation {
         flex-direction: column;
+    }
+}
+
+/* Media query adicional para pantallas muy pequeñas */
+@media (max-width: 360px) {
+    .dharck-store-title {
+        font-size: 1.5em;
+        margin-right: 6px;
+        /* Texto aún más compacto */
+        white-space: nowrap;
+    }
+    
+    .title-logo {
+        height: 28px;
+        max-width: 28px;
+        width: auto;
+        flex-shrink: 0;
+    }
+    
+    .dharck-store-title-container {
+        padding: 0 6px;
+        min-height: 35px;
+        /* Centrar perfectamente */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+}
+
+/* Para pantallas extremadamente pequeñas */
+@media (max-width: 320px) {
+    .dharck-store-title {
+        font-size: 1.3em;
+        margin-right: 5px;
+    }
+    
+    .title-logo {
+        height: 25px;
+        max-width: 25px;
+        width: auto;
+    }
+    
+    .dharck-store-title-container {
+        padding: 0 5px;
+        min-height: 30px;
     }
 }
 
