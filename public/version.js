@@ -1,5 +1,5 @@
 // Versión de la aplicación
-const APP_VERSION = '3.3.4';
+const APP_VERSION = '3.3.5';
 const LAST_UPDATED = new Date().toISOString();
 
 // Verificar si hay nueva versión
