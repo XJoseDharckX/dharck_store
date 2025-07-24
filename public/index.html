@@ -12,7 +12,13 @@
     <link rel="icon" href="/image/logo1.png" type="image/png">
     
     <!-- Version Control -->
-    <script src="/version.js"></script>
+    <script src="version.js"></script>
+    <script>
+        // Llama a checkForUpdates al cargar
+    document.addEventListener('DOMContentLoaded', () => {
+            checkForUpdates();
+        });
+    </script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0RB1V3F1WL"></script>
 <script>
