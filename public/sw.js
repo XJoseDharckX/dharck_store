@@ -1,5 +1,4 @@
-// Cambia esto cuando actualices la versión
-const CACHE_NAME = 'dharck-store-v3.3.9'; // Ejemplo: incrementa a nueva versión
+const CACHE_NAME = 'dharck-store-v3.3.10';
 const urlsToCache = [
     '/',
     '/index.html',
