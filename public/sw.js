@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dharck-store-v3.3.10';
+const CACHE_NAME = 'dharck-store-v3.4.0';
 const urlsToCache = [
     '/',
     '/index.html',
